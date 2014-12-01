@@ -1,0 +1,88 @@
+body {
+  padding-top: 50px;
+  background-color :#F7F7F7;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+.photo { 
+  background-color: #449D44; 
+  border: 0px solid #b0b0b0; 
+  margin:0 0 10px 10px; 
+  padding: 5px; 
+  width : 216px;
+  height : 288px; 
+}
+.changeBackground{
+   background-color: #FF0000 !important;
+}
+.bckgrnd{
+    background-color: #449D44; 
+}
+
+#btn_up
+{
+    position: fixed;
+    bottom: 15px;
+    right: 25px;
+    cursor: pointer;
+    display:none;
+    font-family: "icons";
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    text-rendering: optimizelegibility;
+    text-transform: none;
+    font-size: 2em;
+}
+
+.legend 
+{
+    
+    
+    
+}
+
+.info {
+    background-color: #e1cb2a;
+    bottom: 79px;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    left: 0;
+    opacity: 0.7;
+    overflow: hidden;
+    padding-left: 3px;
+    position: relative;
+    width: 74px;
+}
+.one_pic {
+    float: left;
+    height: 352px;
+    padding: 20px 5.5px 0;
+}
+.organisation{
+    
+    float: left;
+    height: 330px;
+    width: 370px;
+    
+}
+
+#valider{
+    float:right;
+    margin-bottom: 15px;
+    margin-top:150px;
+}
+
+#vider{
+    
+    float:right;    
+    margin-right: 15px;
+}
+
+.orga-btn
+{
+    margin-bottom: 15px;
+}
