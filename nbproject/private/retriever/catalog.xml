@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://xsd.propelorm.org/1.6/database.xsd" uri="xsd.propelorm.org/1.6/database.xsd"/>
+    <system systemId="http://xsd.propelorm.org/1.6/custom_datatypes.xsd" uri="xsd.propelorm.org/1.6/custom_datatypes.xsd"/>
+    <system systemId="http://symfony.com/schema/dic/services/services-1.0.xsd" uri="symfony.com/schema/dic/services/services-1.0.xsd"/>
+</catalog>

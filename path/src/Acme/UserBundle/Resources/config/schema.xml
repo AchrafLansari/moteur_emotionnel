@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="moteur_emotionnel" namespace="Acme\UserBundle\Model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd" defaultIdMethod="native">
+    <table name="utilisateur">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="nom" type="varchar" primaryString="true" size="100" />
+        <column name="prenom" type="varchar" primaryString="true" size="100" />
+        <column name="age" type="decimal" />
+        <column name="ville" type="varchar" size="100" />
+        <column name="ip" type="decimal" />
+        <column name="description" type="longvarchar" />
+        <column name="categorie_id" type="integer" />
+        <foreign-key foreignTable="categorie">
+            <reference local="categorie_id" foreign="id" />
+        </foreign-key>
+    </table>
+    <table name="produit">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="nom" type="varchar" primaryString="true" size="100" />
+        <column name="autheur" type="varchar" primaryString="true" size="100" />
+        <column name="description" type="longvarchar" />
+    </table>
+    <table name="categorie">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="nom" type="varchar" primaryString="true" size="100" />
+   </table>
+</database>
+

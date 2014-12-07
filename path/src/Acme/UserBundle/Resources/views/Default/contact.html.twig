@@ -1,0 +1,15 @@
+
+
+{% block title "form" %}
+
+{% block content %}
+    <form action="{{ path('_user_identification') }}" method="POST" id="contact_form">
+        {{ form_errors(form) }}
+
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prenom) }}
+
+        
+        <input type="submit" value="Send" class="symfony-button-grey" />
+    </form>
+{% endblock %}
