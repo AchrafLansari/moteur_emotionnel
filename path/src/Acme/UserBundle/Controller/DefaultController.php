@@ -47,20 +47,11 @@ class DefaultController extends Controller
         
         $books = count($parsed_json['Books']);
         
-        foreach ($parsed_json['Books'] as $key => $value) {
-            
-            
-        //    echo $value['ID'].'<h3>'.$value['Title'].'</h3><img src='.$value['Image'].'><br>';
-            if(isset($value['SubTitle'])){ 
-          //      echo $value['SubTitle'];
-            }
-            
-        }
         
         
         //return $this->render('UserBundle:User:index.html.twig');
         return $this->render('UserBundle:User:index.html.twig',array('nb_books' => $books,
-                     'books' => $parsed_json['Books']));
+                     'books' => $parsed_json['Books'],'flag'=>false));
     }
     /**
      * @Route("/show/{id}", name="_user_show")
