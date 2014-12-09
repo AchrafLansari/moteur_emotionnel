@@ -37,25 +37,39 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss=""><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+        
+        <h4 class="modal-title" id="exampleModalLabel">Identification </h4>
       </div>
       <div class="modal-body">
-        <form role="form">
+        <form action="{{ path('_user') }}" method="post" enctype="multipart/form-data">
           <div class="form-group">
             <label for="nom" class="control-label">Nom :</label>
-            <input type="text" class="form-control" id="recipient-name" required="true">
+            <input name="nom" type="text" class="form-control" id="recipient-name" placeholder="Entrez votre nom" required>
           </div>
           <div class="form-group">
             <label for="prenom" class="control-label">Prenom:</label>
-            <input type="text" class="form-control" id="recipient-name" required="true">
+            <input type="text" class="form-control" id="recipient-name" placeholder="Entrez votre prenom" required>
           </div>
+          <div class="form-group">
+            <label for="age" class="control-label">Age :</label>
+            <input name="age" type="number" class="form-control" id="recipient-name" required>
+          </div>
+          <div class="form-group">
+            <label for="ville" class="control-label">Ville :</label>
+            <input type="text" class="form-control" id="recipient-name"  placeholder="Entrez votre ville">
+          </div>
+          <div class="form-group">
+            <label for="description" class="control-label">Description :</label>
+            <textarea class="form-control" id="message-text" placeholder="Entrez votre description" ></textarea>
+          </div>
+           
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-primary">Valider</button>
+          
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
-      </div>
+      
+       </div>
+      
     </div>
   </div>
 </div>

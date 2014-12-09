@@ -9,12 +9,18 @@ use Acme\UserBundle\Form\Type\UtilisateurType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
+
+ 
+ 
 class DefaultController extends Controller
 {   
-    
+   
      
     public function helloAction()
     {
@@ -26,32 +32,67 @@ class DefaultController extends Controller
      * @Template()
      */
     public function goodbyeAction()
-    {
+    {   
+        $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+        if($request->getMethod() == 'POST')
+        {        
+
+        $nom = $_POST['nom']; //////Comme PHP
+        $age = $_POST['age'];   // COMME PHP
+        echo $nom.'==>'.$age;
+        }
+        
     return new Response('Goodbye!');
     }
     
      
     public function indexAction()
     {   
+        
+        $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
         $path = "http://it-ebooks-api.info/v1/search/";
         $query= "php%20mysql";
         
         $json = file_get_contents($path.$query);
-        
         $parsed_json = json_decode($json,true);
-        
-        //var_dump($parsed_json) ;
         
         //echo $parsed_json['Total']/10;
         
-        
         $books = count($parsed_json['Books']);
         
+       
+        $response = new Response();
         
+
+        $dejaVu = $request->cookies->has("cookie");
+        
+        //$request->cookies->get("mycookie");    
+        
+        $ip = $this->container->get('request')->getClientIp();
+        $response->headers->clearCookie('cookie');
+        $response->send();
+        
+        if($dejaVu){
+            
+          $flag = false;
+           
+        }else {
+        
+        /*$cookie = new Cookie('cookie', 'contentOfMyCookie',time() + 3600 * 24 * 7);
+        $response->headers->setCookie($cookie);
+        $response->headers->clearCookie('cookie');
+        $response->send();*/
+        
+            
+            
+            $flag=true;
+            
+            
+        }
         
         //return $this->render('UserBundle:User:index.html.twig');
         return $this->render('UserBundle:User:index.html.twig',array('nb_books' => $books,
-                     'books' => $parsed_json['Books'],'flag'=>false));
+                     'books' => $parsed_json['Books'],'flag'=>$flag));
     }
     /**
      * @Route("/show/{id}", name="_user_show")
