@@ -3,6 +3,7 @@
 namespace Acme\UserBundle\Controller;
 
 use Acme\UserBundle\Model\UtilisateurQuery;
+use Acme\UserBundle\Model\Utilisateur;
 use Acme\UserBundle\Form\Type\UtilisateurType;
 
 
@@ -34,12 +35,27 @@ class DefaultController extends Controller
     public function goodbyeAction()
     {   
         $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+        
         if($request->getMethod() == 'POST')
         {        
 
-        $nom = $_POST['nom']; //////Comme PHP
-        $age = $_POST['age'];   // COMME PHP
-        echo $nom.'==>'.$age;
+        $nom = $_POST['nom']; 
+        $prenom = $_POST['prenom']; 
+        $age = $_POST['age'];   
+        $ville = $_POST['ville'];   
+        $description = $_POST['description'];
+        
+        $utilisateur = new Utilisateur();
+        $utilisateur->setNom($nom);
+        $utilisateur->setPrenom($prenom);
+        $utilisateur->setVille($ville);
+        $utilisateur->setAge($age);
+        $utilisateur->setDescription($description);
+        $utilisateur->setIp($this->container->get('request')->getClientIp());
+        
+        $utilisateur->save();
+        
+        echo 'Utilisateur Ajouté';
         }
         
     return new Response('Goodbye!');
@@ -68,7 +84,7 @@ class DefaultController extends Controller
         
         //$request->cookies->get("mycookie");    
         
-        $ip = $this->container->get('request')->getClientIp();
+        
         $response->headers->clearCookie('cookie');
         $response->send();
         
