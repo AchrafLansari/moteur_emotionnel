@@ -9,6 +9,9 @@ use Moteur\ProduitBundle\Model\Mot;
 use Moteur\ProduitBundle\Model\ProduitMotPoids;
 use Moteur\ProduitBundle\Dictionnaire\IndexationProduit;
 use Moteur\ProduitBundle\Model\MotQuery;
+use Moteur\ProduitBundle\Model\UtilisateurProduitQuery;
+use Moteur\ProduitBundle\Model\UtilisateurProduit;
+use Moteur\ProduitBundle\Model\ProduitQuery;
 
 class DefaultController extends Controller
 {
@@ -55,15 +58,56 @@ class DefaultController extends Controller
     
     
     public function getAction($id_produit, $id_utilisateur){
-    	echo"get";
-    	
+    	$produit = ProduitQuery::create()->findOneById($id_produit);
+    	if($produit){
+    		$this->updateNombreVueProduit($id_utilisateur, $id_produit);
+    	}
     }
     
     public function achatAction($id_produit, $id_utilisateur){
-    	echo"achat";
+    	$utilisateurProduit = UtilisateurProduitQuery::create()
+    		->filterByUtilisateurId($id_utilisateur)
+    		->filterByProduitId($id_produit)
+    		->findOne();
+    	
+    	if(!$utilisateurProduit){
+    		$utilisateurProduit = new UtilisateurProduit();
+    		$utilisateurProduit->setProduitId($id_produit)
+    			->setUtilisateurId($id_utilisateur);
+    	}
+    	if(!$utilisateurProduit->getAchat()){
+    		$utilisateurProduit->setAchat(true)->save();
+    	}
     }
     
     public function noteAction($id_produit, $note, $id_utilisateur){
-    	echo"note";
+    	$utilisateurProduit = UtilisateurProduitQuery::create()
+    		->filterByUtilisateurId($id_utilisateur)
+    		->filterByProduitId($id_produit)
+    		->filterByAchat(true) //Il faut avoir acheté le produit pour pouvoir le noter
+    		->findOne();
+    	if($utilisateurProduit){
+    		$utilisateurProduit->setNote($note)->save();
+    	}
+    }
+    
+    private function updateNombreVueProduit($id_utilisateur, $id_produit){
+    	$utilisateurProduit = UtilisateurProduitQuery::create()
+    	->filterByUtilisateurId($id_utilisateur)
+    	->filterByProduitId($id_produit)
+    	->findOne();
+    	if($utilisateurProduit == null){
+    		$utilisateurProduit = new UtilisateurProduit();
+    		$utilisateurProduit
+    		->setUtilisateurId($id_utilisateur)
+    		->setProduitId($id_produit)
+    		->setNote(null)
+    		->setAchat(false)
+    		->setNombreVisite(1);
+    	}
+    	else{
+    		$utilisateurProduit->setNombreVisite($utilisateurProduit->getNombreVisite()+1);
+    	}
+    	$utilisateurProduit->save();
     }
 }
