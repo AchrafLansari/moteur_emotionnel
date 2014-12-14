@@ -51,6 +51,5 @@ class DefaultController extends Controller
     		$produit_mot->setPoids($poids);
     		$produit_mot->save();
     	}
-    	//return $this->render('MoteurProduitBundle:Default:index.html.twig', array('name' => "produit"));
     }
 }
