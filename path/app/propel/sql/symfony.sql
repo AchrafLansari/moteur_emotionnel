@@ -28,7 +28,8 @@ CREATE TABLE `mot`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `mot` VARCHAR(30),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `mot_U_1` (`mot`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------

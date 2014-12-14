@@ -15,6 +15,9 @@
     <table name="mot">
     	<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
     	<column name="mot" type="varchar" size="30" primaryString="true"/>
+    	<unique>
+			<unique-column name="mot"/>
+    	</unique>
     	<vendor type="mysql">
     		<parameter name="Engine" value="InnoDB"/>
     		<parameter name="Charset" value="utf8"/>
