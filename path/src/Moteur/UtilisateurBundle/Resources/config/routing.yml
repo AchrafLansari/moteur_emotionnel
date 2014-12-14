@@ -1,3 +1,15 @@
 moteur_utilisateur_homepage:
     path:     /utilisateur/
     defaults: { _controller: MoteurUtilisateurBundle:Default:index }
+moteur_utilisateur_ip:
+    path:     /utilisateur/ip/ajout
+    defaults: { _controller: MoteurUtilisateurBundle:Default:addIP }
+moteur_utilisateur_ajout:
+    path:     /utilisateur/ajout
+    defaults: { _controller: MoteurUtilisateurBundle:Default:add }
+moteur_utilisateur_interet_creer:
+    path:     /utilisateur/interet/creer/{nom}
+    defaults: { _controller: MoteurUtilisateurBundle:Default:createInteret }
+moteur_utilisateur_interet_ajout:
+    path:     /utilisateur/interet/ajout
+    defaults: { _controller: MoteurUtilisateurBundle:Default:addInteret }

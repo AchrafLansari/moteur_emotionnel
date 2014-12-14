@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Moteur\ProduitBundle\Model\Produit;
 use Moteur\ProduitBundle\Model\Mot;
 use Moteur\ProduitBundle\Model\ProduitMotPoids;
-use Moteur\ProduitBundle\Dictionnaire\Indexation;
 use Moteur\ProduitBundle\Dictionnaire\IndexationProduit;
 use Moteur\ProduitBundle\Model\MotQuery;
 
