@@ -52,4 +52,18 @@ class DefaultController extends Controller
     		$produit_mot->save();
     	}
     }
+    
+    
+    public function getAction($id_produit, $id_utilisateur){
+    	echo"get";
+    	
+    }
+    
+    public function achatAction($id_produit, $id_utilisateur){
+    	echo"achat";
+    }
+    
+    public function noteAction($id_produit, $note, $id_utilisateur){
+    	echo"note";
+    }
 }

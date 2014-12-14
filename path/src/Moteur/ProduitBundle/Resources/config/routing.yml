@@ -4,3 +4,12 @@ moteur_produit_homepage:
 moteur_produit_ajout:
     path:     /produit/ajouter
     defaults: { _controller: MoteurProduitBundle:Default:add }
+moteur_produit_get:
+    path:     /produit/{id_produit}/{id_utilisateur}
+    defaults: { _controller: MoteurProduitBundle:Default:get }
+moteur_produit_achat:
+    path:     /produit/{id_produit}/achat/{id_utilisateur}
+    defaults: { _controller: MoteurProduitBundle:Default:achat }
+moteur_produit_note:
+    path:     /produit/{id_produit}/noter/{note}/{id_utilisateur}
+    defaults: { _controller: MoteurProduitBundle:Default:note }
