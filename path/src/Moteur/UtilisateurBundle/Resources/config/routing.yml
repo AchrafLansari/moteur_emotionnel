@@ -1,0 +1,3 @@
+moteur_utilisateur_homepage:
+    path:     /utilisateur/
+    defaults: { _controller: MoteurUtilisateurBundle:Default:index }

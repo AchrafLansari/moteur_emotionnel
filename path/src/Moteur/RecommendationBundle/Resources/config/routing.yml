@@ -1,0 +1,3 @@
+moteur_recommendation_homepage:
+    path:     /recommendation/
+    defaults: { _controller: MoteurRecommendationBundle:Default:index }

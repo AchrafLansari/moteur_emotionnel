@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="symfony" namespace="Moteur\ProduitBundle\Model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd" defaultIdMethod="native">
+    <table name="produit">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="titre" type="varchar" size="100" />
+        <column name="auteur" type="varchar" size="100" />
+        <column name="description" type="varchar" size="1000" />
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+   			<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="mot">
+    	<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+    	<column name="mot" type="varchar" size="30" primaryString="true"/>
+    	<vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="produit_mot_poids">
+    	<column name="mot_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="produit_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="poids" type="integer" required="true" primaryKey="true"/>
+    	<foreign-key foreignTable="mot">
+            <reference local="mot_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="produit">
+            <reference local="produit_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+		    <parameter name="Engine" value="InnoDB"/>
+			<parameter name="Charset" value="utf8"/>
+		</vendor>
+    </table>
+    
+    
+    <table name="utilisateur_produit">
+        <column name="utilisateur_id" type="integer" required="true" primaryKey="true"/>
+        <column name="produit_id" type="integer" required="true" primaryKey="true"/>
+        <column name="note" type="integer"/>
+        <column name="achat" type="boolean" defaultValue="false"/>
+        <column name="nombre_visite" type="integer" defaultValue="0"/>
+        <foreign-key foreignTable="interet">
+            <reference local="produit_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="utilisateur">
+            <reference local="utilisateur_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+</database>

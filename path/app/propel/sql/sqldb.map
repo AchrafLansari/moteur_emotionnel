@@ -1,2 +1,5 @@
 # Sqlfile -> Database map
+symfony.sql=symfony
+moteur_emotionnel.sql=moteur_emotionnel
+# Sqlfile -> Database map
 moteur_emotionnel.sql=moteur_emotionnel

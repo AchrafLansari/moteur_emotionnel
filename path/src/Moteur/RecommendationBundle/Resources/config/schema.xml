@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="symfony" namespace="Moteur\RecommendationBundle\Model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd" defaultIdMethod="native">
+    <table name="profil_score_utilisateur" readOnly="true" skipSql="true">
+    	<column name="utilisateur_a_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="utilisateur_b_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="score" type="integer" required="true" primaryKey="true"/>
+    	<foreign-key foreignTable="utilisateur">
+            <reference local="utilisateur_a_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="utilisateur">
+            <reference local="utilisateur_b_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="requete">
+    	<column name="requete_id" type="integer" required="true" primaryKey="true"/>
+        <column name="mot_id" type="integer" required="true" primaryKey="true"/>
+        <column name="utilisateur_id" type="integer" required="true" primaryKey="true"/>
+        <foreign-key foreignTable="mot">
+            <reference local="mot_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="utilisateur">
+            <reference local="utilisateur_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+
+	<table name="profil_score_requete_produit" readOnly="true" skipSql="true">
+    	<column name="requete_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="produit_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="score" type="integer" required="true" primaryKey="true"/>
+    	<foreign-key foreignTable="requete">
+            <reference local="requete_id" foreign="requete_id" />
+        </foreign-key>
+        <foreign-key foreignTable="produit">
+            <reference local="produit_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="profil_score_utilisateur_produit" readOnly="true" skipSql="true">
+    	<column name="utilisateur_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="produit_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="score" type="integer" required="true" primaryKey="true"/>
+    	<foreign-key foreignTable="utilisateur">
+            <reference local="utilisateur_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="produit">
+            <reference local="produit_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="profil_score_requete_utilisateur_produit" readOnly="true" skipSql="true">
+    	<column name="requete_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="utilisateur_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="produit_id" type="integer" required="true" primaryKey="true"/>
+    	<column name="score" type="integer" required="true" primaryKey="true"/>
+    	<foreign-key foreignTable="requete">
+            <reference local="requete_id" foreign="requete_id" />
+        </foreign-key>
+        <foreign-key foreignTable="utilisateur">
+            <reference local="utilisateur_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="produit">
+            <reference local="produit_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+</database>

@@ -1,0 +1,6 @@
+moteur_produit_homepage:
+    path:     /produit/
+    defaults: { _controller: MoteurProduitBundle:Default:index }
+moteur_produit_ajout:
+    path:     /produit/ajouter
+    defaults: { _controller: MoteurProduitBundle:Default:add }

@@ -16,3 +16,10 @@ _main:
 # AcmeDemoBundle routes (to be removed)
 _acme_demo:
     resource: "@AcmeDemoBundle/Resources/config/routing.yml"
+
+_moteur_recommendation:
+    resource: "@MoteurRecommendationBundle/Resources/config/routing.yml"
+_moteur_utilisateur:
+    resource: "@MoteurUtilisateurBundle/Resources/config/routing.yml"
+_moteur_produit:
+    resource: "@MoteurProduitBundle/Resources/config/routing.yml"

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="symfony" namespace="Moteur\UtilisateurBundle\Model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd" defaultIdMethod="native">
+    <table name="utilisateur">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="nom" type="varchar" primaryString="true" size="100" />
+        <column name="prenom" type="varchar" primaryString="true" size="100" />
+        <column name="mail" type="varchar" primaryString="true" size="100" />
+        <column name="age" type="integer" />
+        <column name="ville" type="varchar" size="100" />
+        <column name="ip_id" type="integer" />
+        <foreign-key foreignTable="ip">
+            <reference local="ip_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="ip">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="pays" type="varchar" size="100" />
+        <column name="departement" type="varchar" size="100"/>
+        <column name="ville" type="varchar" size="100"/>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="interet">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="nom" type="varchar" primaryString="true" size="100" />
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+    
+    <table name="utilisateur_interet">
+        <column name="utilisateur_id" type="integer" primaryKey="true"/>
+        <column name="interet_id" type="integer" primaryKey="true"/>
+        <column name="valeur" type="integer"/>
+        <foreign-key foreignTable="interet">
+            <reference local="interet_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="utilisateur">
+            <reference local="utilisateur_id" foreign="id" />
+        </foreign-key>
+        <vendor type="mysql">
+    		<parameter name="Engine" value="InnoDB"/>
+    		<parameter name="Charset" value="utf8"/>
+  		</vendor>
+    </table>
+</database>

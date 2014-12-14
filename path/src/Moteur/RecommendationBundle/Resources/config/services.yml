@@ -1,0 +1,7 @@
+parameters:
+#    moteur_recommendation.example.class: Moteur\RecommendationBundle\Example
+
+services:
+#    moteur_recommendation.example:
+#        class: %moteur_recommendation.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
