@@ -13,6 +13,7 @@ use Moteur\UtilisateurBundle\Model\Interet;
 use Moteur\UtilisateurBundle\Model\InteretQuery;
 use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
 use Moteur\UtilisateurBundle\Model\UtilisateurInteret;
+use Moteur\UtilisateurBundle\Model\UtilisateurInteretQuery;
 
 class DefaultController extends Controller
 {
@@ -85,14 +86,17 @@ class DefaultController extends Controller
     	
     	foreach ($utilisateurs as $utilisateur){
     		foreach ($interets as $interet){
-    			//if(rand(0,10) < 3){
+    			if(rand(0,10) < 3){
 	    			$utilisateur_interet = new UtilisateurInteret();
-	    			$utilisateur_interet->setUtilisateurId($utilisateur->getId());
-	    			$utilisateur_interet->setInteretId($interet->getId());
-	    			$utilisateur_interet->setValeur(rand(0, 10));
-	    			print_r($utilisateur_interet);
-	    			$utilisateur_interet->save();
-    			//}
+	    			UtilisateurInteretQuery::create()
+	    				->filterByUtilisateurId($utilisateur->getId())
+	    				->filterByInteretId($interet->getId())
+	    				->findOneOrCreate()
+	    				->setUtilisateurId($utilisateur->getId())
+	    				->setInteretId($interet->getId())
+	    				->setValeur(rand(0, 10))
+	    				->save();
+    			}
     		}
     	}
     }
