@@ -12,6 +12,8 @@ use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
 use Moteur\RecommendationBundle\Model\RequeteQuery;
 use Moteur\RecommendationBundle\Model\Requete;
 use Moteur\ProduitBundle\Model\MotQuery;
+use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateur;
+use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateurQuery;
 
 class DefaultController extends Controller
 {
@@ -64,5 +66,15 @@ class DefaultController extends Controller
     	
     	$score = new ProfilScoreRequeteUtilisateurProduit();
     	//TO DO mais pas prioritaire
+    }
+    
+    public function utilisateurAction($id_utilisateur){
+    	$scores = ProfilScoreUtilisateurQuery::create()
+    	->condition('cond1', 'profil_score_utilisateur.utilisateur_a_id = ?', $id_utilisateur)
+    	->condition('cond2', 'profil_score_utilisateur.utilisateur_b_id = ?', $id_utilisateur)
+    	->where(array('cond1', 'cond2'), 'or')
+    	->orderBy('profil_score_utilisateur.score', 'DESC')
+    	->find();
+    	print_r($scores);
     }
 }
