@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
  
 class DefaultController extends Controller
 {   
-   
+   //$_SERVER['HTTP_USER_AGENT'] Navigateur de l'utilisateur
      
     public function helloAction()
     {
