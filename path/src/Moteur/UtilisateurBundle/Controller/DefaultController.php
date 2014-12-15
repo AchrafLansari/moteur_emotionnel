@@ -17,6 +17,8 @@ use Moteur\UtilisateurBundle\Model\UtilisateurInteretQuery;
 use Moteur\ProduitBundle\Model\ProduitQuery;
 use Moteur\ProduitBundle\Model\UtilisateurProduit;
 
+set_time_limit(500);
+
 class DefaultController extends Controller
 {
     public function indexAction()
@@ -53,7 +55,7 @@ class DefaultController extends Controller
     	$interets = InteretQuery::create()->find();
     	$produits = ProduitQuery::create()->find();
     	
-    	for($i=0; $i<10; $i++){
+    	for($i=0; $i<50; $i++){
 	    	do{
 	    		$geo = new GeoIp();
 	    	}
@@ -101,12 +103,6 @@ class DefaultController extends Controller
 	    				$note = rand(0, 10);
 	    			
 	    			$utilisateur_produit = new UtilisateurProduit();
-	    			
-	    			echo "Utilisateur : ".$utilisateur->getId()."<br>";
-	    			echo "Produit : ".$produit->getId()."<br>";
-	    			echo "Visites : ".$visites."<br>";
-	    			echo "Achat : ".$achat."<br>";
-	    			echo "Note : ".$note."<br><br>";
 	    			
 	    			$utilisateur_produit->setNombreVisite($visites)
 	    								->setAchat($achat)

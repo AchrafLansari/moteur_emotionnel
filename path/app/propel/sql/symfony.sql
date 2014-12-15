@@ -70,7 +70,7 @@ CREATE TABLE `utilisateur_produit`
     INDEX `utilisateur_produit_FI_1` (`produit_id`),
     CONSTRAINT `utilisateur_produit_FK_1`
         FOREIGN KEY (`produit_id`)
-        REFERENCES `interet` (`id`),
+        REFERENCES `produit` (`id`),
     CONSTRAINT `utilisateur_produit_FK_2`
         FOREIGN KEY (`utilisateur_id`)
         REFERENCES `utilisateur` (`id`)
