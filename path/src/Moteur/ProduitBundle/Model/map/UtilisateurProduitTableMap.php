@@ -43,7 +43,7 @@ class UtilisateurProduitTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addForeignPrimaryKey('utilisateur_id', 'UtilisateurId', 'INTEGER' , 'utilisateur', 'id', true, null, null);
-        $this->addForeignPrimaryKey('produit_id', 'ProduitId', 'INTEGER' , 'interet', 'id', true, null, null);
+        $this->addForeignPrimaryKey('produit_id', 'ProduitId', 'INTEGER' , 'produit', 'id', true, null, null);
         $this->addColumn('note', 'Note', 'INTEGER', false, null, null);
         $this->addColumn('achat', 'Achat', 'BOOLEAN', false, 1, false);
         $this->addColumn('nombre_visite', 'NombreVisite', 'INTEGER', false, null, 0);
@@ -55,7 +55,7 @@ class UtilisateurProduitTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Interet', 'Moteur\\UtilisateurBundle\\Model\\Interet', RelationMap::MANY_TO_ONE, array('produit_id' => 'id', ), null, null);
+        $this->addRelation('Produit', 'Moteur\\ProduitBundle\\Model\\Produit', RelationMap::MANY_TO_ONE, array('produit_id' => 'id', ), null, null);
         $this->addRelation('Utilisateur', 'Moteur\\UtilisateurBundle\\Model\\Utilisateur', RelationMap::MANY_TO_ONE, array('utilisateur_id' => 'id', ), null, null);
     } // buildRelations()
 

@@ -13,8 +13,6 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Moteur\ProduitBundle\Model\UtilisateurProduit;
-use Moteur\ProduitBundle\Model\UtilisateurProduitQuery;
 use Moteur\UtilisateurBundle\Model\Interet;
 use Moteur\UtilisateurBundle\Model\InteretPeer;
 use Moteur\UtilisateurBundle\Model\InteretQuery;
@@ -55,12 +53,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
     protected $nom;
 
     /**
-     * @var        PropelObjectCollection|UtilisateurProduit[] Collection to store aggregation of UtilisateurProduit objects.
-     */
-    protected $collUtilisateurProduits;
-    protected $collUtilisateurProduitsPartial;
-
-    /**
      * @var        PropelObjectCollection|UtilisateurInteret[] Collection to store aggregation of UtilisateurInteret objects.
      */
     protected $collUtilisateurInterets;
@@ -85,12 +77,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $utilisateurProduitsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -267,8 +253,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collUtilisateurProduits = null;
-
             $this->collUtilisateurInterets = null;
 
         } // if (deep)
@@ -393,23 +377,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->utilisateurProduitsScheduledForDeletion !== null) {
-                if (!$this->utilisateurProduitsScheduledForDeletion->isEmpty()) {
-                    UtilisateurProduitQuery::create()
-                        ->filterByPrimaryKeys($this->utilisateurProduitsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->utilisateurProduitsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collUtilisateurProduits !== null) {
-                foreach ($this->collUtilisateurProduits as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             if ($this->utilisateurInteretsScheduledForDeletion !== null) {
@@ -577,14 +544,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
             }
 
 
-                if ($this->collUtilisateurProduits !== null) {
-                    foreach ($this->collUtilisateurProduits as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collUtilisateurInterets !== null) {
                     foreach ($this->collUtilisateurInterets as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -672,9 +631,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collUtilisateurProduits) {
-                $result['UtilisateurProduits'] = $this->collUtilisateurProduits->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
             if (null !== $this->collUtilisateurInterets) {
                 $result['UtilisateurInterets'] = $this->collUtilisateurInterets->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -829,12 +785,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getUtilisateurProduits() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addUtilisateurProduit($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getUtilisateurInterets() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addUtilisateurInteret($relObj->copy($deepCopy));
@@ -902,265 +852,9 @@ abstract class BaseInteret extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('UtilisateurProduit' == $relationName) {
-            $this->initUtilisateurProduits();
-        }
         if ('UtilisateurInteret' == $relationName) {
             $this->initUtilisateurInterets();
         }
-    }
-
-    /**
-     * Clears out the collUtilisateurProduits collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Interet The current object (for fluent API support)
-     * @see        addUtilisateurProduits()
-     */
-    public function clearUtilisateurProduits()
-    {
-        $this->collUtilisateurProduits = null; // important to set this to null since that means it is uninitialized
-        $this->collUtilisateurProduitsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collUtilisateurProduits collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialUtilisateurProduits($v = true)
-    {
-        $this->collUtilisateurProduitsPartial = $v;
-    }
-
-    /**
-     * Initializes the collUtilisateurProduits collection.
-     *
-     * By default this just sets the collUtilisateurProduits collection to an empty array (like clearcollUtilisateurProduits());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initUtilisateurProduits($overrideExisting = true)
-    {
-        if (null !== $this->collUtilisateurProduits && !$overrideExisting) {
-            return;
-        }
-        $this->collUtilisateurProduits = new PropelObjectCollection();
-        $this->collUtilisateurProduits->setModel('UtilisateurProduit');
-    }
-
-    /**
-     * Gets an array of UtilisateurProduit objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Interet is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|UtilisateurProduit[] List of UtilisateurProduit objects
-     * @throws PropelException
-     */
-    public function getUtilisateurProduits($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collUtilisateurProduitsPartial && !$this->isNew();
-        if (null === $this->collUtilisateurProduits || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collUtilisateurProduits) {
-                // return empty collection
-                $this->initUtilisateurProduits();
-            } else {
-                $collUtilisateurProduits = UtilisateurProduitQuery::create(null, $criteria)
-                    ->filterByInteret($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collUtilisateurProduitsPartial && count($collUtilisateurProduits)) {
-                      $this->initUtilisateurProduits(false);
-
-                      foreach ($collUtilisateurProduits as $obj) {
-                        if (false == $this->collUtilisateurProduits->contains($obj)) {
-                          $this->collUtilisateurProduits->append($obj);
-                        }
-                      }
-
-                      $this->collUtilisateurProduitsPartial = true;
-                    }
-
-                    $collUtilisateurProduits->getInternalIterator()->rewind();
-
-                    return $collUtilisateurProduits;
-                }
-
-                if ($partial && $this->collUtilisateurProduits) {
-                    foreach ($this->collUtilisateurProduits as $obj) {
-                        if ($obj->isNew()) {
-                            $collUtilisateurProduits[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collUtilisateurProduits = $collUtilisateurProduits;
-                $this->collUtilisateurProduitsPartial = false;
-            }
-        }
-
-        return $this->collUtilisateurProduits;
-    }
-
-    /**
-     * Sets a collection of UtilisateurProduit objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $utilisateurProduits A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Interet The current object (for fluent API support)
-     */
-    public function setUtilisateurProduits(PropelCollection $utilisateurProduits, PropelPDO $con = null)
-    {
-        $utilisateurProduitsToDelete = $this->getUtilisateurProduits(new Criteria(), $con)->diff($utilisateurProduits);
-
-
-        //since at least one column in the foreign key is at the same time a PK
-        //we can not just set a PK to NULL in the lines below. We have to store
-        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->utilisateurProduitsScheduledForDeletion = clone $utilisateurProduitsToDelete;
-
-        foreach ($utilisateurProduitsToDelete as $utilisateurProduitRemoved) {
-            $utilisateurProduitRemoved->setInteret(null);
-        }
-
-        $this->collUtilisateurProduits = null;
-        foreach ($utilisateurProduits as $utilisateurProduit) {
-            $this->addUtilisateurProduit($utilisateurProduit);
-        }
-
-        $this->collUtilisateurProduits = $utilisateurProduits;
-        $this->collUtilisateurProduitsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related UtilisateurProduit objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related UtilisateurProduit objects.
-     * @throws PropelException
-     */
-    public function countUtilisateurProduits(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collUtilisateurProduitsPartial && !$this->isNew();
-        if (null === $this->collUtilisateurProduits || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collUtilisateurProduits) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getUtilisateurProduits());
-            }
-            $query = UtilisateurProduitQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByInteret($this)
-                ->count($con);
-        }
-
-        return count($this->collUtilisateurProduits);
-    }
-
-    /**
-     * Method called to associate a UtilisateurProduit object to this object
-     * through the UtilisateurProduit foreign key attribute.
-     *
-     * @param    UtilisateurProduit $l UtilisateurProduit
-     * @return Interet The current object (for fluent API support)
-     */
-    public function addUtilisateurProduit(UtilisateurProduit $l)
-    {
-        if ($this->collUtilisateurProduits === null) {
-            $this->initUtilisateurProduits();
-            $this->collUtilisateurProduitsPartial = true;
-        }
-
-        if (!in_array($l, $this->collUtilisateurProduits->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddUtilisateurProduit($l);
-
-            if ($this->utilisateurProduitsScheduledForDeletion and $this->utilisateurProduitsScheduledForDeletion->contains($l)) {
-                $this->utilisateurProduitsScheduledForDeletion->remove($this->utilisateurProduitsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	UtilisateurProduit $utilisateurProduit The utilisateurProduit object to add.
-     */
-    protected function doAddUtilisateurProduit($utilisateurProduit)
-    {
-        $this->collUtilisateurProduits[]= $utilisateurProduit;
-        $utilisateurProduit->setInteret($this);
-    }
-
-    /**
-     * @param	UtilisateurProduit $utilisateurProduit The utilisateurProduit object to remove.
-     * @return Interet The current object (for fluent API support)
-     */
-    public function removeUtilisateurProduit($utilisateurProduit)
-    {
-        if ($this->getUtilisateurProduits()->contains($utilisateurProduit)) {
-            $this->collUtilisateurProduits->remove($this->collUtilisateurProduits->search($utilisateurProduit));
-            if (null === $this->utilisateurProduitsScheduledForDeletion) {
-                $this->utilisateurProduitsScheduledForDeletion = clone $this->collUtilisateurProduits;
-                $this->utilisateurProduitsScheduledForDeletion->clear();
-            }
-            $this->utilisateurProduitsScheduledForDeletion[]= clone $utilisateurProduit;
-            $utilisateurProduit->setInteret(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Interet is new, it will return
-     * an empty collection; or if this Interet has previously
-     * been saved, it will retrieve related UtilisateurProduits from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Interet.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|UtilisateurProduit[] List of UtilisateurProduit objects
-     */
-    public function getUtilisateurProduitsJoinUtilisateur($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = UtilisateurProduitQuery::create(null, $criteria);
-        $query->joinWith('Utilisateur', $join_behavior);
-
-        return $this->getUtilisateurProduits($query, $con);
     }
 
     /**
@@ -1445,11 +1139,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collUtilisateurProduits) {
-                foreach ($this->collUtilisateurProduits as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collUtilisateurInterets) {
                 foreach ($this->collUtilisateurInterets as $o) {
                     $o->clearAllReferences($deep);
@@ -1459,10 +1148,6 @@ abstract class BaseInteret extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collUtilisateurProduits instanceof PropelCollection) {
-            $this->collUtilisateurProduits->clearIterator();
-        }
-        $this->collUtilisateurProduits = null;
         if ($this->collUtilisateurInterets instanceof PropelCollection) {
             $this->collUtilisateurInterets->clearIterator();
         }

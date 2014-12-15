@@ -9,10 +9,10 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Moteur\ProduitBundle\Model\ProduitPeer;
 use Moteur\ProduitBundle\Model\UtilisateurProduit;
 use Moteur\ProduitBundle\Model\UtilisateurProduitPeer;
 use Moteur\ProduitBundle\Model\map\UtilisateurProduitTableMap;
-use Moteur\UtilisateurBundle\Model\InteretPeer;
 use Moteur\UtilisateurBundle\Model\UtilisateurPeer;
 
 abstract class BaseUtilisateurProduitPeer
@@ -480,7 +480,7 @@ abstract class BaseUtilisateurProduitPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Interet table
+     * Returns the number of rows matching criteria, joining the related Produit table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -488,7 +488,7 @@ abstract class BaseUtilisateurProduitPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinInteret(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinProduit(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -515,7 +515,7 @@ abstract class BaseUtilisateurProduitPeer
             $con = Propel::getConnection(UtilisateurProduitPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, InteretPeer::ID, $join_behavior);
+        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, ProduitPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -582,7 +582,7 @@ abstract class BaseUtilisateurProduitPeer
 
 
     /**
-     * Selects a collection of UtilisateurProduit objects pre-filled with their Interet objects.
+     * Selects a collection of UtilisateurProduit objects pre-filled with their Produit objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -590,7 +590,7 @@ abstract class BaseUtilisateurProduitPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinInteret(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinProduit(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -601,9 +601,9 @@ abstract class BaseUtilisateurProduitPeer
 
         UtilisateurProduitPeer::addSelectColumns($criteria);
         $startcol = UtilisateurProduitPeer::NUM_HYDRATE_COLUMNS;
-        InteretPeer::addSelectColumns($criteria);
+        ProduitPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, InteretPeer::ID, $join_behavior);
+        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, ProduitPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -623,19 +623,19 @@ abstract class BaseUtilisateurProduitPeer
                 UtilisateurProduitPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
-            $key2 = InteretPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            $key2 = ProduitPeer::getPrimaryKeyHashFromRow($row, $startcol);
             if ($key2 !== null) {
-                $obj2 = InteretPeer::getInstanceFromPool($key2);
+                $obj2 = ProduitPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = InteretPeer::getOMClass();
+                    $cls = ProduitPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol);
-                    InteretPeer::addInstanceToPool($obj2, $key2);
+                    ProduitPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (UtilisateurProduit) to $obj2 (Interet)
+                // Add the $obj1 (UtilisateurProduit) to $obj2 (Produit)
                 $obj2->addUtilisateurProduit($obj1);
 
             } // if joined row was not null
@@ -751,7 +751,7 @@ abstract class BaseUtilisateurProduitPeer
             $con = Propel::getConnection(UtilisateurProduitPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, InteretPeer::ID, $join_behavior);
+        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, ProduitPeer::ID, $join_behavior);
 
         $criteria->addJoin(UtilisateurProduitPeer::UTILISATEUR_ID, UtilisateurPeer::ID, $join_behavior);
 
@@ -789,13 +789,13 @@ abstract class BaseUtilisateurProduitPeer
         UtilisateurProduitPeer::addSelectColumns($criteria);
         $startcol2 = UtilisateurProduitPeer::NUM_HYDRATE_COLUMNS;
 
-        InteretPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + InteretPeer::NUM_HYDRATE_COLUMNS;
+        ProduitPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ProduitPeer::NUM_HYDRATE_COLUMNS;
 
         UtilisateurPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + UtilisateurPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, InteretPeer::ID, $join_behavior);
+        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, ProduitPeer::ID, $join_behavior);
 
         $criteria->addJoin(UtilisateurProduitPeer::UTILISATEUR_ID, UtilisateurPeer::ID, $join_behavior);
 
@@ -816,21 +816,21 @@ abstract class BaseUtilisateurProduitPeer
                 UtilisateurProduitPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Interet rows
+            // Add objects for joined Produit rows
 
-            $key2 = InteretPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = ProduitPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = InteretPeer::getInstanceFromPool($key2);
+                $obj2 = ProduitPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = InteretPeer::getOMClass();
+                    $cls = ProduitPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    InteretPeer::addInstanceToPool($obj2, $key2);
+                    ProduitPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (UtilisateurProduit) to the collection in $obj2 (Interet)
+                // Add the $obj1 (UtilisateurProduit) to the collection in $obj2 (Produit)
                 $obj2->addUtilisateurProduit($obj1);
             } // if joined row not null
 
@@ -861,7 +861,7 @@ abstract class BaseUtilisateurProduitPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Interet table
+     * Returns the number of rows matching criteria, joining the related Produit table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -869,7 +869,7 @@ abstract class BaseUtilisateurProduitPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptInteret(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptProduit(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -947,7 +947,7 @@ abstract class BaseUtilisateurProduitPeer
             $con = Propel::getConnection(UtilisateurProduitPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, InteretPeer::ID, $join_behavior);
+        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, ProduitPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -963,7 +963,7 @@ abstract class BaseUtilisateurProduitPeer
 
 
     /**
-     * Selects a collection of UtilisateurProduit objects pre-filled with all related objects except Interet.
+     * Selects a collection of UtilisateurProduit objects pre-filled with all related objects except Produit.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -972,7 +972,7 @@ abstract class BaseUtilisateurProduitPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptInteret(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptProduit(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1060,10 +1060,10 @@ abstract class BaseUtilisateurProduitPeer
         UtilisateurProduitPeer::addSelectColumns($criteria);
         $startcol2 = UtilisateurProduitPeer::NUM_HYDRATE_COLUMNS;
 
-        InteretPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + InteretPeer::NUM_HYDRATE_COLUMNS;
+        ProduitPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ProduitPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, InteretPeer::ID, $join_behavior);
+        $criteria->addJoin(UtilisateurProduitPeer::PRODUIT_ID, ProduitPeer::ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1083,21 +1083,21 @@ abstract class BaseUtilisateurProduitPeer
                 UtilisateurProduitPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Interet rows
+                // Add objects for joined Produit rows
 
-                $key2 = InteretPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = ProduitPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = InteretPeer::getInstanceFromPool($key2);
+                    $obj2 = ProduitPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = InteretPeer::getOMClass();
+                        $cls = ProduitPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    InteretPeer::addInstanceToPool($obj2, $key2);
+                    ProduitPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (UtilisateurProduit) to the collection in $obj2 (Interet)
+                // Add the $obj1 (UtilisateurProduit) to the collection in $obj2 (Produit)
                 $obj2->addUtilisateurProduit($obj1);
 
             } // if joined row is not null

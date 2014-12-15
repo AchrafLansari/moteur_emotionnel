@@ -53,7 +53,6 @@ class InteretTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('UtilisateurProduit', 'Moteur\\ProduitBundle\\Model\\UtilisateurProduit', RelationMap::ONE_TO_MANY, array('id' => 'produit_id', ), null, null, 'UtilisateurProduits');
         $this->addRelation('UtilisateurInteret', 'Moteur\\UtilisateurBundle\\Model\\UtilisateurInteret', RelationMap::ONE_TO_MANY, array('id' => 'interet_id', ), null, null, 'UtilisateurInterets');
     } // buildRelations()
 

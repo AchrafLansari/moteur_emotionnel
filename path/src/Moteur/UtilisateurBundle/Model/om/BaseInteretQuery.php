@@ -12,7 +12,6 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Moteur\ProduitBundle\Model\UtilisateurProduit;
 use Moteur\UtilisateurBundle\Model\Interet;
 use Moteur\UtilisateurBundle\Model\InteretPeer;
 use Moteur\UtilisateurBundle\Model\InteretQuery;
@@ -28,10 +27,6 @@ use Moteur\UtilisateurBundle\Model\UtilisateurInteret;
  * @method InteretQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method InteretQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method InteretQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method InteretQuery leftJoinUtilisateurProduit($relationAlias = null) Adds a LEFT JOIN clause to the query using the UtilisateurProduit relation
- * @method InteretQuery rightJoinUtilisateurProduit($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UtilisateurProduit relation
- * @method InteretQuery innerJoinUtilisateurProduit($relationAlias = null) Adds a INNER JOIN clause to the query using the UtilisateurProduit relation
  *
  * @method InteretQuery leftJoinUtilisateurInteret($relationAlias = null) Adds a LEFT JOIN clause to the query using the UtilisateurInteret relation
  * @method InteretQuery rightJoinUtilisateurInteret($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UtilisateurInteret relation
@@ -307,80 +302,6 @@ abstract class BaseInteretQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(InteretPeer::NOM, $nom, $comparison);
-    }
-
-    /**
-     * Filter the query by a related UtilisateurProduit object
-     *
-     * @param   UtilisateurProduit|PropelObjectCollection $utilisateurProduit  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 InteretQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByUtilisateurProduit($utilisateurProduit, $comparison = null)
-    {
-        if ($utilisateurProduit instanceof UtilisateurProduit) {
-            return $this
-                ->addUsingAlias(InteretPeer::ID, $utilisateurProduit->getProduitId(), $comparison);
-        } elseif ($utilisateurProduit instanceof PropelObjectCollection) {
-            return $this
-                ->useUtilisateurProduitQuery()
-                ->filterByPrimaryKeys($utilisateurProduit->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByUtilisateurProduit() only accepts arguments of type UtilisateurProduit or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the UtilisateurProduit relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return InteretQuery The current query, for fluid interface
-     */
-    public function joinUtilisateurProduit($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('UtilisateurProduit');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'UtilisateurProduit');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the UtilisateurProduit relation UtilisateurProduit object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Moteur\ProduitBundle\Model\UtilisateurProduitQuery A secondary query class using the current class as primary query
-     */
-    public function useUtilisateurProduitQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinUtilisateurProduit($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'UtilisateurProduit', '\Moteur\ProduitBundle\Model\UtilisateurProduitQuery');
     }
 
     /**

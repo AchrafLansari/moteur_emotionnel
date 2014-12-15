@@ -1787,10 +1787,10 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|UtilisateurProduit[] List of UtilisateurProduit objects
      */
-    public function getUtilisateurProduitsJoinInteret($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getUtilisateurProduitsJoinProduit($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = UtilisateurProduitQuery::create(null, $criteria);
-        $query->joinWith('Interet', $join_behavior);
+        $query->joinWith('Produit', $join_behavior);
 
         return $this->getUtilisateurProduits($query, $con);
     }

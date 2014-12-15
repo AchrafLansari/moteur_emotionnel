@@ -55,6 +55,7 @@ class ProduitTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('ProduitMotPoids', 'Moteur\\ProduitBundle\\Model\\ProduitMotPoids', RelationMap::ONE_TO_MANY, array('id' => 'produit_id', ), null, null, 'ProduitMotPoidss');
+        $this->addRelation('UtilisateurProduit', 'Moteur\\ProduitBundle\\Model\\UtilisateurProduit', RelationMap::ONE_TO_MANY, array('id' => 'produit_id', ), null, null, 'UtilisateurProduits');
         $this->addRelation('ProfilScoreRequeteProduit', 'Moteur\\RecommendationBundle\\Model\\ProfilScoreRequeteProduit', RelationMap::ONE_TO_MANY, array('id' => 'produit_id', ), null, null, 'ProfilScoreRequeteProduits');
         $this->addRelation('ProfilScoreUtilisateurProduit', 'Moteur\\RecommendationBundle\\Model\\ProfilScoreUtilisateurProduit', RelationMap::ONE_TO_MANY, array('id' => 'produit_id', ), null, null, 'ProfilScoreUtilisateurProduits');
         $this->addRelation('ProfilScoreRequeteUtilisateurProduit', 'Moteur\\RecommendationBundle\\Model\\ProfilScoreRequeteUtilisateurProduit', RelationMap::ONE_TO_MANY, array('id' => 'produit_id', ), null, null, 'ProfilScoreRequeteUtilisateurProduits');

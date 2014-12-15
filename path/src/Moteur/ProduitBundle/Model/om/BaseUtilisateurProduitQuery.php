@@ -12,10 +12,10 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Moteur\ProduitBundle\Model\Produit;
 use Moteur\ProduitBundle\Model\UtilisateurProduit;
 use Moteur\ProduitBundle\Model\UtilisateurProduitPeer;
 use Moteur\ProduitBundle\Model\UtilisateurProduitQuery;
-use Moteur\UtilisateurBundle\Model\Interet;
 use Moteur\UtilisateurBundle\Model\Utilisateur;
 
 /**
@@ -35,9 +35,9 @@ use Moteur\UtilisateurBundle\Model\Utilisateur;
  * @method UtilisateurProduitQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method UtilisateurProduitQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method UtilisateurProduitQuery leftJoinInteret($relationAlias = null) Adds a LEFT JOIN clause to the query using the Interet relation
- * @method UtilisateurProduitQuery rightJoinInteret($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Interet relation
- * @method UtilisateurProduitQuery innerJoinInteret($relationAlias = null) Adds a INNER JOIN clause to the query using the Interet relation
+ * @method UtilisateurProduitQuery leftJoinProduit($relationAlias = null) Adds a LEFT JOIN clause to the query using the Produit relation
+ * @method UtilisateurProduitQuery rightJoinProduit($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Produit relation
+ * @method UtilisateurProduitQuery innerJoinProduit($relationAlias = null) Adds a INNER JOIN clause to the query using the Produit relation
  *
  * @method UtilisateurProduitQuery leftJoinUtilisateur($relationAlias = null) Adds a LEFT JOIN clause to the query using the Utilisateur relation
  * @method UtilisateurProduitQuery rightJoinUtilisateur($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Utilisateur relation
@@ -305,7 +305,7 @@ abstract class BaseUtilisateurProduitQuery extends ModelCriteria
      * $query->filterByProduitId(array('max' => 12)); // WHERE produit_id <= 12
      * </code>
      *
-     * @see       filterByInteret()
+     * @see       filterByProduit()
      *
      * @param     mixed $produitId The value to use as filter.
      *              Use scalar values for equality.
@@ -450,43 +450,43 @@ abstract class BaseUtilisateurProduitQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Interet object
+     * Filter the query by a related Produit object
      *
-     * @param   Interet|PropelObjectCollection $interet The related object(s) to use as filter
+     * @param   Produit|PropelObjectCollection $produit The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 UtilisateurProduitQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByInteret($interet, $comparison = null)
+    public function filterByProduit($produit, $comparison = null)
     {
-        if ($interet instanceof Interet) {
+        if ($produit instanceof Produit) {
             return $this
-                ->addUsingAlias(UtilisateurProduitPeer::PRODUIT_ID, $interet->getId(), $comparison);
-        } elseif ($interet instanceof PropelObjectCollection) {
+                ->addUsingAlias(UtilisateurProduitPeer::PRODUIT_ID, $produit->getId(), $comparison);
+        } elseif ($produit instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(UtilisateurProduitPeer::PRODUIT_ID, $interet->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(UtilisateurProduitPeer::PRODUIT_ID, $produit->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByInteret() only accepts arguments of type Interet or PropelCollection');
+            throw new PropelException('filterByProduit() only accepts arguments of type Produit or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Interet relation
+     * Adds a JOIN clause to the query using the Produit relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return UtilisateurProduitQuery The current query, for fluid interface
      */
-    public function joinInteret($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinProduit($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Interet');
+        $relationMap = $tableMap->getRelation('Produit');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -501,14 +501,14 @@ abstract class BaseUtilisateurProduitQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Interet');
+            $this->addJoinObject($join, 'Produit');
         }
 
         return $this;
     }
 
     /**
-     * Use the Interet relation Interet object
+     * Use the Produit relation Produit object
      *
      * @see       useQuery()
      *
@@ -516,13 +516,13 @@ abstract class BaseUtilisateurProduitQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Moteur\UtilisateurBundle\Model\InteretQuery A secondary query class using the current class as primary query
+     * @return   \Moteur\ProduitBundle\Model\ProduitQuery A secondary query class using the current class as primary query
      */
-    public function useInteretQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useProduitQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinInteret($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Interet', '\Moteur\UtilisateurBundle\Model\InteretQuery');
+            ->joinProduit($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Produit', '\Moteur\ProduitBundle\Model\ProduitQuery');
     }
 
     /**

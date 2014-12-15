@@ -11,11 +11,11 @@ use \Persistent;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Moteur\ProduitBundle\Model\Produit;
+use Moteur\ProduitBundle\Model\ProduitQuery;
 use Moteur\ProduitBundle\Model\UtilisateurProduit;
 use Moteur\ProduitBundle\Model\UtilisateurProduitPeer;
 use Moteur\ProduitBundle\Model\UtilisateurProduitQuery;
-use Moteur\UtilisateurBundle\Model\Interet;
-use Moteur\UtilisateurBundle\Model\InteretQuery;
 use Moteur\UtilisateurBundle\Model\Utilisateur;
 use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
 
@@ -73,9 +73,9 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
     protected $nombre_visite;
 
     /**
-     * @var        Interet
+     * @var        Produit
      */
-    protected $aInteret;
+    protected $aProduit;
 
     /**
      * @var        Utilisateur
@@ -221,8 +221,8 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
             $this->modifiedColumns[] = UtilisateurProduitPeer::PRODUIT_ID;
         }
 
-        if ($this->aInteret !== null && $this->aInteret->getId() !== $v) {
-            $this->aInteret = null;
+        if ($this->aProduit !== null && $this->aProduit->getId() !== $v) {
+            $this->aProduit = null;
         }
 
 
@@ -380,8 +380,8 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
         if ($this->aUtilisateur !== null && $this->utilisateur_id !== $this->aUtilisateur->getId()) {
             $this->aUtilisateur = null;
         }
-        if ($this->aInteret !== null && $this->produit_id !== $this->aInteret->getId()) {
-            $this->aInteret = null;
+        if ($this->aProduit !== null && $this->produit_id !== $this->aProduit->getId()) {
+            $this->aProduit = null;
         }
     } // ensureConsistency
 
@@ -422,7 +422,7 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aInteret = null;
+            $this->aProduit = null;
             $this->aUtilisateur = null;
         } // if (deep)
     }
@@ -542,11 +542,11 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aInteret !== null) {
-                if ($this->aInteret->isModified() || $this->aInteret->isNew()) {
-                    $affectedRows += $this->aInteret->save($con);
+            if ($this->aProduit !== null) {
+                if ($this->aProduit->isModified() || $this->aProduit->isNew()) {
+                    $affectedRows += $this->aProduit->save($con);
                 }
-                $this->setInteret($this->aInteret);
+                $this->setProduit($this->aProduit);
             }
 
             if ($this->aUtilisateur !== null) {
@@ -722,9 +722,9 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aInteret !== null) {
-                if (!$this->aInteret->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aInteret->getValidationFailures());
+            if ($this->aProduit !== null) {
+                if (!$this->aProduit->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProduit->getValidationFailures());
                 }
             }
 
@@ -831,8 +831,8 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aInteret) {
-                $result['Interet'] = $this->aInteret->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aProduit) {
+                $result['Produit'] = $this->aProduit->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aUtilisateur) {
                 $result['Utilisateur'] = $this->aUtilisateur->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1064,13 +1064,13 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a Interet object.
+     * Declares an association between this object and a Produit object.
      *
-     * @param                  Interet $v
+     * @param                  Produit $v
      * @return UtilisateurProduit The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setInteret(Interet $v = null)
+    public function setProduit(Produit $v = null)
     {
         if ($v === null) {
             $this->setProduitId(NULL);
@@ -1078,10 +1078,10 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
             $this->setProduitId($v->getId());
         }
 
-        $this->aInteret = $v;
+        $this->aProduit = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Interet object, it will not be re-added.
+        // If this object has already been added to the Produit object, it will not be re-added.
         if ($v !== null) {
             $v->addUtilisateurProduit($this);
         }
@@ -1092,27 +1092,27 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated Interet object
+     * Get the associated Produit object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return Interet The associated Interet object.
+     * @return Produit The associated Produit object.
      * @throws PropelException
      */
-    public function getInteret(PropelPDO $con = null, $doQuery = true)
+    public function getProduit(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aInteret === null && ($this->produit_id !== null) && $doQuery) {
-            $this->aInteret = InteretQuery::create()->findPk($this->produit_id, $con);
+        if ($this->aProduit === null && ($this->produit_id !== null) && $doQuery) {
+            $this->aProduit = ProduitQuery::create()->findPk($this->produit_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aInteret->addUtilisateurProduits($this);
+                $this->aProduit->addUtilisateurProduits($this);
              */
         }
 
-        return $this->aInteret;
+        return $this->aProduit;
     }
 
     /**
@@ -1200,8 +1200,8 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aInteret instanceof Persistent) {
-              $this->aInteret->clearAllReferences($deep);
+            if ($this->aProduit instanceof Persistent) {
+              $this->aProduit->clearAllReferences($deep);
             }
             if ($this->aUtilisateur instanceof Persistent) {
               $this->aUtilisateur->clearAllReferences($deep);
@@ -1210,7 +1210,7 @@ abstract class BaseUtilisateurProduit extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aInteret = null;
+        $this->aProduit = null;
         $this->aUtilisateur = null;
     }
 
