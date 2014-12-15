@@ -47,7 +47,7 @@
         <column name="note" type="integer"/>
         <column name="achat" type="boolean" defaultValue="false"/>
         <column name="nombre_visite" type="integer" defaultValue="0"/>
-        <foreign-key foreignTable="interet">
+        <foreign-key foreignTable="produit">
             <reference local="produit_id" foreign="id" />
         </foreign-key>
         <foreign-key foreignTable="utilisateur">

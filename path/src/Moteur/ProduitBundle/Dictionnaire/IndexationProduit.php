@@ -38,7 +38,7 @@ class IndexationProduit{
 		
 		$this->setListeMotsVides();
 		
-		$separateurs = " \n\t\r,«;.»’'\"()!?";
+		$separateurs = " \n\t\r,«;.»’'\"()!?-";
 
 		$this->indexTitre = $this->fractionner_chaine($this->titre, $separateurs);
 		$this->indexTitre = $this->supprimerPetitsSegments($this->indexTitre, 4);
