@@ -124,6 +124,12 @@ class DefaultController extends Controller
 	    			$auteur = isset($t_auteur[1]) ? $this->rip_tags($t_auteur[1]) : null;
 	    			
 	    			echo "<h3>Lien :</h3>http://www.nextinpact.com/news/".$lien[1]; 
+	    			if($titre == null)
+	    				echo "Titre NULL<br>";
+	    			if($description == null)
+	    				echo "Description NULL<br>";
+	    			if($auteur == null)
+	    				echo "Auteur NULL<br>";
 	    			
 	    			if($titre != null && $description != null && $auteur != null){
 	    				echo "<br>Sauvegarde en cours<br>";
