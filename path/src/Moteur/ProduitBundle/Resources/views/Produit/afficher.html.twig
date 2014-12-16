@@ -1,24 +1,41 @@
 {% extends "::moteur.html.twig" %}
 
 {% block body %}
-
-<h1>{{ produit.titre }}</h1>
-<h2>Auteur : {{ produit.auteur }}</h2>
-<p>{{ produit.description }}</p>
-
-<table>
-	<tr>
-  		<th>Titre</th>
-  		<th>Auteur</th>
-		<th>Score</th>
-	</tr>
-	{% for p in produits %}
-	  <tr>
-	    <td>{{ p.produit.titre }}</td>
-	    <td>{{ p.produit.auteur }}</td>
-	    <td>{{ p.score }}</td>
-	  </tr>
-	{% endfor %}
-</table>
-
+<div class="row">
+	<div class="span6">
+		<h1>{{ produit.titre }}</h1>
+		<p>{{ produit.description }}</p>
+	</div>
+	<div class="span3">
+		<div class="row">
+			<h2>Auteur</h2>
+			{{ produit.auteur }}
+		</div>
+		<div class="row">
+			<h2>Informations</h2>
+			Vous avez visité ce produit {{ visites }} fois
+			<br>
+			{% if achat %}
+				Vous avez acheté ce produit
+				{% if not note %}
+					<div class="row">
+						<form method="post" action="{{ path('moteur_produit_note', {'id_produit':produit.id, 'id_utilisateur':utilisateur}) }}">
+							<label class="span1">Noter</label>
+							<input class="span2" type="number" max="10" min="0" name="note"/>
+						</form>
+					</div>
+				{% endif %}
+				{% if note %}
+					<br>Votre note : {{ note }}
+				{% endif %}
+			{% endif %}
+			
+			{% if not achat %}
+				<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/produit/achat/{{ produit.id }}/{{ utilisateur }}">
+					Acheter le produit
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</div>
 {% endblock %}

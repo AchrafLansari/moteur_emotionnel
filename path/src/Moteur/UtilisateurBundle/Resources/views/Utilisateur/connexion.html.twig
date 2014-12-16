@@ -1,11 +1,12 @@
 {% extends "::moteur.html.twig" %}
 
 {% block body %}
-
-<h1>Connexion</h1>
-
-<form action="{{ path('moteur_utilisateur_connecte') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    <input type="submit" />
-</form>
+<div class="span9">
+	<h1>Connexion</h1>
+	
+	<form action="{{ path('moteur_utilisateur_connecte') }}" method="post" {{ form_enctype(form) }}>
+	    {{ form_widget(form) }}
+	    <input type="submit" />
+	</form>
+</div>
 {% endblock %}

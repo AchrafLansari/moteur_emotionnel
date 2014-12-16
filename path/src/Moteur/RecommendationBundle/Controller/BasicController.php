@@ -19,46 +19,53 @@ use Moteur\ProduitBundle\Dictionnaire\IndexationMot;
 class BasicController extends Controller
 {
 	//Remplacer l'ID par un cookie
-    public function rechercherAction($requete)
-    {    	
-    	$kernel = $this->get('kernel');
-    	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
+    public function rechercherAction()
+    {  
+    	$request = $this->get('request');
+
+    	$requete = "";
     	
-    	print_r($requete);
-    	print_r($requete);
+    	$resultats = array();
     	
-    	$indexation = new IndexationMot($requete, $path);
-    	
-    	$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne()->getRequeteId();
-		$utilisateur_id = rand(1,80);
-    	
-    	foreach ($indexation->indexRequete as $mot){
-    		$m_Req = MotQuery::create()
-    		->filterByMot($mot)
-    		->findOne();
-    			
-    		if(!$m_Req){
-    			$m_Req = new Mot();
-    			$m_Req->setMot($mot)->save();
+    	if ($request->isMethod('POST')) {
+    		$kernel = $this->get('kernel');
+    		$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
+    		 
+    		$requete = $_POST['requete'];
+    		 
+    		$indexation = new IndexationMot($requete, $path);
+    		 
+    		$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne()->getRequeteId();
+    		$utilisateur_id = rand(1,80);
+    		$utilisateur_id = 54; 
+    		foreach ($indexation->indexRequete as $mot){
+    			$m_Req = MotQuery::create()
+    			->filterByMot($mot)
+    			->findOne();
+    			 
+    			if(!$m_Req){
+    				$m_Req = new Mot();
+    				$m_Req->setMot($mot)->save();
+    			}
+    			$ajoutRequete = new Requete();
+    			$ajoutRequete->setUtilisateurId($utilisateur_id);
+    			$ajoutRequete->setRequeteId($requete_id + 1);
+    			$ajoutRequete->setMotId($m_Req->getId());
+    			$ajoutRequete->save();
     		}
-    		$ajoutRequete = new Requete();
-    		$ajoutRequete->setUtilisateurId($utilisateur_id);
-    		$ajoutRequete->setRequeteId($requete_id + 1);
-    		$ajoutRequete->setMotId($m_Req->getId());
-    		$ajoutRequete->save();
-    	}
-
-    	$sql = "CALL rechercher_produits_via_requete(?)";
-    	
-    	//\Propel::
-    	$connexion = \Propel::getConnection();
-    	$statement = $connexion->prepare($sql);
-    	$statement->bindParam(1, $requete_id, \PDO::PARAM_INT);
-    	$statement->execute();
-
-    	$resultat = $statement->fetchAll();
-    	
-        return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat));
+    		
+    		$sql = "CALL rechercher_produits_via_requete(?)";
+    		 
+    		//\Propel::
+    		$connexion = \Propel::getConnection();
+    		$statement = $connexion->prepare($sql);
+    		$statement->bindParam(1, $requete_id, \PDO::PARAM_INT);
+    		$statement->execute();
+    		
+    		$resultat = $statement->fetchAll();
+    		 
+    	}  	
+        return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
     }
     
     public function indexAction($page, $nombre){
@@ -76,7 +83,7 @@ class BasicController extends Controller
     	$statement->execute();
     	
     	$resultat = $statement->fetchAll();
-    	return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('resultats' => $resultat));
+    	return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('resultats' => $resultat, 'page' => $page, 'nombre' => $nombre));
     }
     
 }

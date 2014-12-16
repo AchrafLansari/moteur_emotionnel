@@ -41,33 +41,6 @@ class DefaultController extends Controller
     	}
     }
     
-    public function achatAction($id_produit, $id_utilisateur){
-    	$utilisateurProduit = UtilisateurProduitQuery::create()
-    		->filterByUtilisateurId($id_utilisateur)
-    		->filterByProduitId($id_produit)
-    		->findOne();
-    	
-    	if(!$utilisateurProduit){
-    		$utilisateurProduit = new UtilisateurProduit();
-    		$utilisateurProduit->setProduitId($id_produit)
-    			->setUtilisateurId($id_utilisateur);
-    	}
-    	if(!$utilisateurProduit->getAchat()){
-    		$utilisateurProduit->setAchat(true)->save();
-    	}
-    }
-    
-    public function noteAction($id_produit, $note, $id_utilisateur){
-    	$utilisateurProduit = UtilisateurProduitQuery::create()
-    		->filterByUtilisateurId($id_utilisateur)
-    		->filterByProduitId($id_produit)
-    		->filterByAchat(true) //Il faut avoir achet� le produit pour pouvoir le noter
-    		->findOne();
-    	if($utilisateurProduit){
-    		$utilisateurProduit->setNote($note)->save();
-    	}
-    }
-    
     private function updateNombreVueProduit($id_utilisateur, $id_produit){
     	$utilisateurProduit = UtilisateurProduitQuery::create()
     	->filterByUtilisateurId($id_utilisateur)

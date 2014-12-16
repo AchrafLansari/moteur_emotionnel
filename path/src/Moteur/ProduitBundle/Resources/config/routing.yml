@@ -8,11 +8,11 @@ moteur_produit_get:
     path:     /produit/{id_produit}/{id_utilisateur}
     defaults: { _controller: MoteurProduitBundle:Default:get }
 moteur_produit_achat:
-    path:     /produit/{id_produit}/achat/{id_utilisateur}
-    defaults: { _controller: MoteurProduitBundle:Default:achat }
+    path:     /produit/achat/{id_produit}/{id_utilisateur}
+    defaults: { _controller: MoteurProduitBundle:Basic:achat }
 moteur_produit_note:
-    path:     /produit/{id_produit}/noter/{note}/{id_utilisateur}
-    defaults: { _controller: MoteurProduitBundle:Default:note }
+    path:     /produit/{id_produit}/{id_utilisateur}/noter
+    defaults: { _controller: MoteurProduitBundle:Basic:note }
 moteur_produit_affiche:
     path:     /produits/affiche/{id}
     defaults: { _controller: MoteurProduitBundle:Basic:afficher }

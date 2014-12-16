@@ -1,5 +1,10 @@
 eclipse.preferences.version=1
+encoding//path/app/Resources/views/moteur.html.twig=UTF-8
 encoding//path/src/Moteur/ProduitBundle/Controller/BasicController.php=UTF-8
 encoding//path/src/Moteur/ProduitBundle/Controller/DefaultController.php=UTF-8
+encoding//path/src/Moteur/ProduitBundle/Resources/views/Produit/afficher.html.twig=UTF-8
 encoding//path/src/Moteur/RecommendationBundle/Resources/views/Default/index.html.twig=UTF-8
+encoding//path/src/Moteur/RecommendationBundle/Resources/views/Recherche/liste.html.twig=UTF-8
+encoding//path/src/Moteur/UtilisateurBundle/Resources/views/Utilisateur/afficher.html.twig=UTF-8
+encoding//path/src/Moteur/UtilisateurBundle/Resources/views/Utilisateur/liste.html.twig=UTF-8
 encoding//path/src/Moteur/UtilisateurBundle/Resources/views/Utilisateur/liste_interet.html.twig=UTF-8

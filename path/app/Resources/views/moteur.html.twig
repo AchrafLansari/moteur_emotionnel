@@ -56,10 +56,10 @@
                       <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="{{ path('moteur_utilisateur_creer') }}">Créer un utilisateur</a></li>
+                  <li><a href="{{ path('moteur_utilisateur_creer') }}">CrÃ©er un utilisateur</a></li>
                   <li><a href="{{ path('moteur_utilisateur_liste', {'page':1,'nombre':10}) }}">Liste des utilisateurs</a></li>
-                  <li><a href="{{ path('moteur_interet_creer') }}">Créer un centre d'intérêts</a></li>
-                  <li><a href="{{ path('moteur_interet_liste') }}">Liste des centres d'intérêts</a></li>
+                  <li><a href="{{ path('moteur_interet_creer') }}">CrÃ©er un centre d'intÃ©rÃªts</a></li>
+                  <li><a href="{{ path('moteur_interet_liste') }}">Liste des centres d'intÃ©rÃªts</a></li>
                 </ul>
               </li><!-- dropdown -->
               <li><a href="{{ path('moteur_utilisateur_connecte') }}">Connexion</a></li>
@@ -70,8 +70,16 @@
     </div><!-- /.navbar -->
         {% endblock %}
         <div class="container">
+			<div class="row">
+				<div class="span3">
+					<h2>Chercher un produit dÃ©jÃ  visitÃ©</h2>
+					<form method="post" action="{{ path('moteur_recommendation_recherche_liste') }}">
+						<input type="search" name="requete">
+						<input type="submit">
+					</form>
+				</div>
         {% block body %}{% endblock %}
-              <div id="footer_cookies" style="display: none"> En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de nos cookies afin de vous offrir une meilleure utilisation de ce site Internet.</div>
+        	</div>
         </div>
         
         <!-- Le javascript

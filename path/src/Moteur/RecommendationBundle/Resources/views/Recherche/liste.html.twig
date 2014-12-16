@@ -1,22 +1,26 @@
 {% extends "::moteur.html.twig" %}
 
 {% block body %}
-<h1>Recherche parmi les produits visités</h1>
+<div class="span9">
+	<h1>Recherche parmi les produits visitÃ©s</h1>
 
+	<p>
+	Recherche : {{ requete }}
+	</p>
+	
 	<table>
 		<tr>
 			<th>Titre</th>
 			<th>Auteur</th>
 			<th>Score</th>
-			<th>Lien</th>
 		</tr>
 		{% for produit in resultats %}
 		<tr>
-			<td>{{ produit.titre }}</td>
+			<td><a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/produits/affiche/{{ produit.produit_id }}">{{ produit.titre }}</a></td>
 			<td>{{ produit.auteur }}</td>
 			<td>{{ produit.score }}</td>
-			<td><a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/produits/affiche/{{ produit.produit_id }}">Lien</a></td>
 		</tr>
 		{% endfor %}
 	</table>
+</div>
 {% endblock %}

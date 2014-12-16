@@ -120,7 +120,7 @@ class BasicController extends Controller
     	}
     	//TO DO Ajouter le score entre les utilisateurs
     	
-    	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste.html.twig', array('utilisateurs' => $retours));
+    	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste.html.twig', array('utilisateurs' => $retours, 'page' => $page, 'nombre' => $nombre));
     }
     
     //FONCTIONNE

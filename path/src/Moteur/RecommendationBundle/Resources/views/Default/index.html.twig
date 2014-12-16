@@ -1,31 +1,33 @@
 {% extends "::moteur.html.twig" %}
 
 {% block body %}
-<div>
-<h1>Rechercher un produit déjà visité</h1>
-<form method="get" action="{{ path('moteur_recommendation_recherche_liste', {'requete': 'requete'}) }}">
-	<input type="search" name="requete">
-</form>
-</div>
-
-<div>
-<h1>Produits pouvant vous intéresser</h1>
-
-	<table>
-		<tr>
-			<th>Titre</th>
-			<th>Auteur</th>
-			<th>Score</th>
-			<th>Lien</th>
-		</tr>
+	<div class="span9">
+		<h1>Produits pouvant vous intéresser</h1>
+	
+		<div class="row">
+			<div class="span3">
+				{% if page > 1 %}<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/recommendation/{{ page-1 }}/{{ nombre }}">Page précédente</a>{% endif %}
+			</div>
+			<div class="span3">
+				Page actuelle : {{ page }}
+			</div>
+			<div class="span3">
+				<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/recommendation/{{ page+1 }}/{{ nombre }}">Page suivante</a>
+			</div>
+		</div>
+		
 		{% for produit in resultats %}
-		<tr>
-			<td>{{ produit.titre }}</td>
-			<td>{{ produit.auteur }}</td>
-			<td>{{ produit.score }}</td>
-			<td><a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/produits/affiche/{{ produit.produit_id }}">Lien</a></td>
-		</tr>
+		<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/produits/affiche/{{ produit.produit_id }}">
+			<div class="row">
+				<div class="span8">
+					{{ produit.titre }}
+					<br>Auteur : {{ produit.auteur }}
+				</div>
+				<div class="span1">
+					{{ produit.score }}
+				</div>
+			</div>
+		</a>
 		{% endfor %}
-	</table>
-</div>
+	</div>
 {% endblock %}

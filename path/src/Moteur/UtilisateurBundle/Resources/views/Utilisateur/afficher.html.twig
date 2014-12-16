@@ -1,62 +1,63 @@
 {% extends "::moteur.html.twig" %}
 
 {% block body %}
-
-<h1>Affichage de l'utilisateur</h1>
-
-<table>
-  <tr>
-    <th>Colonne</th>
-    <th>Valeur</th>
-  </tr>
-  <tr>
-    <td>ID</td>
-    <td>{{ utilisateur.id }}</td>
-  </tr>
-  <tr>
-    <td>Nom</td>
-    <td>{{ utilisateur.nom }}</td>
-  </tr>
-  <tr>
-    <td>Prénom</td>
-    <td>{{ utilisateur.prenom }}</td>
-  </tr>
-  <tr>
-    <td>Mail</td>
-    <td>{{ utilisateur.mail }}</td>
-  </tr>
-  <tr>
-    <td>Age</td>
-    <td>{{ utilisateur.age }}</td>
-  </tr>
-  <tr>
-    <td>Ville renseignée</td>
-    <td>{{ utilisateur.ville }}</td>
-  </tr>
-  <tr>
-    <td>IP : Pays</td>
-    <td>{{ ip.pays }}</td>
-  </tr>
-  <tr>
-    <td>IP : Région</td>
-    <td>{{ ip.departement }}</td>
-  </tr>
-  <tr>
-    <td>IP : Ville</td>
-    <td>{{ ip.ville }}</td>
-  </tr>
-</table>
-
+<div class="span9">
+	<h1>Affichage de l'utilisateur</h1>
+	
 	<table>
 	  <tr>
-	    <th>Interet</th>
+	    <th>Colonne</th>
 	    <th>Valeur</th>
 	  </tr>
-		{% for interet in interets %}
-		  <tr>
-		    <td>{{ interet.0.nom }}</td>
-		    <td>{{ interet.1 }}</td>
-		  </tr>
-		{% endfor %}
+	  <tr>
+	    <td>ID</td>
+	    <td>{{ utilisateur.id }}</td>
+	  </tr>
+	  <tr>
+	    <td>Nom</td>
+	    <td>{{ utilisateur.nom }}</td>
+	  </tr>
+	  <tr>
+	    <td>PrÃ©nom</td>
+	    <td>{{ utilisateur.prenom }}</td>
+	  </tr>
+	  <tr>
+	    <td>Mail</td>
+	    <td>{{ utilisateur.mail }}</td>
+	  </tr>
+	  <tr>
+	    <td>Age</td>
+	    <td>{{ utilisateur.age }}</td>
+	  </tr>
+	  <tr>
+	    <td>Ville renseignÃ©e</td>
+	    <td>{{ utilisateur.ville }}</td>
+	  </tr>
+	  <tr>
+	    <td>IP : Pays</td>
+	    <td>{{ ip.pays }}</td>
+	  </tr>
+	  <tr>
+	    <td>IP : RÃ©gion</td>
+	    <td>{{ ip.departement }}</td>
+	  </tr>
+	  <tr>
+	    <td>IP : Ville</td>
+	    <td>{{ ip.ville }}</td>
+	  </tr>
 	</table>
+	
+		<table>
+		  <tr>
+		    <th>Interet</th>
+		    <th>Valeur</th>
+		  </tr>
+			{% for interet in interets %}
+			  <tr>
+			    <td>{{ interet.0.nom }}</td>
+			    <td>{{ interet.1 }}</td>
+			  </tr>
+			{% endfor %}
+		</table>
+</div>
 {% endblock %}
