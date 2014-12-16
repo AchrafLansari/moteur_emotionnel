@@ -42,11 +42,15 @@ class BasicController extends Controller
 				$response = new Response();
 				$cookie_nom = new Cookie('utilisateur_nom', $utilisateur->getNom(),time() + 3600 * 24 * 7);
 				$response->headers->setCookie($cookie_nom);
-				$response->headers->clearCookie('utilisateur_nom');
 				
 				$cookie_prenom = new Cookie('utilisateur_prenom', $utilisateur->getPrenom(),time() + 3600 * 24 * 7);
 				$response->headers->setCookie($cookie_prenom);
-				$response->headers->clearCookie('utilisateur_prenom');
+				
+				$util = UtilisateurQuery::create()->filterByNom($utilisateur->getNom())
+										->filterByPrenom($utilisateur->getPrenom())
+										->findOne();
+				$cookie_id = new Cookie('utilisateur_id', $util->getId(),time() + 3600 * 24 * 7);
+				$response->headers->setCookie($cookie_id);
 				
 				$response->send();
 				 
