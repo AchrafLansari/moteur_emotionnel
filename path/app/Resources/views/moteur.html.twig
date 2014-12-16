@@ -4,7 +4,7 @@
         
        {% block head %}
 
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="content-type" content="text/html"; charset="UTF-8">
         <meta charset="utf-8">
         <title></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,27 +49,43 @@
           <a class="brand" href="#">Recommandation Profil</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Accueil</a></li>
-              <li><a href="">statut{% if app.request.cookies.has('utilisateur_nom') %}{{ app.request.cookies.get('utilisateur_nom') }}{% endif %}</a></li>
-              <li><a href="#about">A propos</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li class="active"><a href="{{ path('moteur_recommendation_homepage', {'page':1,'nombre':10} ) }}">Accueil</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      Menu Deroulant
+                      Utilisateur
                       <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Item 1</a></li>
-                  <li><a href="#">Item 2</a></li>
+                  <li><a href="{{ path('moteur_utilisateur_creer') }}">Créer un utilisateur</a></li>
+                  <li><a href="{{ path('moteur_utilisateur_liste', {'page':1,'nombre':10}) }}">Liste des utilisateurs</a></li>
+                  <li><a href="{{ path('moteur_interet_creer') }}">Créer un centre d'intérêts</a></li>
+                  <li><a href="{{ path('moteur_interet_liste') }}">Liste des centres d'intérêts</a></li>
                 </ul>
               </li><!-- dropdown -->
+              <li><a href="{{ path('moteur_utilisateur_connecte') }}">Connexion</a></li>
             </ul><!-- /.nav -->
           </div><!--/.nav-collapse -->
         </div><!-- /.container -->
       </div><!-- /.navbar-inner -->
     </div><!-- /.navbar -->
         {% endblock %}
+        <div class="container">
         {% block body %}{% endblock %}
+              <div id="footer_cookies" style="display: none"> En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de nos cookies afin de vous offrir une meilleure utilisation de ce site Internet.</div>
+        </div>
+        
+        <!-- Le javascript
+    ================================================== -->
+    <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
+    <script src="{{ asset('bundles/user/js/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/user/js/bootstrap.js') }}"></script>
+    <script>
+      $(document).ready(function(){
+        $('.carousel').carousel({
+          interval: 4000
+        });
+      });
+    </script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

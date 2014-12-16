@@ -23,6 +23,10 @@ class BasicController extends Controller
     {    	
     	$kernel = $this->get('kernel');
     	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
+    	
+    	print_r($requete);
+    	print_r($requete);
+    	
     	$indexation = new IndexationMot($requete, $path);
     	
     	$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne()->getRequeteId();

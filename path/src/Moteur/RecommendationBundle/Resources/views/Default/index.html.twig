@@ -2,14 +2,14 @@
 
 {% block body %}
 <div>
-<h1>Rechercher un produit</h1>
-<form method="get" action="{{ path('moteur_recommendation_recherche_liste') }}">
-	<input type="search">
+<h1>Rechercher un produit déjà visité</h1>
+<form method="get" action="{{ path('moteur_recommendation_recherche_liste', {'requete': 'requete'}) }}">
+	<input type="search" name="requete">
 </form>
 </div>
 
 <div>
-<h1>Produits pouvant vous int�resser</h1>
+<h1>Produits pouvant vous intéresser</h1>
 
 	<table>
 		<tr>
