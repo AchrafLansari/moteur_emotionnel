@@ -3,7 +3,6 @@
 namespace Moteur\RecommendationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Moteur\ProduitBundle\Model\Mot;
 use Moteur\RecommendationBundle\Model\ProfilScoreRequeteUtilisateurProduit;
@@ -15,6 +14,7 @@ use Moteur\ProduitBundle\Model\MotQuery;
 use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateur;
 use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateurQuery;
 use Moteur\ProduitBundle\Dictionnaire\IndexationMot;
+use Symfony\Component\HttpFoundation\Request;
 
 class BasicController extends Controller
 {
@@ -69,20 +69,31 @@ class BasicController extends Controller
     }
     
     public function indexAction($page, $nombre){
-    	$sql = "CALL recommander_produits(?,?,?)";
+    	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
     	
-    	$id = rand(0,100);
-    	$debut = ($page-1)*$nombre;
+    	$resultat = array();
     	
-    	$connexion = \Propel::getConnection();
-    	$statement = $connexion->prepare($sql);
-    	$statement->bindParam(1, $id, \PDO::PARAM_INT);
-    	$statement->bindParam(2, $debut, \PDO::PARAM_INT);
-    	$statement->bindParam(3, $nombre, \PDO::PARAM_INT);
-    	 
-    	$statement->execute();
+    	if($request->cookies->has('utilisateur_id'))
+    	{
+	    	$id = $request->cookies->get('utilisateur_id');
+	    		
+	    	$sql = "CALL recommander_produits(?,?,?)";
+	    	
+	    	$id = rand(0,100);
+	    	$debut = ($page-1)*$nombre;
+	    	
+	    	$connexion = \Propel::getConnection();
+	    	$statement = $connexion->prepare($sql);
+	    	$statement->bindParam(1, $id, \PDO::PARAM_INT);
+	    	$statement->bindParam(2, $debut, \PDO::PARAM_INT);
+	    	$statement->bindParam(3, $nombre, \PDO::PARAM_INT);
+	    	 
+	    	$statement->execute();
+	    	
+	    	$resultat = $statement->fetchAll();
+    	}
     	
-    	$resultat = $statement->fetchAll();
+    	
     	return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('resultats' => $resultat, 'page' => $page, 'nombre' => $nombre));
     }
     
