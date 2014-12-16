@@ -1,0 +1,28 @@
+{% extends "::moteur.html.twig" %}
+
+{% block body %}
+<h1>Liste des utilisateurs</h1>
+
+	<table>
+		<tr>
+			<th>Score</th>
+			<th>Nom</th>
+			<th>Prénom</th>
+			<th>Mail</th>
+			<th>Age</th>
+			<th>Ville</th>
+			<th>Lien</th>
+		</tr>
+		{% for utilisateur in utilisateurs %}
+		<tr>
+			<td>{{ utilisateur.1 }}</td>
+			<td>{{ utilisateur.0.nom }}</td>
+			<td>{{ utilisateur.0.prenom }}</td>
+			<td>{{ utilisateur.0.mail }}</td>
+			<td>{{ utilisateur.0.age }}</td>
+			<td>{{ utilisateur.0.ville }}</td>
+			<td><a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/utilisateur/affiche/{{ utilisateur.0.nom }}/{{ utilisateur.0.prenom }}">Afficher</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

@@ -16,12 +16,7 @@ use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateur;
 use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateurQuery;
 
 class DefaultController extends Controller
-{
-    public function indexAction()
-    {
-        return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('name' => "nom"));
-    }
-    
+{    
     /**
      * @Route("/recherche/{requete}")
      */
@@ -49,9 +44,6 @@ class DefaultController extends Controller
     		$m_Req = MotQuery::create()
     							->filterByMot($mot)
     							->findOne();
-    							//->findOneOrCreate() -> Ne fonctionne pas, je ne sais pas pourquoi
-    							//->setMot($mot)
-    							//->save();
     							
     		if(!$m_Req){
     			$m_Req = new Mot();

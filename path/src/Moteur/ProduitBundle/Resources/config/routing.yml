@@ -13,3 +13,6 @@ moteur_produit_achat:
 moteur_produit_note:
     path:     /produit/{id_produit}/noter/{note}/{id_utilisateur}
     defaults: { _controller: MoteurProduitBundle:Default:note }
+moteur_produit_affiche:
+    path:     /produits/affiche/{id}
+    defaults: { _controller: MoteurProduitBundle:Basic:afficher }

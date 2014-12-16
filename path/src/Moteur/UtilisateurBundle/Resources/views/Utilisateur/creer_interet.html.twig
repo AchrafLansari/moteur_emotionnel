@@ -1,0 +1,10 @@
+{% extends "::moteur.html.twig" %}
+
+{% block body %}
+<h1>Ajouter un centre d'intérêt</h1>
+
+<form action="{{ path('moteur_interet_creer') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <input type="submit" />
+</form>
+{% endblock %}

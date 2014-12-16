@@ -1,6 +1,6 @@
 moteur_utilisateur_homepage:
     path:     /utilisateur/
-    defaults: { _controller: MoteurUtilisateurBundle:Default:index }
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:index }
 moteur_utilisateur_ip:
     path:     /utilisateur/ip/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Default:addIP }
@@ -13,3 +13,21 @@ moteur_utilisateur_interet_creer:
 moteur_utilisateur_interet_ajout:
     path:     /utilisateur/interet/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Default:addInteret }
+moteur_utilisateur_creer:
+    path:     /utilisateur/creer
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:creer }
+moteur_utilisateur_liste:
+    path:     /utilisateur/liste/{page}/{nombre}
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:lister }
+moteur_utilisateur_affiche:
+    path:     /utilisateur/affiche/{nom}/{prenom}
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:afficher }
+moteur_utilisateur_connecte:
+    path:     /connexion
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:connecter }
+moteur_interet_creer:
+    path:     /interet/creer
+    defaults: { _controller: MoteurUtilisateurBundle:Interet:creer }
+moteur_interet_liste:
+    path:     /interet/liste
+    defaults: { _controller: MoteurUtilisateurBundle:Interet:lister }

@@ -1,0 +1,16 @@
+{% extends "::moteur.html.twig" %}
+
+{% block body %}
+<h1>Liste des centres d'intérêts</h1>
+
+	<table>
+		<tr>
+			<th>Nom</th>
+		</tr>
+		{% for interet in interets %}
+		<tr>
+			<td>{{ interet.nom }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

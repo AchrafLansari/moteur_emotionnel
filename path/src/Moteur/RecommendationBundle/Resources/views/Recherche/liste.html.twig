@@ -1,15 +1,7 @@
 {% extends "::moteur.html.twig" %}
 
 {% block body %}
-<div>
-<h1>Rechercher un produit</h1>
-<form method="get" action="{{ path('moteur_recommendation_recherche_liste') }}">
-	<input type="search">
-</form>
-</div>
-
-<div>
-<h1>Produits pouvant vous intéresser</h1>
+<h1>Recherche parmi les produits visités</h1>
 
 	<table>
 		<tr>
@@ -27,5 +19,4 @@
 		</tr>
 		{% endfor %}
 	</table>
-</div>
 {% endblock %}

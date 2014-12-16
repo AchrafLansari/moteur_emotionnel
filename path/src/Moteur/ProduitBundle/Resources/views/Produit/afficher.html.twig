@@ -1,0 +1,24 @@
+{% extends "::moteur.html.twig" %}
+
+{% block body %}
+
+<h1>{{ produit.titre }}</h1>
+<h2>Auteur : {{ produit.auteur }}</h2>
+<p>{{ produit.description }}</p>
+
+<table>
+	<tr>
+  		<th>Titre</th>
+  		<th>Auteur</th>
+		<th>Score</th>
+	</tr>
+	{% for p in produits %}
+	  <tr>
+	    <td>{{ p.produit.titre }}</td>
+	    <td>{{ p.produit.auteur }}</td>
+	    <td>{{ p.score }}</td>
+	  </tr>
+	{% endfor %}
+</table>
+
+{% endblock %}
