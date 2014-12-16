@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
  
 class DefaultController extends Controller
 {   
-   //$_SERVER['HTTP_USER_AGENT'] Navigateur de l'utilisateur
+   
      
     public function helloAction()
     {
@@ -34,29 +34,9 @@ class DefaultController extends Controller
      */
     public function goodbyeAction()
     {   
-        $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
         
-        if($request->getMethod() == 'POST')
-        {        
-
-        $nom = $_POST['nom']; 
-        $prenom = $_POST['prenom']; 
-        $age = $_POST['age'];   
-        $ville = $_POST['ville'];   
-        $description = $_POST['description'];
         
-        $utilisateur = new Utilisateur();
-        $utilisateur->setNom($nom);
-        $utilisateur->setPrenom($prenom);
-        $utilisateur->setVille($ville);
-        $utilisateur->setAge($age);
-        $utilisateur->setDescription($description);
-        $utilisateur->setIp($this->container->get('request')->getClientIp());
         
-        $utilisateur->save();
-        
-        echo 'Utilisateur Ajouté';
-        }
         
     return new Response('Goodbye!');
     }
@@ -78,32 +58,55 @@ class DefaultController extends Controller
         
        
         $response = new Response();
+        //$response->headers->clearCookie('cookie');
+        //$response->send();
+        
         
 
-        $dejaVu = $request->cookies->has("cookie");
+        $dejaVu = $request->cookies->has('cookie');
         
-        //$request->cookies->get("mycookie");    
+        //$request->cookies->get("mycookie"); 
         
         
-        $response->headers->clearCookie('cookie');
-        $response->send();
+        if($request->getMethod() == 'POST')
+        {        
+
+        $nom = $_POST['nom']; 
+        $prenom = $_POST['prenom']; 
+        $age = $_POST['age'];   
+        $ville = $_POST['ville'];   
+        $description = $_POST['description'];
+        
+        $utilisateur = new Utilisateur();
+        $utilisateur->setNom($nom);
+        $utilisateur->setPrenom($prenom);
+        $utilisateur->setVille($ville);
+        $utilisateur->setAge($age);
+        $utilisateur->setDescription($description);
+        $utilisateur->setIp($this->container->get('request')->getClientIp());
+        
+        $utilisateur->save();
+        
+        //unset($_POST);
+        }
+        
+        
+        
         
         if($dejaVu){
-            
+          
           $flag = false;
            
         }else {
-        
-        /*$cookie = new Cookie('cookie', 'contentOfMyCookie',time() + 3600 * 24 * 7);
+        if(isset($_POST['nom'])){
+        $cookie = new Cookie('cookie', 'utilisateur',time() + 3600 * 24 * 7);
         $response->headers->setCookie($cookie);
-        $response->headers->clearCookie('cookie');
-        $response->send();*/
+        $response->send();
+        $flag=true;
+        }else {
+         $flag=true;   
+        }
         
-            
-            
-            $flag=true;
-            
-            
         }
         
         //return $this->render('UserBundle:User:index.html.twig');
