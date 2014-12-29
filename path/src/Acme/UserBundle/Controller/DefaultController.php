@@ -57,18 +57,10 @@ class DefaultController extends Controller
         $response = new Response();
         //$response->headers->clearCookie('cookie');
         //$response->send();
-        
-        
 
         $dejaVu = $request->cookies->has('cookie');
         
         //$request->cookies->get("mycookie"); 
-        
-        
-       
-        
-        
-        
         
         if($dejaVu){
           
@@ -121,9 +113,39 @@ class DefaultController extends Controller
     if (!$user) {
         throw $this->createNotFoundException('No user found for id '.$id);
     }
-
+  
     // faites quelque chose, comme passer l'objet $product à un template
     }
+    
+    /**
+     * @Route("/book/{id}", name="_book_show")
+     * @Template()
+     */
+    public function bookAction($id)
+    {
+     $path = "http://it-ebooks-api.info/v1/book/".$id;
+        
+        
+     $json = file_get_contents($path);
+     $parsed_json = json_decode($json,true);
+     
+     
+        
+    //$book = 
+        
+
+    if ($parsed_json["Error"]!="0") {
+        throw $this->createNotFoundException('No book found for id '.$id);
+    }
+  
+    // faites quelque chose, comme passer l'objet $product à un template
+    return $this->render('UserBundle:User:book.html.twig',array(
+                     'book' => $parsed_json));
+    }
+    
+    
+    
+    
     public function updateAction($id)
     {
     $user = UtilisateurQuery::create()

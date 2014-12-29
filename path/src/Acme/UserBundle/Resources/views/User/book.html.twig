@@ -1,0 +1,62 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+   
+    <div class="container">
+        
+        
+        <img src="{{ book['Image'] }}"/>
+        <h1> {{ book['Title'] }}</h1> 
+        <h3> {{ book['SubTitle'] }}</h3> 
+        
+        <p>
+        {{ book['Description'] }}
+        </p>
+        
+        <a href="{{ book['Download'] }}" target="_blank">  <img src="{{ asset('bundles/user/images/download.png') }}"  /> </a>
+
+       
+ 
+        <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
+        <div class="basic" data-average="2" data-id="1"></div>
+
+        
+
+     
+        
+    </div>
+      <div id="footer_cookies" style="display: none"> En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de nos cookies afin de vous offrir une meilleure utilisation de ce site Internet.</div>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
+
+    <script src="{{ asset('bundles/user/js/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/user/js/bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/user/js/jRating.jquery.js')}}"></script>
+
+    <script type="text/javascript">
+$(document).ready(function(){
+     
+ 
+      // more complex jRating call
+     /* $(".basic").jRating({
+         step:true,
+         length : 6, // nb of stars
+         onSuccess : function(){
+           alert('Success : your rate has been saved :)');
+         }
+       });
+ */
+      
+ 
+      // get the clicked rate !
+      $(".basic").jRating({
+        onClick : function(element,rate) {
+         alert(rate);
+        }
+      });
+});
+</script>
+{% endblock %}

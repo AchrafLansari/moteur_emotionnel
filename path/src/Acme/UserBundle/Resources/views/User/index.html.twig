@@ -16,7 +16,7 @@
             {% else %}
                  <div class="item">
             {% endif %}
-                         <a href="">  <img src="{{ book['Image'] }}" alt="{{ book['ID'] }}" style =" display: block; margin-left: auto;margin-right: auto;" />
+                         <a href="/book/{{ book['ID'] }}">  <img src="{{ book['Image'] }}" alt="{{ book['ID'] }}" style =" display: block; margin-left: auto;margin-right: auto;" />
             </a>
             <div class="carousel-caption">
               <p>{{ book['Title']|e }}</p>
