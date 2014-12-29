@@ -23,10 +23,7 @@ class DefaultController extends Controller
 {   
    
      
-    public function helloAction()
-    {
-    return new Response('Hello world!');
-    }
+   
     
     /**
      * @Route("/user/goodbye", name="_user")
@@ -68,7 +65,17 @@ class DefaultController extends Controller
         //$request->cookies->get("mycookie"); 
         
         
-        if($request->getMethod() == 'POST')
+       
+        
+        
+        
+        
+        if($dejaVu){
+          
+          $flag = false;
+           
+        }else {
+         if($request->getMethod() == 'POST')
         {        
 
         $nom = $_POST['nom']; 
@@ -87,26 +94,15 @@ class DefaultController extends Controller
         
         $utilisateur->save();
         
-        //unset($_POST);
-        }
+        unset($_POST);
         
-        
-        
-        
-        if($dejaVu){
-          
-          $flag = false;
-           
-        }else {
-        if(isset($_POST['nom'])){
         $cookie = new Cookie('cookie', 'utilisateur',time() + 3600 * 24 * 7);
         $response->headers->setCookie($cookie);
         $response->send();
-        $flag=true;
-        }else {
-         $flag=true;   
-        }
         
+        
+        }
+        $flag=true;
         }
         
         //return $this->render('UserBundle:User:index.html.twig');
