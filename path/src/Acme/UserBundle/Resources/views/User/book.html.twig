@@ -13,7 +13,7 @@
         {{ book['Description'] }}
         </p>
         
-        <a href="{{ book['Download'] }}" target="_blank">  <img src="{{ asset('bundles/user/images/download.png') }}"  /> </a>
+        <a href="{{ book['Download'] }}" target="_blank">  <img id="download" src="{{ asset('bundles/user/images/download.png') }}"  /> </a>
 
        
  
@@ -38,7 +38,7 @@
 
     <script type="text/javascript">
 $(document).ready(function(){
-     
+     var score = 0;
  
       // more complex jRating call
      /* $(".basic").jRating({
@@ -49,7 +49,10 @@ $(document).ready(function(){
          }
        });
  */
-      
+       $("#download").click(function(){
+            score = 6;
+            //alert(score);
+       });
  
       // get the clicked rate !
       $(".basic").jRating({

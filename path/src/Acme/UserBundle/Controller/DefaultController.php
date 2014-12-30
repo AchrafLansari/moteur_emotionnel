@@ -41,14 +41,21 @@ class DefaultController extends Controller
      
     public function indexAction()
     {   
+        include_once 'functions/functions.php';
         
         $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
-        $path = "http://it-ebooks-api.info/v1/search/";
-        $query= "php%20mysql";
+        $path =  $this->get('kernel')->locateResource("@UserBundle/Data/data.txt");
+        $data = tokenization(utf8_decode(file_get_contents($path)),"\n",0,1);        
+        $url = "http://it-ebooks-api.info/v1/search/";
+        $parsed_json['Total'] = "0";
         
-        $json = file_get_contents($path.$query);
+        while ($parsed_json['Total'] == "0"){
+        $query= rtrim($data[rand(0,count($data)-1)]);
+       
+        $json = file_get_contents($url.$query);
         $parsed_json = json_decode($json,true);
         
+        }
         //echo $parsed_json['Total']/10;
         
         $books = count($parsed_json['Books']);
