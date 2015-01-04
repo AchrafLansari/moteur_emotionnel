@@ -17,6 +17,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
+
  
  
 class DefaultController extends Controller
@@ -26,16 +29,34 @@ class DefaultController extends Controller
    
     
     /**
-     * @Route("/user/goodbye", name="_user")
+     * @Route("/search/", name="_search")
      * @Template()
      */
-    public function goodbyeAction()
+    public function searchAction()
     {   
+        $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+        if($request->getMethod() == 'POST')
+        {        
+        $url = "http://it-ebooks-api.info/v1/search/";
+        $json = file_get_contents($url.$_POST['tags']);
+        $parsed_json = json_decode($json,true);
         
         
+       if ($parsed_json['Total'] == "0"){
+        
+       return new Response('Nothing Found!');
         
         
-    return new Response('Goodbye!');
+       }else {
+           
+        $books = count($parsed_json['Books']);
+        return $this->render('UserBundle:User:index.html.twig',array('nb_books' => $books,
+                     'books' => $parsed_json['Books'],'flag'=>false));
+           
+           
+       }
+        
+       }
     }
     
      
@@ -68,20 +89,46 @@ class DefaultController extends Controller
         $dejaVu = $request->cookies->has('cookie');
         
         //$request->cookies->get("mycookie"); 
+        $session = new Session();
         
         if($dejaVu){
+            
+          if($session->get('name')){
+              $user = UtilisateurQuery::create()
+                    ->filterByNom($session->get('name'))
+                    ->findOne();
+              
+            recommandation_description($data,$user->getDescription());
+                      
+          } 
+          //recommandation_description($data," je suis développeur Java,PHP, mysql");
           
           $flag = false;
            
         }else {
          if($request->getMethod() == 'POST')
         {        
+        
+        
+        $session->start();
 
+        
+        // définit des messages dits « flash »
+        $session->getFlashBag()->add('notice', 'Utilisateur Modifier');     
+        $session->getFlashBag()->add('error', 'Pas d\'utilisateur');     
+             
+             
         $nom = $_POST['nom']; 
         $prenom = $_POST['prenom']; 
         $age = $_POST['age'];   
         $ville = $_POST['ville'];   
         $description = $_POST['description'];
+        
+        // définit et récupère des attributs de session
+        $session->set('nom', $nom);
+        
+
+        
         
         $utilisateur = new Utilisateur();
         $utilisateur->setNom($nom);
@@ -92,6 +139,7 @@ class DefaultController extends Controller
         $utilisateur->setIp($this->container->get('request')->getClientIp());
         
         $utilisateur->save();
+        
         
         unset($_POST);
         

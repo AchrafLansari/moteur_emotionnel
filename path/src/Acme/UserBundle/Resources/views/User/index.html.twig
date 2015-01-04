@@ -32,7 +32,7 @@
           <a class="carousel-control right" href="#this-carousel-id" data-slide="next">›</a>
       </div><!-- .carousel -->
       <!-- end carousel -->
-
+      {% if flag == true  %}
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -73,6 +73,7 @@
     </div>
   </div>
 </div>
+     {% endif %}
       <div id="footer_cookies" style="display: none"> En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de nos cookies afin de vous offrir une meilleure utilisation de ce site Internet.</div>
     </div> <!-- /container -->
 
@@ -81,6 +82,7 @@
     <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
     <script src="{{ asset('bundles/user/js/jquery.js') }}"></script>
     <script src="{{ asset('bundles/user/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('bundles/user/js/gestion.js') }}"></script>
     <script>
       $(document).ready(function(){
         $('.carousel').carousel({
