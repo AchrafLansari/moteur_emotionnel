@@ -56,3 +56,22 @@ function tokenization ($text,$delimiteurs,$nb_carac,$state)
      }*/
      return $tab_recommandations;
  }
+ 
+ function recommandations_articles($tab_recommandations){
+     
+     $url = "http://it-ebooks-api.info/v1/search/";
+     $books = array();
+     
+     foreach ($tab_recommandations as $item=>$valeur ){
+        
+        $json = file_get_contents($url.$valeur);
+        $parsed_json = json_decode($json,true);
+        
+        for($i=0;$i<5;$i++){
+            array_push($books,$parsed_json['Books'][$i]); 
+        }
+          
+     }
+     return $books;
+         
+ }

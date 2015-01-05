@@ -101,8 +101,8 @@ class DefaultController extends Controller
             recommandation_description($data,$user->getDescription());
                       
           } 
-          //recommandation_description($data," je suis développeur Java,PHP, mysql");
-          
+          $tab_recommandation = recommandation_description($data," je suis développeur Java,PHP, mysql");
+          $reconnamdation_books = recommandations_articles($tab_recommandation);
           $flag = false;
            
         }else {
@@ -154,7 +154,7 @@ class DefaultController extends Controller
         
         //return $this->render('UserBundle:User:index.html.twig');
         return $this->render('UserBundle:User:index.html.twig',array('nb_books' => $books,
-                     'books' => $parsed_json['Books'],'flag'=>$flag));
+                     'books' => $parsed_json['Books'],'flag'=>$flag,'recommandation_book'=>$reconnamdation_books));
     }
     /**
      * @Route("/show/{id}", name="_user_show")
