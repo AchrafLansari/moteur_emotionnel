@@ -94,9 +94,9 @@ class DefaultController extends Controller
         
         if($dejaVu){
             
-          if($session->get('name')){
+          if($session->get('nom')){
               $user = UtilisateurQuery::create()
-                    ->filterByNom($session->get('name'))
+                    ->filterByNom($session->get('nom'))
                     ->findOne();
               
             recommandation_description($data,$user->getDescription());
@@ -139,9 +139,20 @@ class DefaultController extends Controller
         $utilisateur->setAge($age);
         $utilisateur->setDescription($description);
         $utilisateur->setIp($this->container->get('request')->getClientIp());
-        
         $utilisateur->save();
         
+        $geo = new GeoIp();
+    		
+    		if($geo->pays != null){
+                    
+	    		$ip = new Ip();
+	    		$ip->setPays($geo->pays);
+	    		$ip->setDepartement($geo->departement);
+	    		$ip->setVille($geo->ville);
+	    		$ip->save();
+                }
+        
+        $session->set('id',$utilisateur->getId());// je pense qu'il faut le récuperer de la base ou de l'action précedante
         
         
         unset($_POST);

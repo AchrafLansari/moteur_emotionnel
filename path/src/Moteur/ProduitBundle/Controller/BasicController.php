@@ -23,15 +23,31 @@ set_time_limit(10000);
 class BasicController extends Controller
 {
 	/**
-	 * @todo
-	 * @param unknown $id
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
+     * @Route("/book/{id}", name="_book_show")
+     * @Template()
+     */
     public function afficherAction($id)
     {	
-    	$produit = ProduitQuery::create()->findOneById($id);
-    	
-    	$utilisateur_id = rand(0,80);
+         $path = "http://it-ebooks-api.info/v1/book/".$id;
+         $json = file_get_contents($path);
+         $parsed_json = json_decode($json,true);
+         $produit = new Produit();
+         
+        if ($parsed_json["Error"]!="0") {
+            throw $this->createNotFoundException('No book found for id '.$id);
+        }else {
+            $produit->setId($parsed_json['ID']);
+            $produit->setImage($parsed_json['Image']);
+            $produit->setTitre($parsed_json['Title']);
+            $produit->setSousTitre($parsed_json['SubTitle']);
+            $produit->setDescription($parsed_json['Description']);
+            $produit->setLien($parsed_json['Download']);
+            $produit->save();
+        }
+        
+        $session = new Session();
+        $session->start();
+    	$utilisateur_id = $session->get('id');
     	
     	$utilisateurProduit = UtilisateurProduitQuery::create()
     								->filterByProduit($produit)
@@ -41,10 +57,13 @@ class BasicController extends Controller
     	$utilisateurProduit->setNombreVisite($utilisateurProduit->getNombreVisite()+1);
     	$utilisateurProduit->save();
     	
-        return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
-    }
+        //return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
+        
+        return $this->render('UserBundle:User:book.html.twig',array('book' => $parsed_json));
+        
+        }
     
-    public function achatAction($id_produit, $id_utilisateur){
+    public function telechargerAction($id_produit, $id_utilisateur){
     	$utilisateurProduit = UtilisateurProduitQuery::create()
     	->filterByUtilisateurId($id_utilisateur)
     	->filterByProduitId($id_produit)

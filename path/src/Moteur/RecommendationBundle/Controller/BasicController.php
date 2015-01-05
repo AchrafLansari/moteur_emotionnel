@@ -18,26 +18,43 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BasicController extends Controller
 {
-	//Remplacer l'ID par un cookie
+	
+     /**
+     * @Route("/search/", name="_search")
+     * @Template()
+     */
     public function rechercherAction()
     {  
-    	$request = $this->get('request');
-
+    	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
     	$requete = "";
-    	
     	$resultats = array();
-    	
+    	$session = new Session();
+        
+        
+        
     	if ($request->isMethod('POST')) {
     		$kernel = $this->get('kernel');
     		$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
-    		 
-    		$requete = $_POST['requete'];
-    		 
+    		
+                
+                $url = "http://it-ebooks-api.info/v1/search/";
+                $json = file_get_contents($url.$_POST['tags']);
+                $parsed_json = json_decode($json,true);
+    		$requete = $_POST['tags'];
+    		
+                /*if ($parsed_json['Total'] == "0"){
+        
+                return new Response('Nothing Found!');
+        
+        
+                }*/
+        
     		$indexation = new IndexationMot($requete, $path);
     		 
     		$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne()->getRequeteId();
-    		$utilisateur_id = rand(1,80);
-    		$utilisateur_id = 54; 
+    		$utilisateur_id = $session->get('id');
+    		
+                
     		foreach ($indexation->indexRequete as $mot){
     			$m_Req = MotQuery::create()
     			->filterByMot($mot)
@@ -64,8 +81,10 @@ class BasicController extends Controller
     		
     		$resultat = $statement->fetchAll();
     		 
-    	}  	
-        return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
+    	}  
+        $books = count($parsed_json['Books']);
+        return $this->render('UserBundle:User:index.html.twig',array('nb_books' => $books,'books' => $parsed_json['Books'],'flag'=>false));
+        //return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
     }
     
     public function indexAction($page, $nombre){
