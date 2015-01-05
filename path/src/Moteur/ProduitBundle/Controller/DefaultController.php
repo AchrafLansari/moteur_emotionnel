@@ -28,9 +28,7 @@ class DefaultController extends Controller
      * @Route("/ajouter")
      */
     public function addAction(){
-    	//$url = "http://www.nextinpact.com/news/91393-la-finlande-fiscalisera-copie-privee-des-1er-janvier-2015.htm";
     	
-    	$this->indexActuNextInpact();
     }
     
     
@@ -60,63 +58,10 @@ class DefaultController extends Controller
     	}
     	$utilisateurProduit->save();
     }
-    
-    private function indexActuNextInpact(){
-    	
-    	$urls = array("http://www.nextinpact.com/?page=4", "http://www.nextinpact.com/?page=5");
-    	echo "<h1>Indexation</h1>";
-    	
-    	foreach ($urls as $url){
-	    	$html = file_get_contents($url);
-
-	    	echo "<h2>Page : ".$url."</h2>";
-	    	
-	    	$modele_lien = '/<h2 class="color_title">(.*)<\/h2>/i';
-	    	$modele_lien_raw = '/<a href="\/news\/(.*)" title/i';
-	    	
-	    	preg_match_all($modele_lien, $html, $liens);
-	    	 
-	    	foreach ($liens[1] as $l){
-	    		preg_match($modele_lien_raw, $l, $lien);
-	    		if(isset($lien[1])){
-	    			$url = "http://www.nextinpact.com/news/".$lien[1];
-	    			
-	    			$html = file_get_contents($url);
-	    			 
-	    			$modele_titre = '/<h1 class="color_title" itemprop="name">(.*)<\/h1>/i';
-	    			$modele_description = '/<p class="actu_chapeau">(.*)<\/p>/i';
-	    			$modele_auteur = '/itemprop="author">(.*)<\/a><\/h3>/i';
-	    			 
-	    			preg_match($modele_titre, $html, $t_titre);
-	    			$titre = isset($t_titre[1]) ? $this->rip_tags($t_titre[1]) : null;
-	    			 
-	    			preg_match($modele_description, $html, $t_desc);
-	    			$description = isset($t_desc[0]) ? $this->rip_tags($t_desc[0]) : null;
-	    			 
-	    			preg_match($modele_auteur, $html, $t_auteur);
-	    			$auteur = isset($t_auteur[1]) ? $this->rip_tags($t_auteur[1]) : null;
-	    			
-	    			echo "<h3>Lien :</h3>http://www.nextinpact.com/news/".$lien[1]; 
-	    			if($titre == null)
-	    				echo "Titre NULL<br>";
-	    			if($description == null)
-	    				echo "Description NULL<br>";
-	    			if($auteur == null)
-	    				echo "Auteur NULL<br>";
-	    			
-	    			if($titre != null && $description != null && $auteur != null){
-	    				echo "<br>Sauvegarde en cours<br>";
-	    				$this->indexDocument($titre, $auteur, $description);
-	    			}
-	    		}
-	    	}
-    	}
-    }
-    
+        
     private function indexDocument($titre, $auteur, $description){
     	$kernel = $this->get('kernel');
     	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
-    	 echo $titre."<br>";
     	if(!ProduitQuery::create()->filterByTitre($titre)->findOne()){	
 	    	$indexation = new IndexationProduit($titre, $auteur, $description, $path);
 	    	
@@ -147,7 +92,6 @@ class DefaultController extends Controller
 	    	
 	    	$con->commit();
     	}
-    	else echo "<br>FAIL";
     }
     
     private function rip_tags($string) {
