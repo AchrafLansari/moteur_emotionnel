@@ -65,6 +65,7 @@ class DefaultController extends Controller
         include_once 'functions/functions.php';
         
         $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+        
         $path =  $this->get('kernel')->locateResource("@UserBundle/Data/data.txt");
         $data = tokenization(utf8_decode(file_get_contents($path)),"\n",0,1);        
         $url = "http://it-ebooks-api.info/v1/search/";
@@ -157,21 +158,6 @@ class DefaultController extends Controller
         //return $this->render('UserBundle:User:index.html.twig');
         return $this->render('UserBundle:User:index.html.twig',array('nb_books' => $books,
                      'books' => $parsed_json['Books'],'flag'=>$flag,'recommandation_book'=>$recommandation_books));
-    }
-    /**
-     * @Route("/show/{id}", name="_user_show")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-    $user = UtilisateurQuery::create()
-        ->findPk($id);
-
-    if (!$user) {
-        throw $this->createNotFoundException('No user found for id '.$id);
-    }
-  
-    // faites quelque chose, comme passer l'objet $product à un template
     }
     
     /**

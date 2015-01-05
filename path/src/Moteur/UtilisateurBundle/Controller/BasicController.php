@@ -24,41 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BasicController extends Controller
 {
-	//FONCTIONNE
-	public function connecterAction()
-	{
-		$utilisateur = new Utilisateur();
-		
-		$u = new UtilisateurType();
-		$u->setOption("connexion", true);
-		$form = $this->createForm($u, $utilisateur);
-		 
-		$request = $this->getRequest();
-		if('POST' == $request->getMethod()){
-			$form->handleRequest($request);
 	
-			if ($form->isValid()){
-				
-				$response = new Response();
-				$cookie_nom = new Cookie('utilisateur_nom', $utilisateur->getNom(),time() + 3600 * 24 * 7);
-				$response->headers->setCookie($cookie_nom);
-				
-				$cookie_prenom = new Cookie('utilisateur_prenom', $utilisateur->getPrenom(),time() + 3600 * 24 * 7);
-				$response->headers->setCookie($cookie_prenom);
-				
-				$util = UtilisateurQuery::create()->filterByNom($utilisateur->getNom())
-										->filterByPrenom($utilisateur->getPrenom())
-										->findOne();
-				$cookie_id = new Cookie('utilisateur_id', $util->getId(),time() + 3600 * 24 * 7);
-				$response->headers->setCookie($cookie_id);
-				
-				$response->send();
-				 
-				return $this->render('MoteurUtilisateurBundle:Default:index.html.twig', array('message' => "Connexion réussie!"));
-			}
-		}
-		return $this->render('MoteurUtilisateurBundle:Utilisateur:connexion.html.twig', array('form' => $form->createView()));
-	}
 	
 	//FONCTIONNE
     public function creerAction()
@@ -83,7 +49,7 @@ class BasicController extends Controller
     			$utilisateur->setIp($ip);
     			$utilisateur->save();
     			
-    			return $this->render('MoteurUtilisateurBundle:Default:index.html.twig', array('message' => "Ajout réussi!"));
+    			return $this->render('MoteurUtilisateurBundle:Default:index.html.twig', array('message' => "Ajout rï¿½ussi!"));
     		}
     	}
         return $this->render('MoteurUtilisateurBundle:Utilisateur:creer.html.twig', array('form' => $form->createView()));
