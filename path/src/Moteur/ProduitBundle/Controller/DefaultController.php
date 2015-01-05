@@ -55,16 +55,20 @@ class DefaultController extends Controller
     	$utilisateurProduit->save();
     }
         
-    private function indexDocument($titre, $auteur, $description){
+    private function indexDocument($titre, $auteur, $description,$soustitre,$image,$lien){
     	$kernel = $this->get('kernel');
     	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
     	if(!ProduitQuery::create()->filterByTitre($titre)->findOne()){	
-	    	$indexation = new IndexationProduit($titre, $auteur, $description, $path);
+	    	$indexation = new IndexationProduit($titre, $auteur, $description, $path,$soustitre,$image,$lien);
 	    	
 	    	$produit = new Produit();
 	    	$produit->setTitre($titre);
 	    	$produit->setAuteur($auteur);
 	    	$produit->setDescription($description);
+                $produit->setSousTitre($soustitre);
+                $produit->setImage($image);
+                $produit->setLien($lien);
+	    	
 	    	
 	    	$con = Propel::getConnection(ProduitMotPoidsPeer::DATABASE_NAME);
 	    	$con->beginTransaction();

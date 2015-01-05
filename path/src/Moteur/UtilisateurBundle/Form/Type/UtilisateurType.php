@@ -23,6 +23,7 @@ class UtilisateurType extends BaseAbstractType
 	        $builder->add('mail');
 	        $builder->add('age');
 	        $builder->add('ville');
+	        $builder->add('description');
         }
     }
 }

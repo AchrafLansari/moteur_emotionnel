@@ -100,6 +100,8 @@ class BasicController extends Controller
     	$ip = $utilisateur->getIp();
     	
     	$utilisateurInterets = $utilisateur->getUtilisateurInteretsJoinInteret();
+        
+        $utilisateurDescription = $utilisateur->getDescription();
     	
     	$interets = array();
     	
@@ -109,6 +111,6 @@ class BasicController extends Controller
     		$interets[] = $interet;
     	}
     	
-    	return $this->render('MoteurUtilisateurBundle:Utilisateur:afficher.html.twig', array('utilisateur' => $utilisateur, "ip" => $ip, "interets" => $interets));
+    	return $this->render('MoteurUtilisateurBundle:Utilisateur:afficher.html.twig', array('utilisateur' => $utilisateur, "ip" => $ip, "interets" => $interets,"description" => $utilisateurDescription));
     }
 }

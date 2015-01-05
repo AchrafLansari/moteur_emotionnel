@@ -29,16 +29,19 @@ class IndexationProduit{
 	private $cheminMotsVide = 'mots_vides.txt';
 	private $cheminDictionnaireLemmes = 'dictionnaire_lemme_fr.csv';
 	
-	public function __construct($titre, $auteur, $description, $path){
+	public function __construct($titre, $auteur, $description, $path,$soustitre,$image,$lien){
 		$this->titre = $titre;
 		$this->auteur = $auteur;
 		$this->description = $description;
 		$this->cheminMotsVide = $path . $this->cheminMotsVide;
 		$this->cheminDictionnaireLemmes = $path . $this->cheminDictionnaireLemmes;
+                $this->soustitre = $soustitre;
+                $this->image = $image;
+                $this->lien = $lien;
 		
 		$this->setListeMotsVides();
 		
-		$separateurs = " \n\t\r,«;.»’'\"()!?-";
+		$separateurs = " \n\t\r,ï¿½;.ï¿½ï¿½'\"()!?-";
 
 		$this->indexTitre = $this->fractionner_chaine($this->titre, $separateurs);
 		$this->indexTitre = $this->supprimerPetitsSegments($this->indexTitre, 4);
@@ -109,8 +112,8 @@ class IndexationProduit{
 	/**
 	 * Transforme un texte en tableau de mots
 	 * 
-	 * @Param $string la chaine de caractères à  traiter
-	 * @Return un tableau de chaine de caractères
+	 * @Param $string la chaine de caractï¿½res ï¿½ traiter
+	 * @Return un tableau de chaine de caractï¿½res
 	 */
 	private function fractionner_chaine($string, $separateurs){
 		$arrayString = [];
@@ -152,7 +155,7 @@ class IndexationProduit{
 	}
 	
 	/**
-	 * Multiplie les valeurs d'un tableau clé valeur par un coefficient
+	 * Multiplie les valeurs d'un tableau clï¿½ valeur par un coefficient
 	 * 
 	 * @param unknown $occurences le tableau de terme => occurence
 	 * @param unknown $coefficient le poids des termes
