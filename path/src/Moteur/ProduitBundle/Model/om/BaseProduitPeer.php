@@ -29,13 +29,13 @@ abstract class BaseProduitPeer
     const TM_CLASS = 'Moteur\\ProduitBundle\\Model\\map\\ProduitTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'produit.id';
@@ -43,11 +43,20 @@ abstract class BaseProduitPeer
     /** the column name for the titre field */
     const TITRE = 'produit.titre';
 
+    /** the column name for the sous_titre field */
+    const SOUS_TITRE = 'produit.sous_titre';
+
     /** the column name for the auteur field */
     const AUTEUR = 'produit.auteur';
 
     /** the column name for the description field */
     const DESCRIPTION = 'produit.description';
+
+    /** the column name for the image field */
+    const IMAGE = 'produit.image';
+
+    /** the column name for the lien field */
+    const LIEN = 'produit.lien';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -68,12 +77,12 @@ abstract class BaseProduitPeer
      * e.g. ProduitPeer::$fieldNames[ProduitPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Titre', 'Auteur', 'Description', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'titre', 'auteur', 'description', ),
-        BasePeer::TYPE_COLNAME => array (ProduitPeer::ID, ProduitPeer::TITRE, ProduitPeer::AUTEUR, ProduitPeer::DESCRIPTION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITRE', 'AUTEUR', 'DESCRIPTION', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'titre', 'auteur', 'description', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Titre', 'SousTitre', 'Auteur', 'Description', 'Image', 'Lien', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'titre', 'sousTitre', 'auteur', 'description', 'image', 'lien', ),
+        BasePeer::TYPE_COLNAME => array (ProduitPeer::ID, ProduitPeer::TITRE, ProduitPeer::SOUS_TITRE, ProduitPeer::AUTEUR, ProduitPeer::DESCRIPTION, ProduitPeer::IMAGE, ProduitPeer::LIEN, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITRE', 'SOUS_TITRE', 'AUTEUR', 'DESCRIPTION', 'IMAGE', 'LIEN', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'titre', 'sous_titre', 'auteur', 'description', 'image', 'lien', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -83,12 +92,12 @@ abstract class BaseProduitPeer
      * e.g. ProduitPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Titre' => 1, 'Auteur' => 2, 'Description' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'titre' => 1, 'auteur' => 2, 'description' => 3, ),
-        BasePeer::TYPE_COLNAME => array (ProduitPeer::ID => 0, ProduitPeer::TITRE => 1, ProduitPeer::AUTEUR => 2, ProduitPeer::DESCRIPTION => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITRE' => 1, 'AUTEUR' => 2, 'DESCRIPTION' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'titre' => 1, 'auteur' => 2, 'description' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Titre' => 1, 'SousTitre' => 2, 'Auteur' => 3, 'Description' => 4, 'Image' => 5, 'Lien' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'titre' => 1, 'sousTitre' => 2, 'auteur' => 3, 'description' => 4, 'image' => 5, 'lien' => 6, ),
+        BasePeer::TYPE_COLNAME => array (ProduitPeer::ID => 0, ProduitPeer::TITRE => 1, ProduitPeer::SOUS_TITRE => 2, ProduitPeer::AUTEUR => 3, ProduitPeer::DESCRIPTION => 4, ProduitPeer::IMAGE => 5, ProduitPeer::LIEN => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITRE' => 1, 'SOUS_TITRE' => 2, 'AUTEUR' => 3, 'DESCRIPTION' => 4, 'IMAGE' => 5, 'LIEN' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'titre' => 1, 'sous_titre' => 2, 'auteur' => 3, 'description' => 4, 'image' => 5, 'lien' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -164,13 +173,19 @@ abstract class BaseProduitPeer
         if (null === $alias) {
             $criteria->addSelectColumn(ProduitPeer::ID);
             $criteria->addSelectColumn(ProduitPeer::TITRE);
+            $criteria->addSelectColumn(ProduitPeer::SOUS_TITRE);
             $criteria->addSelectColumn(ProduitPeer::AUTEUR);
             $criteria->addSelectColumn(ProduitPeer::DESCRIPTION);
+            $criteria->addSelectColumn(ProduitPeer::IMAGE);
+            $criteria->addSelectColumn(ProduitPeer::LIEN);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.titre');
+            $criteria->addSelectColumn($alias . '.sous_titre');
             $criteria->addSelectColumn($alias . '.auteur');
             $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.image');
+            $criteria->addSelectColumn($alias . '.lien');
         }
     }
 

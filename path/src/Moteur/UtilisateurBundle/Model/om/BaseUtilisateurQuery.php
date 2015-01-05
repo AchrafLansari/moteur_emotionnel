@@ -30,6 +30,8 @@ use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
  * @method UtilisateurQuery orderByMail($order = Criteria::ASC) Order by the mail column
  * @method UtilisateurQuery orderByAge($order = Criteria::ASC) Order by the age column
  * @method UtilisateurQuery orderByVille($order = Criteria::ASC) Order by the ville column
+ * @method UtilisateurQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method UtilisateurQuery orderByIpUtilisateur($order = Criteria::ASC) Order by the ip_utilisateur column
  * @method UtilisateurQuery orderByIpId($order = Criteria::ASC) Order by the ip_id column
  *
  * @method UtilisateurQuery groupById() Group by the id column
@@ -38,6 +40,8 @@ use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
  * @method UtilisateurQuery groupByMail() Group by the mail column
  * @method UtilisateurQuery groupByAge() Group by the age column
  * @method UtilisateurQuery groupByVille() Group by the ville column
+ * @method UtilisateurQuery groupByDescription() Group by the description column
+ * @method UtilisateurQuery groupByIpUtilisateur() Group by the ip_utilisateur column
  * @method UtilisateurQuery groupByIpId() Group by the ip_id column
  *
  * @method UtilisateurQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -84,6 +88,8 @@ use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
  * @method Utilisateur findOneByMail(string $mail) Return the first Utilisateur filtered by the mail column
  * @method Utilisateur findOneByAge(int $age) Return the first Utilisateur filtered by the age column
  * @method Utilisateur findOneByVille(string $ville) Return the first Utilisateur filtered by the ville column
+ * @method Utilisateur findOneByDescription(string $description) Return the first Utilisateur filtered by the description column
+ * @method Utilisateur findOneByIpUtilisateur(string $ip_utilisateur) Return the first Utilisateur filtered by the ip_utilisateur column
  * @method Utilisateur findOneByIpId(int $ip_id) Return the first Utilisateur filtered by the ip_id column
  *
  * @method array findById(int $id) Return Utilisateur objects filtered by the id column
@@ -92,6 +98,8 @@ use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
  * @method array findByMail(string $mail) Return Utilisateur objects filtered by the mail column
  * @method array findByAge(int $age) Return Utilisateur objects filtered by the age column
  * @method array findByVille(string $ville) Return Utilisateur objects filtered by the ville column
+ * @method array findByDescription(string $description) Return Utilisateur objects filtered by the description column
+ * @method array findByIpUtilisateur(string $ip_utilisateur) Return Utilisateur objects filtered by the ip_utilisateur column
  * @method array findByIpId(int $ip_id) Return Utilisateur objects filtered by the ip_id column
  */
 abstract class BaseUtilisateurQuery extends ModelCriteria
@@ -198,7 +206,7 @@ abstract class BaseUtilisateurQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `nom`, `prenom`, `mail`, `age`, `ville`, `ip_id` FROM `utilisateur` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `nom`, `prenom`, `mail`, `age`, `ville`, `description`, `ip_utilisateur`, `ip_id` FROM `utilisateur` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -485,6 +493,64 @@ abstract class BaseUtilisateurQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UtilisateurPeer::VILLE, $ville, $comparison);
+    }
+
+    /**
+     * Filter the query on the description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $description The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UtilisateurQuery The current query, for fluid interface
+     */
+    public function filterByDescription($description = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($description)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $description)) {
+                $description = str_replace('*', '%', $description);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UtilisateurPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the ip_utilisateur column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIpUtilisateur('fooValue');   // WHERE ip_utilisateur = 'fooValue'
+     * $query->filterByIpUtilisateur('%fooValue%'); // WHERE ip_utilisateur LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $ipUtilisateur The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UtilisateurQuery The current query, for fluid interface
+     */
+    public function filterByIpUtilisateur($ipUtilisateur = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($ipUtilisateur)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $ipUtilisateur)) {
+                $ipUtilisateur = str_replace('*', '%', $ipUtilisateur);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UtilisateurPeer::IP_UTILISATEUR, $ipUtilisateur, $comparison);
     }
 
     /**

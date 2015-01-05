@@ -8,6 +8,8 @@
         <column name="mail" type="varchar" primaryString="true" size="100" />
         <column name="age" type="integer" />
         <column name="ville" type="varchar" size="100" />
+        <column name="description" type="varchar"/>
+        <column name="ip_utilisateur" type="varchar" size="12"/>
         <column name="ip_id" type="integer" />
         <foreign-key foreignTable="ip">
             <reference local="ip_id" foreign="id" />

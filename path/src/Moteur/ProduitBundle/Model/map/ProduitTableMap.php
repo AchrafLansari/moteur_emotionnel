@@ -44,8 +44,11 @@ class ProduitTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('titre', 'Titre', 'VARCHAR', false, 100, null);
+        $this->addColumn('sous_titre', 'SousTitre', 'VARCHAR', false, 255, null);
         $this->addColumn('auteur', 'Auteur', 'VARCHAR', false, 100, null);
-        $this->addColumn('description', 'Description', 'VARCHAR', false, 1000, null);
+        $this->addColumn('description', 'Description', 'VARCHAR', false, 255, null);
+        $this->addColumn('image', 'Image', 'VARCHAR', false, 255, null);
+        $this->addColumn('lien', 'Lien', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 

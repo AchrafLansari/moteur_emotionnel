@@ -4,8 +4,11 @@
     <table name="produit">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="titre" type="varchar" size="100" />
+        <column name="sous_titre" type="varchar" size="255"/>
         <column name="auteur" type="varchar" size="100" />
-        <column name="description" type="varchar" size="1000" />
+        <column name="description" type="varchar"/>
+        <column name="image" type="varchar" size="255"/>
+        <column name="lien" type="varchar" size="255"/>
         <vendor type="mysql">
     		<parameter name="Engine" value="InnoDB"/>
    			<parameter name="Charset" value="utf8"/>

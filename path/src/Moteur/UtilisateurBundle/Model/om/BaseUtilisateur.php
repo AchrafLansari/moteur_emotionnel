@@ -89,6 +89,18 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
     protected $ville;
 
     /**
+     * The value for the description field.
+     * @var        string
+     */
+    protected $description;
+
+    /**
+     * The value for the ip_utilisateur field.
+     * @var        string
+     */
+    protected $ip_utilisateur;
+
+    /**
      * The value for the ip_id field.
      * @var        int
      */
@@ -270,6 +282,28 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [description] column value.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+
+        return $this->description;
+    }
+
+    /**
+     * Get the [ip_utilisateur] column value.
+     *
+     * @return string
+     */
+    public function getIpUtilisateur()
+    {
+
+        return $this->ip_utilisateur;
+    }
+
+    /**
      * Get the [ip_id] column value.
      *
      * @return int
@@ -407,6 +441,48 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
     } // setVille()
 
     /**
+     * Set the value of [description] column.
+     *
+     * @param  string $v new value
+     * @return Utilisateur The current object (for fluent API support)
+     */
+    public function setDescription($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->description !== $v) {
+            $this->description = $v;
+            $this->modifiedColumns[] = UtilisateurPeer::DESCRIPTION;
+        }
+
+
+        return $this;
+    } // setDescription()
+
+    /**
+     * Set the value of [ip_utilisateur] column.
+     *
+     * @param  string $v new value
+     * @return Utilisateur The current object (for fluent API support)
+     */
+    public function setIpUtilisateur($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->ip_utilisateur !== $v) {
+            $this->ip_utilisateur = $v;
+            $this->modifiedColumns[] = UtilisateurPeer::IP_UTILISATEUR;
+        }
+
+
+        return $this;
+    } // setIpUtilisateur()
+
+    /**
      * Set the value of [ip_id] column.
      *
      * @param  int $v new value
@@ -469,7 +545,9 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
             $this->mail = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->age = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->ville = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->ip_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->ip_utilisateur = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->ip_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -479,7 +557,7 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 7; // 7 = UtilisateurPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = UtilisateurPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Utilisateur object", $e);
@@ -858,6 +936,12 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
         if ($this->isColumnModified(UtilisateurPeer::VILLE)) {
             $modifiedColumns[':p' . $index++]  = '`ville`';
         }
+        if ($this->isColumnModified(UtilisateurPeer::DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = '`description`';
+        }
+        if ($this->isColumnModified(UtilisateurPeer::IP_UTILISATEUR)) {
+            $modifiedColumns[':p' . $index++]  = '`ip_utilisateur`';
+        }
         if ($this->isColumnModified(UtilisateurPeer::IP_ID)) {
             $modifiedColumns[':p' . $index++]  = '`ip_id`';
         }
@@ -889,6 +973,12 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
                         break;
                     case '`ville`':
                         $stmt->bindValue($identifier, $this->ville, PDO::PARAM_STR);
+                        break;
+                    case '`description`':
+                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`ip_utilisateur`':
+                        $stmt->bindValue($identifier, $this->ip_utilisateur, PDO::PARAM_STR);
                         break;
                     case '`ip_id`':
                         $stmt->bindValue($identifier, $this->ip_id, PDO::PARAM_INT);
@@ -1114,6 +1204,12 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
                 return $this->getVille();
                 break;
             case 6:
+                return $this->getDescription();
+                break;
+            case 7:
+                return $this->getIpUtilisateur();
+                break;
+            case 8:
                 return $this->getIpId();
                 break;
             default:
@@ -1151,7 +1247,9 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
             $keys[3] => $this->getMail(),
             $keys[4] => $this->getAge(),
             $keys[5] => $this->getVille(),
-            $keys[6] => $this->getIpId(),
+            $keys[6] => $this->getDescription(),
+            $keys[7] => $this->getIpUtilisateur(),
+            $keys[8] => $this->getIpId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1236,6 +1334,12 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
                 $this->setVille($value);
                 break;
             case 6:
+                $this->setDescription($value);
+                break;
+            case 7:
+                $this->setIpUtilisateur($value);
+                break;
+            case 8:
                 $this->setIpId($value);
                 break;
         } // switch()
@@ -1268,7 +1372,9 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setMail($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setAge($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setVille($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setIpId($arr[$keys[6]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setIpUtilisateur($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setIpId($arr[$keys[8]]);
     }
 
     /**
@@ -1286,6 +1392,8 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
         if ($this->isColumnModified(UtilisateurPeer::MAIL)) $criteria->add(UtilisateurPeer::MAIL, $this->mail);
         if ($this->isColumnModified(UtilisateurPeer::AGE)) $criteria->add(UtilisateurPeer::AGE, $this->age);
         if ($this->isColumnModified(UtilisateurPeer::VILLE)) $criteria->add(UtilisateurPeer::VILLE, $this->ville);
+        if ($this->isColumnModified(UtilisateurPeer::DESCRIPTION)) $criteria->add(UtilisateurPeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(UtilisateurPeer::IP_UTILISATEUR)) $criteria->add(UtilisateurPeer::IP_UTILISATEUR, $this->ip_utilisateur);
         if ($this->isColumnModified(UtilisateurPeer::IP_ID)) $criteria->add(UtilisateurPeer::IP_ID, $this->ip_id);
 
         return $criteria;
@@ -1355,6 +1463,8 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
         $copyObj->setMail($this->getMail());
         $copyObj->setAge($this->getAge());
         $copyObj->setVille($this->getVille());
+        $copyObj->setDescription($this->getDescription());
+        $copyObj->setIpUtilisateur($this->getIpUtilisateur());
         $copyObj->setIpId($this->getIpId());
 
         if ($deepCopy && !$this->startCopy) {
@@ -3299,6 +3409,8 @@ abstract class BaseUtilisateur extends BaseObject implements Persistent
         $this->mail = null;
         $this->age = null;
         $this->ville = null;
+        $this->description = null;
+        $this->ip_utilisateur = null;
         $this->ip_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

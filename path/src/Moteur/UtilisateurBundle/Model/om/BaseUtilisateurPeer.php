@@ -30,13 +30,13 @@ abstract class BaseUtilisateurPeer
     const TM_CLASS = 'Moteur\\UtilisateurBundle\\Model\\map\\UtilisateurTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the id field */
     const ID = 'utilisateur.id';
@@ -55,6 +55,12 @@ abstract class BaseUtilisateurPeer
 
     /** the column name for the ville field */
     const VILLE = 'utilisateur.ville';
+
+    /** the column name for the description field */
+    const DESCRIPTION = 'utilisateur.description';
+
+    /** the column name for the ip_utilisateur field */
+    const IP_UTILISATEUR = 'utilisateur.ip_utilisateur';
 
     /** the column name for the ip_id field */
     const IP_ID = 'utilisateur.ip_id';
@@ -78,12 +84,12 @@ abstract class BaseUtilisateurPeer
      * e.g. UtilisateurPeer::$fieldNames[UtilisateurPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Nom', 'Prenom', 'Mail', 'Age', 'Ville', 'IpId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'nom', 'prenom', 'mail', 'age', 'ville', 'ipId', ),
-        BasePeer::TYPE_COLNAME => array (UtilisateurPeer::ID, UtilisateurPeer::NOM, UtilisateurPeer::PRENOM, UtilisateurPeer::MAIL, UtilisateurPeer::AGE, UtilisateurPeer::VILLE, UtilisateurPeer::IP_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NOM', 'PRENOM', 'MAIL', 'AGE', 'VILLE', 'IP_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'nom', 'prenom', 'mail', 'age', 'ville', 'ip_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Nom', 'Prenom', 'Mail', 'Age', 'Ville', 'Description', 'IpUtilisateur', 'IpId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'nom', 'prenom', 'mail', 'age', 'ville', 'description', 'ipUtilisateur', 'ipId', ),
+        BasePeer::TYPE_COLNAME => array (UtilisateurPeer::ID, UtilisateurPeer::NOM, UtilisateurPeer::PRENOM, UtilisateurPeer::MAIL, UtilisateurPeer::AGE, UtilisateurPeer::VILLE, UtilisateurPeer::DESCRIPTION, UtilisateurPeer::IP_UTILISATEUR, UtilisateurPeer::IP_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NOM', 'PRENOM', 'MAIL', 'AGE', 'VILLE', 'DESCRIPTION', 'IP_UTILISATEUR', 'IP_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'nom', 'prenom', 'mail', 'age', 'ville', 'description', 'ip_utilisateur', 'ip_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -93,12 +99,12 @@ abstract class BaseUtilisateurPeer
      * e.g. UtilisateurPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Nom' => 1, 'Prenom' => 2, 'Mail' => 3, 'Age' => 4, 'Ville' => 5, 'IpId' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'nom' => 1, 'prenom' => 2, 'mail' => 3, 'age' => 4, 'ville' => 5, 'ipId' => 6, ),
-        BasePeer::TYPE_COLNAME => array (UtilisateurPeer::ID => 0, UtilisateurPeer::NOM => 1, UtilisateurPeer::PRENOM => 2, UtilisateurPeer::MAIL => 3, UtilisateurPeer::AGE => 4, UtilisateurPeer::VILLE => 5, UtilisateurPeer::IP_ID => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NOM' => 1, 'PRENOM' => 2, 'MAIL' => 3, 'AGE' => 4, 'VILLE' => 5, 'IP_ID' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'nom' => 1, 'prenom' => 2, 'mail' => 3, 'age' => 4, 'ville' => 5, 'ip_id' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Nom' => 1, 'Prenom' => 2, 'Mail' => 3, 'Age' => 4, 'Ville' => 5, 'Description' => 6, 'IpUtilisateur' => 7, 'IpId' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'nom' => 1, 'prenom' => 2, 'mail' => 3, 'age' => 4, 'ville' => 5, 'description' => 6, 'ipUtilisateur' => 7, 'ipId' => 8, ),
+        BasePeer::TYPE_COLNAME => array (UtilisateurPeer::ID => 0, UtilisateurPeer::NOM => 1, UtilisateurPeer::PRENOM => 2, UtilisateurPeer::MAIL => 3, UtilisateurPeer::AGE => 4, UtilisateurPeer::VILLE => 5, UtilisateurPeer::DESCRIPTION => 6, UtilisateurPeer::IP_UTILISATEUR => 7, UtilisateurPeer::IP_ID => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NOM' => 1, 'PRENOM' => 2, 'MAIL' => 3, 'AGE' => 4, 'VILLE' => 5, 'DESCRIPTION' => 6, 'IP_UTILISATEUR' => 7, 'IP_ID' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'nom' => 1, 'prenom' => 2, 'mail' => 3, 'age' => 4, 'ville' => 5, 'description' => 6, 'ip_utilisateur' => 7, 'ip_id' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -178,6 +184,8 @@ abstract class BaseUtilisateurPeer
             $criteria->addSelectColumn(UtilisateurPeer::MAIL);
             $criteria->addSelectColumn(UtilisateurPeer::AGE);
             $criteria->addSelectColumn(UtilisateurPeer::VILLE);
+            $criteria->addSelectColumn(UtilisateurPeer::DESCRIPTION);
+            $criteria->addSelectColumn(UtilisateurPeer::IP_UTILISATEUR);
             $criteria->addSelectColumn(UtilisateurPeer::IP_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -186,6 +194,8 @@ abstract class BaseUtilisateurPeer
             $criteria->addSelectColumn($alias . '.mail');
             $criteria->addSelectColumn($alias . '.age');
             $criteria->addSelectColumn($alias . '.ville');
+            $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.ip_utilisateur');
             $criteria->addSelectColumn($alias . '.ip_id');
         }
     }

@@ -24,13 +24,19 @@ use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateurProduit;
 /**
  * @method ProduitQuery orderById($order = Criteria::ASC) Order by the id column
  * @method ProduitQuery orderByTitre($order = Criteria::ASC) Order by the titre column
+ * @method ProduitQuery orderBySousTitre($order = Criteria::ASC) Order by the sous_titre column
  * @method ProduitQuery orderByAuteur($order = Criteria::ASC) Order by the auteur column
  * @method ProduitQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method ProduitQuery orderByImage($order = Criteria::ASC) Order by the image column
+ * @method ProduitQuery orderByLien($order = Criteria::ASC) Order by the lien column
  *
  * @method ProduitQuery groupById() Group by the id column
  * @method ProduitQuery groupByTitre() Group by the titre column
+ * @method ProduitQuery groupBySousTitre() Group by the sous_titre column
  * @method ProduitQuery groupByAuteur() Group by the auteur column
  * @method ProduitQuery groupByDescription() Group by the description column
+ * @method ProduitQuery groupByImage() Group by the image column
+ * @method ProduitQuery groupByLien() Group by the lien column
  *
  * @method ProduitQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProduitQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -60,13 +66,19 @@ use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateurProduit;
  * @method Produit findOneOrCreate(PropelPDO $con = null) Return the first Produit matching the query, or a new Produit object populated from the query conditions when no match is found
  *
  * @method Produit findOneByTitre(string $titre) Return the first Produit filtered by the titre column
+ * @method Produit findOneBySousTitre(string $sous_titre) Return the first Produit filtered by the sous_titre column
  * @method Produit findOneByAuteur(string $auteur) Return the first Produit filtered by the auteur column
  * @method Produit findOneByDescription(string $description) Return the first Produit filtered by the description column
+ * @method Produit findOneByImage(string $image) Return the first Produit filtered by the image column
+ * @method Produit findOneByLien(string $lien) Return the first Produit filtered by the lien column
  *
  * @method array findById(int $id) Return Produit objects filtered by the id column
  * @method array findByTitre(string $titre) Return Produit objects filtered by the titre column
+ * @method array findBySousTitre(string $sous_titre) Return Produit objects filtered by the sous_titre column
  * @method array findByAuteur(string $auteur) Return Produit objects filtered by the auteur column
  * @method array findByDescription(string $description) Return Produit objects filtered by the description column
+ * @method array findByImage(string $image) Return Produit objects filtered by the image column
+ * @method array findByLien(string $lien) Return Produit objects filtered by the lien column
  */
 abstract class BaseProduitQuery extends ModelCriteria
 {
@@ -172,7 +184,7 @@ abstract class BaseProduitQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `titre`, `auteur`, `description` FROM `produit` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `titre`, `sous_titre`, `auteur`, `description`, `image`, `lien` FROM `produit` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -333,6 +345,35 @@ abstract class BaseProduitQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the sous_titre column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySousTitre('fooValue');   // WHERE sous_titre = 'fooValue'
+     * $query->filterBySousTitre('%fooValue%'); // WHERE sous_titre LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $sousTitre The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProduitQuery The current query, for fluid interface
+     */
+    public function filterBySousTitre($sousTitre = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($sousTitre)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $sousTitre)) {
+                $sousTitre = str_replace('*', '%', $sousTitre);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProduitPeer::SOUS_TITRE, $sousTitre, $comparison);
+    }
+
+    /**
      * Filter the query on the auteur column
      *
      * Example usage:
@@ -388,6 +429,64 @@ abstract class BaseProduitQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProduitPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the image column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByImage('fooValue');   // WHERE image = 'fooValue'
+     * $query->filterByImage('%fooValue%'); // WHERE image LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $image The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProduitQuery The current query, for fluid interface
+     */
+    public function filterByImage($image = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($image)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $image)) {
+                $image = str_replace('*', '%', $image);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProduitPeer::IMAGE, $image, $comparison);
+    }
+
+    /**
+     * Filter the query on the lien column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLien('fooValue');   // WHERE lien = 'fooValue'
+     * $query->filterByLien('%fooValue%'); // WHERE lien LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $lien The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProduitQuery The current query, for fluid interface
+     */
+    public function filterByLien($lien = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($lien)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $lien)) {
+                $lien = str_replace('*', '%', $lien);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProduitPeer::LIEN, $lien, $comparison);
     }
 
     /**

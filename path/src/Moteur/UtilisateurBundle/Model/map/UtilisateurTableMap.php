@@ -51,6 +51,8 @@ class UtilisateurTableMap extends TableMap
         $this->getColumn('mail', false)->setPrimaryString(true);
         $this->addColumn('age', 'Age', 'INTEGER', false, null, null);
         $this->addColumn('ville', 'Ville', 'VARCHAR', false, 100, null);
+        $this->addColumn('description', 'Description', 'VARCHAR', false, 255, null);
+        $this->addColumn('ip_utilisateur', 'IpUtilisateur', 'VARCHAR', false, 12, null);
         $this->addForeignKey('ip_id', 'IpId', 'INTEGER', 'ip', 'id', false, null, null);
         // validators
     } // initialize()

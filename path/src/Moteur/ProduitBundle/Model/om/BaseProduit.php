@@ -61,6 +61,12 @@ abstract class BaseProduit extends BaseObject implements Persistent
     protected $titre;
 
     /**
+     * The value for the sous_titre field.
+     * @var        string
+     */
+    protected $sous_titre;
+
+    /**
      * The value for the auteur field.
      * @var        string
      */
@@ -71,6 +77,18 @@ abstract class BaseProduit extends BaseObject implements Persistent
      * @var        string
      */
     protected $description;
+
+    /**
+     * The value for the image field.
+     * @var        string
+     */
+    protected $image;
+
+    /**
+     * The value for the lien field.
+     * @var        string
+     */
+    protected $lien;
 
     /**
      * @var        PropelObjectCollection|ProduitMotPoids[] Collection to store aggregation of ProduitMotPoids objects.
@@ -175,6 +193,17 @@ abstract class BaseProduit extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [sous_titre] column value.
+     *
+     * @return string
+     */
+    public function getSousTitre()
+    {
+
+        return $this->sous_titre;
+    }
+
+    /**
      * Get the [auteur] column value.
      *
      * @return string
@@ -194,6 +223,28 @@ abstract class BaseProduit extends BaseObject implements Persistent
     {
 
         return $this->description;
+    }
+
+    /**
+     * Get the [image] column value.
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+
+        return $this->image;
+    }
+
+    /**
+     * Get the [lien] column value.
+     *
+     * @return string
+     */
+    public function getLien()
+    {
+
+        return $this->lien;
     }
 
     /**
@@ -239,6 +290,27 @@ abstract class BaseProduit extends BaseObject implements Persistent
     } // setTitre()
 
     /**
+     * Set the value of [sous_titre] column.
+     *
+     * @param  string $v new value
+     * @return Produit The current object (for fluent API support)
+     */
+    public function setSousTitre($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->sous_titre !== $v) {
+            $this->sous_titre = $v;
+            $this->modifiedColumns[] = ProduitPeer::SOUS_TITRE;
+        }
+
+
+        return $this;
+    } // setSousTitre()
+
+    /**
      * Set the value of [auteur] column.
      *
      * @param  string $v new value
@@ -281,6 +353,48 @@ abstract class BaseProduit extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Set the value of [image] column.
+     *
+     * @param  string $v new value
+     * @return Produit The current object (for fluent API support)
+     */
+    public function setImage($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->image !== $v) {
+            $this->image = $v;
+            $this->modifiedColumns[] = ProduitPeer::IMAGE;
+        }
+
+
+        return $this;
+    } // setImage()
+
+    /**
+     * Set the value of [lien] column.
+     *
+     * @param  string $v new value
+     * @return Produit The current object (for fluent API support)
+     */
+    public function setLien($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->lien !== $v) {
+            $this->lien = $v;
+            $this->modifiedColumns[] = ProduitPeer::LIEN;
+        }
+
+
+        return $this;
+    } // setLien()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -314,8 +428,11 @@ abstract class BaseProduit extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->titre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->auteur = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->sous_titre = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->auteur = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->image = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->lien = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -325,7 +442,7 @@ abstract class BaseProduit extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = ProduitPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = ProduitPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Produit object", $e);
@@ -638,11 +755,20 @@ abstract class BaseProduit extends BaseObject implements Persistent
         if ($this->isColumnModified(ProduitPeer::TITRE)) {
             $modifiedColumns[':p' . $index++]  = '`titre`';
         }
+        if ($this->isColumnModified(ProduitPeer::SOUS_TITRE)) {
+            $modifiedColumns[':p' . $index++]  = '`sous_titre`';
+        }
         if ($this->isColumnModified(ProduitPeer::AUTEUR)) {
             $modifiedColumns[':p' . $index++]  = '`auteur`';
         }
         if ($this->isColumnModified(ProduitPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`description`';
+        }
+        if ($this->isColumnModified(ProduitPeer::IMAGE)) {
+            $modifiedColumns[':p' . $index++]  = '`image`';
+        }
+        if ($this->isColumnModified(ProduitPeer::LIEN)) {
+            $modifiedColumns[':p' . $index++]  = '`lien`';
         }
 
         $sql = sprintf(
@@ -661,11 +787,20 @@ abstract class BaseProduit extends BaseObject implements Persistent
                     case '`titre`':
                         $stmt->bindValue($identifier, $this->titre, PDO::PARAM_STR);
                         break;
+                    case '`sous_titre`':
+                        $stmt->bindValue($identifier, $this->sous_titre, PDO::PARAM_STR);
+                        break;
                     case '`auteur`':
                         $stmt->bindValue($identifier, $this->auteur, PDO::PARAM_STR);
                         break;
                     case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`image`':
+                        $stmt->bindValue($identifier, $this->image, PDO::PARAM_STR);
+                        break;
+                    case '`lien`':
+                        $stmt->bindValue($identifier, $this->lien, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -848,10 +983,19 @@ abstract class BaseProduit extends BaseObject implements Persistent
                 return $this->getTitre();
                 break;
             case 2:
-                return $this->getAuteur();
+                return $this->getSousTitre();
                 break;
             case 3:
+                return $this->getAuteur();
+                break;
+            case 4:
                 return $this->getDescription();
+                break;
+            case 5:
+                return $this->getImage();
+                break;
+            case 6:
+                return $this->getLien();
                 break;
             default:
                 return null;
@@ -884,8 +1028,11 @@ abstract class BaseProduit extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTitre(),
-            $keys[2] => $this->getAuteur(),
-            $keys[3] => $this->getDescription(),
+            $keys[2] => $this->getSousTitre(),
+            $keys[3] => $this->getAuteur(),
+            $keys[4] => $this->getDescription(),
+            $keys[5] => $this->getImage(),
+            $keys[6] => $this->getLien(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -949,10 +1096,19 @@ abstract class BaseProduit extends BaseObject implements Persistent
                 $this->setTitre($value);
                 break;
             case 2:
-                $this->setAuteur($value);
+                $this->setSousTitre($value);
                 break;
             case 3:
+                $this->setAuteur($value);
+                break;
+            case 4:
                 $this->setDescription($value);
+                break;
+            case 5:
+                $this->setImage($value);
+                break;
+            case 6:
+                $this->setLien($value);
                 break;
         } // switch()
     }
@@ -980,8 +1136,11 @@ abstract class BaseProduit extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setTitre($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setAuteur($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
+        if (array_key_exists($keys[2], $arr)) $this->setSousTitre($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setAuteur($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setImage($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setLien($arr[$keys[6]]);
     }
 
     /**
@@ -995,8 +1154,11 @@ abstract class BaseProduit extends BaseObject implements Persistent
 
         if ($this->isColumnModified(ProduitPeer::ID)) $criteria->add(ProduitPeer::ID, $this->id);
         if ($this->isColumnModified(ProduitPeer::TITRE)) $criteria->add(ProduitPeer::TITRE, $this->titre);
+        if ($this->isColumnModified(ProduitPeer::SOUS_TITRE)) $criteria->add(ProduitPeer::SOUS_TITRE, $this->sous_titre);
         if ($this->isColumnModified(ProduitPeer::AUTEUR)) $criteria->add(ProduitPeer::AUTEUR, $this->auteur);
         if ($this->isColumnModified(ProduitPeer::DESCRIPTION)) $criteria->add(ProduitPeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(ProduitPeer::IMAGE)) $criteria->add(ProduitPeer::IMAGE, $this->image);
+        if ($this->isColumnModified(ProduitPeer::LIEN)) $criteria->add(ProduitPeer::LIEN, $this->lien);
 
         return $criteria;
     }
@@ -1061,8 +1223,11 @@ abstract class BaseProduit extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setTitre($this->getTitre());
+        $copyObj->setSousTitre($this->getSousTitre());
         $copyObj->setAuteur($this->getAuteur());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setImage($this->getImage());
+        $copyObj->setLien($this->getLien());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2476,8 +2641,11 @@ abstract class BaseProduit extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->titre = null;
+        $this->sous_titre = null;
         $this->auteur = null;
         $this->description = null;
+        $this->image = null;
+        $this->lien = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
