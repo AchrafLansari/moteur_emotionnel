@@ -19,10 +19,6 @@ set_time_limit(10000);
 
 class DefaultController extends Controller
 {
-    public function indexAction()
-    {
-        return $this->render('MoteurProduitBundle:Default:index.html.twig', array('name' => "produit"));
-    }
     
     /**
      * @Route("/ajouter")

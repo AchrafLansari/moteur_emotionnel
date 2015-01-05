@@ -17,48 +17,7 @@ use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateurQuery;
 
 class DefaultController extends Controller
 {    
-    /**
-     * @Route("/recherche/{requete}")
-     */
-    public function rechercheAction($requete)
-    {
-    	$mots;
-    	$tok = strtok($requete, "+");
-    	while($tok !== false){
-    		$mots[] = $tok;
-    		$tok = strtok("+");
-    	}
-    	
-    	
-    	/*
-    	 * A CHANGER POUR METTRE L'UTILISATEUR CONNECTE
-    	 */
-    	$utilisateur = UtilisateurQuery::create()->findOne();
-    	
-    	
-    	//Sauvegarde de la requete dans la base de donnée
-    	$idMotsRequete = array();
-    	$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne()->getRequeteId();    	
-    	
-    	foreach ($mots as $mot){
-    		$m_Req = MotQuery::create()
-    							->filterByMot($mot)
-    							->findOne();
-    							
-    		if(!$m_Req){
-    			$m_Req = new Mot();
-    			$m_Req->setMot($mot)->save();
-    		}
-    		$ajoutRequete = new Requete();
-    		$ajoutRequete->setUtilisateur($utilisateur);
-    		$ajoutRequete->setRequeteId($requete_id + 1);
-    		$ajoutRequete->setMotId($m_Req->getId());
-    		$ajoutRequete->save();
-    	}
-    	
-    	$score = new ProfilScoreRequeteUtilisateurProduit();
-    	//TO DO mais pas prioritaire
-    }
+    
     
     public function utilisateurAction($id_utilisateur){
     	$t = microtime(true);
