@@ -102,10 +102,11 @@ class DefaultController extends Controller
                       
           } 
           $tab_recommandation = recommandation_description($data," je suis développeur Java,PHP, mysql");
-          $reconnamdation_books = recommandations_articles($tab_recommandation);
+          $recommandation_books = recommandations_articles($tab_recommandation);
           $flag = false;
            
         }else {
+         $recommandation_books = null;
          if($request->getMethod() == 'POST')
         {        
         
@@ -141,6 +142,7 @@ class DefaultController extends Controller
         $utilisateur->save();
         
         
+        
         unset($_POST);
         
         $cookie = new Cookie('cookie', 'utilisateur',time() + 3600 * 24 * 7);
@@ -154,7 +156,7 @@ class DefaultController extends Controller
         
         //return $this->render('UserBundle:User:index.html.twig');
         return $this->render('UserBundle:User:index.html.twig',array('nb_books' => $books,
-                     'books' => $parsed_json['Books'],'flag'=>$flag,'recommandation_book'=>$reconnamdation_books));
+                     'books' => $parsed_json['Books'],'flag'=>$flag,'recommandation_book'=>$recommandation_books));
     }
     /**
      * @Route("/show/{id}", name="_user_show")
