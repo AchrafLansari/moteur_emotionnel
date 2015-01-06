@@ -127,4 +127,49 @@ class BasicController extends Controller
     	//Affiche le produit dans la vue adaptée
     	return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
     }
+    
+    public function genererAction(){
+        
+    	
+    	$form = $form = $this->createFormBuilder($task)
+            ->add('requete', 'text')
+            ->add('nombre', 'int')
+            ->add('Generer', 'submit')
+            ->getForm();
+    	 
+    	$request = $this->getRequest();		//Recupère l'état de la requête
+    	 
+    	//Si on accède à ce controleur via une requête POST alors c'est que l'on a soumis le formulaire
+    	if('POST' == $request->getMethod()){
+    	
+    		//On récupère le formulaire envoyé
+    		$form->handleRequest($request);
+    	
+    		//S'il est valide alors on l'enregistre
+    		if ($form->isValid()){
+    			/**
+    			 *			SAUVEGARDE DU PRODUIT
+    			 */
+                             
+                        $url = "http://it-ebooks-api.info/v1/search/";
+                        $json = file_get_contents($url.$_POST['requete']);
+                        $parsed_json = json_decode($json,true);
+                        
+                        for($i =0; $i <count($_POST['nombre']);$i++){
+                            $produit = new Produit();
+                            $produit->setId($parsed_json['Books'][$i]['ID']);
+                            $produit->save();
+                            $this->indexDocument($produit);
+                        } 
+    			
+    			
+    			
+    			
+    			//on affiche la vue adaptée
+    		}
+    	}
+    	//on renvoie vers la vue du formulaire de création de l'utilisateur
+    	return $this->render('MoteurProduitBundle:Default:generer.html.twig', array('form' => $form->createView()));
+    }
+    
 }
