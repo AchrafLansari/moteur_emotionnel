@@ -136,6 +136,31 @@ class BasicController extends Controller
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
 				'books' => $parsed_json['Books'],'flag'=>$flag,'recommandation_book'=>$recommandation_books));
 	}
+        
+    
+    public function bookAction($id)
+    {
+     $path = "http://it-ebooks-api.info/v1/book/".$id;
+        
+        
+     $json = file_get_contents($path);
+     $parsed_json = json_decode($json,true);
+     
+    
+
+    if ($parsed_json["Error"]!="0") {
+        throw $this->createNotFoundException('No book found for id '.$id);
+    }
+  
+    // faites quelque chose, comme passer l'objet $product Ã  un template
+    return $this->render('UserBundle:User:book.html.twig',array(
+                     'book' => $parsed_json));
+    }
+    
+    
+    
+    
+    
 	
 	
     /**
@@ -203,43 +228,43 @@ class BasicController extends Controller
     }
     
     /**
-     * Affiche une liste recommendant des produits à l'utilisateur en fonction de leurs scores
-     * @param unknown $page la page à afficher
-     * @param unknown $nombre le nombre de produits à afficher par page
+     * Affiche une liste recommendant des produits ï¿½ l'utilisateur en fonction de leurs scores
+     * @param unknown $page la page ï¿½ afficher
+     * @param unknown $nombre le nombre de produits ï¿½ afficher par page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listeAction($page, $nombre){
-    	//Un objet requête de Symfony avec les variables globales
+    	//Un objet requï¿½te de Symfony avec les variables globales
     	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
     	
     	//Variable stockant la liste des produits correspondants
     	$resultat = array();
     	
-    	//Si l'utilisateur est identifié par un cookie de nom "utilisateur_id" alors on peut récupérer la liste
+    	//Si l'utilisateur est identifiï¿½ par un cookie de nom "utilisateur_id" alors on peut rï¿½cupï¿½rer la liste
     	if($request->cookies->has('utilisateur_id'))
     	{
-    		//l'id de l'utilisateur connecté
+    		//l'id de l'utilisateur connectï¿½
 	    	$id = $request->cookies->get('utilisateur_id');
 	    		
-	    	//la requête SQL faisant appel à la procédure stockée charger de classer les produits par score avec l'utilisateur connecté
+	    	//la requï¿½te SQL faisant appel ï¿½ la procï¿½dure stockï¿½e charger de classer les produits par score avec l'utilisateur connectï¿½
 	    	$sql = "CALL recommander_produits(?,?,?)";
 	    	
-	    	//pour la pagination : renvoie à partir du $debut-ième élément dont le score correspond
+	    	//pour la pagination : renvoie ï¿½ partir du $debut-iï¿½me ï¿½lï¿½ment dont le score correspond
 	    	$debut = ($page-1)*$nombre;
 	    	
-	    	$connexion = \Propel::getConnection();				//permet de se connecter à la base de donnée
-	    	$statement = $connexion->prepare($sql);				//prépare la requête
+	    	$connexion = \Propel::getConnection();				//permet de se connecter ï¿½ la base de donnï¿½e
+	    	$statement = $connexion->prepare($sql);				//prï¿½pare la requï¿½te
 	    	$statement->bindParam(1, $id, \PDO::PARAM_INT);		//lie le 1er parametre avec l'id de l'utilisateur
-	    	$statement->bindParam(2, $debut, \PDO::PARAM_INT);	//lie le 2eme parametre avec le debut-ième élément
-	    	$statement->bindParam(3, $nombre, \PDO::PARAM_INT);	//lie le 3eme parametre avec le nombre d'éléments à retourner
+	    	$statement->bindParam(2, $debut, \PDO::PARAM_INT);	//lie le 2eme parametre avec le debut-iï¿½me ï¿½lï¿½ment
+	    	$statement->bindParam(3, $nombre, \PDO::PARAM_INT);	//lie le 3eme parametre avec le nombre d'ï¿½lï¿½ments ï¿½ retourner
 	    	 
-	    	$statement->execute();	//exécute la requête
+	    	$statement->execute();	//exï¿½cute la requï¿½te
 
-	    	//Les résultats comprennent les champs suivants : "produit_id", "score", "titre", "auteur"
-	    	$resultat = $statement->fetchAll(); //récupère l'ensemble des résultats
+	    	//Les rï¿½sultats comprennent les champs suivants : "produit_id", "score", "titre", "auteur"
+	    	$resultat = $statement->fetchAll(); //rï¿½cupï¿½re l'ensemble des rï¿½sultats
     	}
     	
-    	//renvoie les résultats dans la vue adaptée
+    	//renvoie les rï¿½sultats dans la vue adaptï¿½e
     	return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('resultats' => $resultat, 'page' => $page, 'nombre' => $nombre));
     }
     

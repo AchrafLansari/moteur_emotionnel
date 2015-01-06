@@ -12,4 +12,9 @@ moteur_recommendation_recherche_liste:
     defaults: { _controller: MoteurRecommendationBundle:Basic:rechercher }
 user_homepage:
     path:     /user
-    defaults: { _controller: MoteurRecommendationBundle:Basic:index }
+    defaults: { _controller: MoteurRecommendationBundle:Basic:index }  
+book_page :
+    path:     /book/{id}
+    defaults: { _controller: MoteurRecommendationBundle:Basic:book }
+    
+
