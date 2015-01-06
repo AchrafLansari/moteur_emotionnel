@@ -39,14 +39,14 @@ class IndexationProduit{
                 $this->image = $image;
                 $this->lien = $lien;
 		
-		$this->setListeMotsVides();
+		//$this->setListeMotsVides();
 		
-		$separateurs = " \n\t\r,ï¿½;.ï¿½ï¿½'\"()!?-";
+		$separateurs = " \n\t\r,«;.»’'\"()!?+:-/&$0123456789*~#{}[]|`_@%µ¤£§<>=°²";
 
 		$this->indexTitre = $this->fractionner_chaine($this->titre, $separateurs);
 		$this->indexTitre = $this->supprimerPetitsSegments($this->indexTitre, 4);
 		sort($this->indexTitre);
-		$this->indexTitre = $this->supprimerMotsVide($this->indexTitre);
+		//$this->indexTitre = $this->supprimerMotsVide($this->indexTitre);
 		$this->indexTitre = array_map("strtolower", $this->indexTitre);
 		$this->indexPoidsTitre = array_count_values($this->indexTitre);
 		//$this->indexPoidsTitre = $this->lemmatisation($this->indexPoidsTitre);
@@ -54,7 +54,7 @@ class IndexationProduit{
 		$this->indexAuteur = $this->fractionner_chaine($this->auteur, $separateurs);
 		$this->indexAuteur = $this->supprimerPetitsSegments($this->indexAuteur, 4);
 		sort($this->indexAuteur);
-		$this->indexAuteur = $this->supprimerMotsVide($this->indexAuteur);
+		//$this->indexAuteur = $this->supprimerMotsVide($this->indexAuteur);
 		$this->indexAuteur = array_map("strtolower", $this->indexAuteur);
 		$this->indexPoidsAuteur = array_count_values($this->indexAuteur);
 		//$this->indexPoidsAuteur = $this->lemmatisation($this->indexPoidsAuteur);
@@ -62,7 +62,7 @@ class IndexationProduit{
 		$this->indexDescription = $this->fractionner_chaine($this->description, $separateurs);
 		$this->indexDescription = $this->supprimerPetitsSegments($this->indexDescription, 4);
 		sort($this->indexDescription);
-		$this->indexDescription = $this->supprimerMotsVide($this->indexDescription);
+		//$this->indexDescription = $this->supprimerMotsVide($this->indexDescription);
 		$this->indexDescription = array_map("strtolower", $this->indexDescription);
 		$this->indexPoidsDescription = array_count_values($this->indexDescription);
 		//$this->indexPoidsDescription = $this->lemmatisation($this->indexPoidsDescription);

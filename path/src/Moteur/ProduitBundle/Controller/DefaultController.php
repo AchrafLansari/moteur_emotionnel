@@ -46,7 +46,7 @@ class DefaultController extends Controller
     			/**
     			 * 			INDEXATION DES MOTS DU PRODUIT
     			 */
-    			
+    			$this->indexDocument($produit);
     			
     			
     			//on affiche la vue adaptée
@@ -84,42 +84,38 @@ class DefaultController extends Controller
     	$utilisateurProduit->save();
     }
         
-    private function indexDocument($titre, $auteur, $description, $soustitre, $image, $lien){
+    private function indexDocument($produit){
     	$kernel = $this->get('kernel');
     	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
-    	if(!ProduitQuery::create()->filterByTitre($titre)->findOne()){	
-	    	$indexation = new IndexationProduit($titre, $auteur, $description, $path,$soustitre,$image,$lien);
+        $indexation = new IndexationProduit($produit->getTitre(),
+	    			$produit->getAuteur(),
+	    			$produit->getDescription(),
+	    			"",
+	    			$produit->getSousTitre(),
+	    			$produit->getImage(),
+	    			$produit->getLien()
+	    			);
 	    	
-	    	$produit = new Produit();
-	    	$produit->setTitre($titre);
-	    	$produit->setAuteur($auteur);
-	    	$produit->setDescription($description);
-                $produit->setSousTitre($soustitre);
-                $produit->setImage($image);
-                $produit->setLien($lien);
+    	$con = Propel::getConnection(ProduitMotPoidsPeer::DATABASE_NAME);
+    	$con->beginTransaction();
 	    	
-	    	
-	    	$con = Propel::getConnection(ProduitMotPoidsPeer::DATABASE_NAME);
-	    	$con->beginTransaction();
-	    	
-	    	foreach ($indexation->indexMotPoids as $mot => $poids){
-	    		$produit_mot = new ProduitMotPoids();
-	    		$produit_mot->setProduit($produit);
-	    	
-	    		$m = MotQuery::create()->findOneByMot($mot);
-	    		if($m){
-	    			$produit_mot->setMotId($m->getId());
-	    		}
-	    		else {
-	    			$m = new Mot();
-	    			$m->setMot($mot);
-	    			$produit_mot->setMot($m);
-	    		}
-	    		$produit_mot->setPoids($poids);
-	    		$produit_mot->save();
-	    	}
-	    	
-	    	$con->commit();
+    	foreach ($indexation->indexMotPoids as $mot => $poids){
+    		$produit_mot = new ProduitMotPoids();
+    		$produit_mot->setProduit($produit);
+    	
+    		$m = MotQuery::create()->findOneByMot($mot);
+    		if($m){
+    			$produit_mot->setMotId($m->getId());
+    		}
+    		else {
+    			$m = new Mot();
+    			$m->setMot($mot);
+    			$produit_mot->setMot($m);
+    		}
+    		$produit_mot->setPoids($poids);
+    		$produit_mot->save();
     	}
+    	
+    	$con->commit();
     }
 }
