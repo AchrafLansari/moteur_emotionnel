@@ -43,14 +43,14 @@
             </a>
             <div class="media-body">
               <h4 class="media-heading">{{ book['Title']|e }}</h4>
-              {{ book['SubTitle']|e }}
+              {% if book['SubTitle'] is defined %} {{ book['SubTitle']|e }} {% endif %} 
             </div>
              {% endfor %} 
           </div>
           
       {% endif %}
       
-      {% if flag == true  %}
+      {% if flag == false  %}
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

@@ -102,8 +102,7 @@ class DefaultController extends Controller
             recommandation_description($data,$user->getDescription());
                       
           } 
-          $tab_recommandation = recommandation_description($data," je suis développeur Java,PHP, mysql");
-          $recommandation_books = recommandations_articles($tab_recommandation);
+         
           $flag = false;
            
         }else {

@@ -19,8 +19,8 @@ Haskell
 F#
 Scheme
 PHP MYSQL
-PHP
-SQL
+Php
+Sql
 NodeJS
 Photoshop
 Illustrator
@@ -28,17 +28,24 @@ Javascript
 Scala
 HTML5
 HTML
+Html
 CSS
+Css
 XML
+Xml
 Swing
 J2EE
 Spring
 Hibernate
 SVG
+Svg
 JSON
+Json
 Groovy
 ASP
+Asm
 AJAX
+Ajax
 Jquery
 Zend 
 Silex

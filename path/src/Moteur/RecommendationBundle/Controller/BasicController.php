@@ -48,7 +48,7 @@ class BasicController extends Controller
 			$parsed_json = json_decode($json,true);
 	
 		}
-		//echo $parsed_json['Total']/10;
+		
 	
 		$books = count($parsed_json['Books']);
 	
@@ -70,9 +70,10 @@ class BasicController extends Controller
 				$user = UtilisateurQuery::create()
 				->filterById($session->get('id'))
 				->findOne();
-	
 				$recommandation_books = recommandations_articles(recommandation_description($data,$user->getDescription()));
-			}
+                                
+                                
+                        }
 			$flag = false;
 			 
 		}else {
