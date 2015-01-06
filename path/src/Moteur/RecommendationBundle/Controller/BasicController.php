@@ -126,10 +126,11 @@ class BasicController extends Controller
 				$cookie = new Cookie('cookie', 'utilisateur',time() + 3600 * 24 * 7);
 				$response->headers->setCookie($cookie);
 				$response->send();
-	
-	
+
+				
 			}
 			$flag=true;
+				
 		}
 	
 		//return $this->render('UserBundle:User:index.html.twig');
