@@ -30,7 +30,7 @@ class IndexationProduit{
 	private $cheminDictionnaireLemmes = 'dictionnaire_lemme_fr.csv';
 	
 	public function __construct($titre, $auteur, $description, $path,$soustitre,$image,$lien){
-		$this->titre = $titre;
+		$this->titre = $titre." ".$soustitre;
 		$this->auteur = $auteur;
 		$this->description = $description;
 		$this->cheminMotsVide = $path . $this->cheminMotsVide;

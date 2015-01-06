@@ -65,16 +65,54 @@ class DefaultController extends Controller
     	$mots = MotQuery::create()->limit(500)->find();
     	
     	//On génère les utilisateurs
-    	for($i=0; $i<10; $i++){		//Permet de générer 10 utilisateurs
-	    	
+    	for($u=0; $u<10; $u++){		//Permet de générer 10 utilisateurs
+    		
+    		
+    		
     		//On crée une adresse IP et on récupère les informations sur celle-ci
-    		do{
+    		//do{
 	    		$geo = new GeoIp();
 	    		//génère une IP aléatoire afin d'éviter d'enregistrer seulement des IP correspondant au localhost
 	    		$geo->setIpadress(rand(0,255).".".rand(0,255).".".rand(0,255).".".rand(0,255));
-	    		$geo->geoCheckIP();
-	    	}
-	    	while ($geo->pays == null);
+	    	//	$geo->geoCheckIP();
+	    	//}
+	    	//while ($geo->pays == null);
+	    	
+	    	//Liste des géolocalisations possibles
+	    	$geolocalisation = array(
+	    		array('pays' => 'France',
+	    				array('region' => 'Ile-de-france',
+	    						array('Paris', 'Saint-Denis', 'Montreuil')
+	    				),
+	    				array('region' => 'Rhone-Alpes',
+	    						array('Lyon', 'Saint-Etienne', 'Grenoble')
+	    				)
+	    		),
+	    		array('pays' => 'Etats-Unis',
+	    				array('region' => 'New-York',
+	    						array('Manhattan', 'Bronx', 'Brooklyn')
+	    				),
+	    				array('region' => 'Californie',
+	    						array('Los Angeles', 'San Diego', 'San Jose')
+	    				)
+	    		),
+	    		array('pays' => 'Allemagne',
+	    				array('region' => 'Bavière',
+	    						array('Munich', 'Augsbourg', 'Nuremberg')
+	    				),
+	    				array('region' => 'Saxe',
+	    						array('Dresde', 'Leipzig', 'Chemnitz')
+	    				)
+	    		)	
+	    	);
+
+	    	//On détermine une géolocalisation aléatoirement parmi la liste des géolocalisations possible
+	    	$pays_geo = $geolocalisation[rand(0,2)];
+	    	$region_geo = $pays_geo[rand(0,1)];
+	    	$ville_geo = $region_geo[0][rand(0,2)];
+	    	$geo->pays = $pays_geo['pays'];
+	    	$geo->departement = $region_geo['region'];
+	    	$geo->ville = $ville_geo;
 	    	
 	    	//On crée un objet contenant les informations sur l'adresse ip
 	    	$ip = new Ip();

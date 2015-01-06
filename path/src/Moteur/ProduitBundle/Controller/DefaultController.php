@@ -14,6 +14,7 @@ use Moteur\ProduitBundle\Model\UtilisateurProduit;
 use Moteur\ProduitBundle\Model\ProduitQuery;
 use Moteur\ProduitBundle\Model\ProduitMotPoidsPeer;
 use Propel;
+use Moteur\ProduitBundle\Form\Type\ProduitType;
 
 set_time_limit(10000);
 
@@ -24,7 +25,35 @@ class DefaultController extends Controller
      * @Route("/ajouter")
      */
     public function addAction(){
+    	$produit = new Produit();	//Le nouvel utilisateur
+    	$form = $this->createForm(new ProduitType(), $produit);	//Le formulaire associé
+    	 
+    	$request = $this->getRequest();		//Recupère l'état de la requête
+    	 
+    	//Si on accède à ce controleur via une requête POST alors c'est que l'on a soumis le formulaire
+    	if('POST' == $request->getMethod()){
     	
+    		//On récupère le formulaire envoyé
+    		$form->handleRequest($request);
+    	
+    		//S'il est valide alors on l'enregistre
+    		if ($form->isValid()){
+    			/**
+    			 *			SAUVEGARDE DU PRODUIT
+    			 */
+    			$produit->save();
+    				
+    			/**
+    			 * 			INDEXATION DES MOTS DU PRODUIT
+    			 */
+    			
+    			
+    			
+    			//on affiche la vue adaptée
+    		}
+    	}
+    	//on renvoie vers la vue du formulaire de création de l'utilisateur
+    	return $this->render('MoteurProduitBundle:Default:add.html.twig', array('form' => $form->createView()));
     }
     
     
@@ -55,7 +84,7 @@ class DefaultController extends Controller
     	$utilisateurProduit->save();
     }
         
-    private function indexDocument($titre, $auteur, $description,$soustitre,$image,$lien){
+    private function indexDocument($titre, $auteur, $description, $soustitre, $image, $lien){
     	$kernel = $this->get('kernel');
     	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
     	if(!ProduitQuery::create()->filterByTitre($titre)->findOne()){	

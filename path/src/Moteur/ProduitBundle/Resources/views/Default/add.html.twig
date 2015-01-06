@@ -1,0 +1,12 @@
+{% extends "::moteur.html.twig" %}
+
+{% block body %}
+<div class="span9">
+	<h1>Ajouter un produit</h1>
+	
+	<form action="{{ path('moteur_produit_ajout') }}" method="post" {{ form_enctype(form) }}>
+	    {{ form_widget(form) }}
+	    <input type="submit" />
+	</form>
+</div>
+{% endblock %}
