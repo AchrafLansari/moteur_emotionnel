@@ -60,45 +60,71 @@ class BasicController extends Controller
         //return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
         
         return $this->render('UserBundle:User:book.html.twig',array('book' => $parsed_json));
-        
         }
     
+    /**
+     * Permet de spécifier que l'utilisateur a téléchargé un produit
+     * L'interaction entre l'utilisateur et le produit permet d'affiner son score avec ce produit
+     * @param unknown $id_produit
+     * @param unknown $id_utilisateur
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function telechargerAction($id_produit, $id_utilisateur){
+    	
+    	//Trouve l'enregistrement qui stocke les interactions (nombres de visites, a téléchargé, note) entre un utilisateur et un produit
     	$utilisateurProduit = UtilisateurProduitQuery::create()
     	->filterByUtilisateurId($id_utilisateur)
     	->filterByProduitId($id_produit)
     	->findOne();
     	 
+    	//Si l'enregistrement n'existe pas alors on en crée un
     	if(!$utilisateurProduit){
     		$utilisateurProduit = new UtilisateurProduit();
     		$utilisateurProduit->setProduitId($id_produit)
     		->setUtilisateurId($id_utilisateur);
     	}
+    	
+    	//On sauvegarde en base de donnée que l'utilisateur a téléchargé le produit
     	if(!$utilisateurProduit->getAchat()){
-    		$utilisateurProduit->setAchat(true)->save();
+    		$utilisateurProduit->setAchat(true)->save(); // TRUE car le produit a été téléchargé
     	}
     	
+    	//On récupère les informations du produit mises à jour
     	$produit = $utilisateurProduit->getProduit();
     	
+    	//On affiche les informations sur le produit
     	return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
     }
 
+    /**
+     * Permet à un utilisateur de noter un produit qu'il a déjà téléchargé
+     * @param unknown $id_produit
+     * @param unknown $id_utilisateur
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function noteAction($id_produit, $id_utilisateur){
     	$request = $this->get('request');
     	
+    	//Vérifie que l'utilisateur essaye de noter le produit via une requête de type POST
     	if ($request->isMethod('POST')) {
+    		
+    		//Vérifie que l'utilisateur essaye de noter un produit qu'il a déjà téléchargé (acheté)
 	    	$utilisateurProduit = UtilisateurProduitQuery::create()
 	    	->filterByUtilisateurId($id_utilisateur)
 	    	->filterByProduitId($id_produit)
-	    	->filterByAchat(true) //Il faut avoir acheté le produit pour pouvoir le noter
+	    	->filterByAchat(true) 		//Il faut avoir téléchargé/acheté le produit pour pouvoir le noter
 	    	->findOne();
+	    	
+	    	//Si la précédente requête a réussi alors on peut ajouter la note de l'utilisateur pour le produit
 	    	if($utilisateurProduit){
 	    		$utilisateurProduit->setNote($_POST['note'])->save();
 	    	}
     	}
     	
+    	//On récupère les informations du produit mises à jour
     	$produit = $utilisateurProduit->getProduit();
-    	 
+    	
+    	//Affiche le produit dans la vue adaptée
     	return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
     }
 }

@@ -25,9 +25,15 @@ use Moteur\UtilisateurBundle\Form\Type\InteretType;
 
 class InteretController extends Controller
 {   
-    //FONCTIONNE
+    /**
+     * Renvoie la liste des centres d'intérêts existants
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function listerAction(){
+    	//Recherche la liste des centres d'intérêts classés par ordre alphabétique
     	$interets = InteretQuery::create()->orderByNom(\Criteria::ASC)->find();
+    	
+    	//Retourne la liste dans la vue adaptée
     	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste_interet.html.twig', array('interets' => $interets));
     }
 }

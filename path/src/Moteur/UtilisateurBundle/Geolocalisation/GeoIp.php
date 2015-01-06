@@ -25,19 +25,17 @@ class GeoIp{
 			$this->ipaddress = getenv('REMOTE_ADDR');
 		else
 			$this->ipaddress = 'UNKNOWN';
-		
-		$this->ipadress='83.112.204.116';
-		$r_1 = rand(0, 255);
-		$r_2 = rand(0, 255);
-		$r_3 = rand(0, 255);
-		$r_4 = rand(0, 255);
-		
-		$this->ipadress = $r_1.".".$r_2.".".$r_3.".".$r_4;
-		
-		$this->geoCheckIP();
 	}
 	
-	private function geoCheckIP()
+	public function setIpadress($ip){
+		$this->ipadress = $ip;
+	}
+	
+	public function getIpadress(){
+		return $this->ipadress;
+	}
+	
+	public function geoCheckIP()
 	{
 		if(!filter_var($this->ipadress, FILTER_VALIDATE_IP))
 		{
@@ -65,5 +63,10 @@ class GeoIp{
 		$this->ville = preg_match($patterns["town"],$response,$value) && !empty($value[1]) ?
 						$value[1] :
 						null;
+		
+		//On renvoi vrai seulement si on a réussit à correctement géolocaliser l'utilisateur
+		if($this->pays!=null && $this->departement!=null && $this->ville!=null)
+			return true;
+		return false;
 	}
 }

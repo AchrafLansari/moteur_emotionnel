@@ -21,8 +21,8 @@ class IndexationMot{
 		$this->indexRequete = $this->fractionner_chaine($this->requete, $separateurs);
 		$this->indexRequete = $this->supprimerPetitsSegments($this->indexRequete, 4);
 		sort($this->indexRequete);
-		$this->indexRequete = $this->supprimerMotsVide($this->indexRequete);
 		$this->indexRequete = array_map("strtolower", $this->indexRequete);
+		$this->indexRequete = $this->supprimerMotsVide($this->indexRequete);
 	}
 	
 	/**
