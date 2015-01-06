@@ -154,7 +154,7 @@ class BasicController extends Controller
     }
   
     // faites quelque chose, comme passer l'objet $product à un template
-    return $this->render('UserBundle:User:book.html.twig',array(
+    return $this->render('MoteurRecommendationBundle:User:book.html.twig',array(
                      'book' => $parsed_json));
     }
     

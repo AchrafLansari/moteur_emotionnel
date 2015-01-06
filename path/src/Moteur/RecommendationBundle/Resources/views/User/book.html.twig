@@ -15,7 +15,7 @@
         <div class="notation_telechargement">
         <a style="float:right;" href="{{ book['Download'] }}" target="_blank">  <img id="download" src="{{ asset('bundles/user/images/download.png') }}" alt="Telecharger"  /> </a>
         <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
-        <div style="float:left;" class="basic" data-average="2" data-id="1"></div>
+        <div style="float:left;" class="basic" id="notation" data-average="2" data-id="1"></div>
         </div>
         
 
@@ -36,11 +36,12 @@
     <script type="text/javascript">
 $(document).ready(function(){
      var score = 0;
- 
- 
+       
+       $("#notation").css("display","none");
+       
        $("#download").click(function(){
             score = 6;
-            //alert(score);
+            $("#notation").css('display','block');
        });
  
       // get the clicked rate !
