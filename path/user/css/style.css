@@ -1,0 +1,16 @@
+.icon-search {
+  background-position: -48px 0;
+}
+.search {
+    left: 297px;
+    position: absolute;
+    top: 6px;
+    width: 5%;
+}
+.notation_telechargement {
+    position : absolute;
+    width : 650px;
+    heigth: auto;
+    margin-left: 240px;
+    margin-top: 50px;
+}
