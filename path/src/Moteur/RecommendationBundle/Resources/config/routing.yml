@@ -10,3 +10,6 @@ moteur_recommendation_utilisateur:
 moteur_recommendation_recherche_liste:
     path:     /recherche/
     defaults: { _controller: MoteurRecommendationBundle:Basic:rechercher }
+user_homepage:
+    path:     /user
+    defaults: { _controller: MoteurRecommendationBundle:Basic:index }

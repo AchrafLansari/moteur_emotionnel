@@ -1,0 +1,120 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+   
+    <div class="container">
+
+      
+      <div id="this-carousel-id" class="carousel slide">
+        <div class="carousel-inner">
+            
+                    
+            
+                    {% for book in books %}
+            {% if loop.first %}
+                <div class="item active">
+            {% else %}
+                 <div class="item">
+            {% endif %}
+                         <a href="/book/{{ book['ID'] }}">  <img src="{{ book['Image'] }}" alt="{{ book['ID'] }}" style =" display: block; margin-left: auto;margin-right: auto;" />
+            </a>
+            <div class="carousel-caption">
+              <p>{{ book['Title']|e }}</p>
+              <p><a href="">{% if book['SubTitle'] is defined %} {{ book['SubTitle']|e }} {% endif %}</a></p>
+            </div>
+          </div>
+                    {% endfor %}
+          
+        </div><!-- .carousel-inner -->
+        <!--  next and previous controls here
+              href values must reference the id for this carousel -->
+          <a class="carousel-control left" href="#this-carousel-id" data-slide="prev">‹</a>
+          <a class="carousel-control right" href="#this-carousel-id" data-slide="next">›</a>
+      </div><!-- .carousel -->
+      <!-- end carousel -->
+      
+      {% if recommandation_book != null %}
+          
+          <h3> Ses Articles Pourrait Vous Interesser : </h3>
+          <div class="media">
+              {% for book in recommandation_book %}
+            <a class="media-left media-middle" href="/book/{{book['ID']}}">
+              <img src="{{ book['Image'] }}" alt="{{ book['ID'] }}">
+            </a>
+            <div class="media-body">
+              <h4 class="media-heading">{{ book['Title']|e }}</h4>
+              {{ book['SubTitle']|e }}
+            </div>
+             {% endfor %} 
+          </div>
+          
+      {% endif %}
+      
+      {% if flag == true  %}
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title" id="exampleModalLabel">Identification </h4>
+      </div>
+      <div class="modal-body">
+        <form action="{{ path('user_homepage') }}" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="nom" class="control-label">Nom :</label>
+            <input name="nom" type="text" class="form-control" id="recipient-name" placeholder="Entrez votre nom" required>
+          </div>
+          <div class="form-group">
+            <label for="prenom" class="control-label">Prenom:</label>
+            <input name="prenom" type="text" class="form-control" id="recipient-name" placeholder="Entrez votre prenom" required>
+          </div>
+          <div class="form-group">
+            <label for="age" class="control-label">Age :</label>
+            <input name="age" type="number" class="form-control" id="recipient-name" required>
+          </div>
+          <div class="form-group">
+            <label for="ville" class="control-label">Ville :</label>
+            <input name="ville" type="text" class="form-control" id="recipient-name"  placeholder="Entrez votre ville">
+          </div>
+          <div class="form-group">
+            <label for="description" class="control-label">Description :</label>
+            <textarea name="description" class="form-control" id="message-text" placeholder="Entrez votre description" ></textarea>
+          </div>
+           
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-primary">Valider</button>
+          
+        </form>
+      
+       </div>
+      
+    </div>
+  </div>
+</div>
+     {% endif %}
+      <div id="footer_cookies" style="display: none"> En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de nos cookies afin de vous offrir une meilleure utilisation de ce site Internet.</div>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
+    <script src="{{ asset('bundles/user/js/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/user/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('bundles/user/js/gestion.js') }}"></script>
+    <script>
+      $(document).ready(function(){
+        $('.carousel').carousel({
+          interval: 4000
+        });
+       {% if flag == true  %}
+       $('#myModal').modal({
+            keyboard: false,
+            hide: false,
+            backdrop : 'static'
+        });
+       {% endif %}
+      });
+    </script>
+
+   
+{% endblock %}
