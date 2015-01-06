@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="moteur_emotionnel" namespace="Acme\UserBundle\Model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<database name="symfony" namespace="Acme\UserBundle\Model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd" defaultIdMethod="native">
     <table name="utilisateur">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
