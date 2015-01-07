@@ -59,7 +59,7 @@ class BasicController extends Controller
     	
         //return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
         
-        return $this->render('UserBundle:User:book.html.twig',array('book' => $parsed_json));
+        return $this->render('MoteurRecommendationBundle:User:book.html.twig',array('book' => $parsed_json));
         }
     
     /**
@@ -98,12 +98,21 @@ class BasicController extends Controller
 
     /**
      * Permet à un utilisateur de noter un produit qu'il a déjà téléchargé
-     * @param unknown $id_produit
-     * @param unknown $id_utilisateur
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function noteAction($id_produit, $id_utilisateur){
+    public function noteAction($id_produit){
     	$request = $this->get('request');
+    	
+    	/**
+    	 * @todo
+    	 * Récupérer l'id de l'utilisateur dans les cookies s'il est connecté
+    	 * 
+    	 */
+    	$id_utilisateur = 1;
+    	
+    	/**
+    	 * @todo l'utilisateur ne peut noter le produit que s'il est connecté
+    	 */
     	
     	//Vérifie que l'utilisateur essaye de noter le produit via une requête de type POST
     	if ($request->isMethod('POST')) {
@@ -119,12 +128,16 @@ class BasicController extends Controller
 	    	if($utilisateurProduit){
 	    		$utilisateurProduit->setNote($_POST['note'])->save();
 	    	}
+	    	
+	    	//On récupère les informations du produit mises à jour
+	    	$produit = $utilisateurProduit->getProduit();
+	    	 
+	    	//Affiche le produit dans la vue adaptée
+	    	return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
     	}
     	
-    	//On récupère les informations du produit mises à jour
-    	$produit = $utilisateurProduit->getProduit();
-    	
-    	//Affiche le produit dans la vue adaptée
-    	return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
+    	/**
+    	 * @todo Renvoyer un message d'erreur en json?
+    	 */
     }
 }

@@ -11,7 +11,7 @@ moteur_produit_achat:
     path:     /produit/achat/{id_produit}/{id_utilisateur}
     defaults: { _controller: MoteurProduitBundle:Basic:achat }
 moteur_produit_note:
-    path:     /produit/{id_produit}/{id_utilisateur}/noter
+    path:     /book/note/{id_produit}
     defaults: { _controller: MoteurProduitBundle:Basic:note }
 moteur_produit_affiche:
     path:     /produits/affiche/{id}
