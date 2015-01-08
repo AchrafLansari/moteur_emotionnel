@@ -142,36 +142,48 @@ class BasicController extends Controller
     }
     
     public function genererAction(){
-        /*$form = $this->createFormBuilder($task)
+        //*
+        $form = $this->createFormBuilder()
             ->add('requete', 'text')
-            ->add('nombre', 'int')
+            ->add('nombre', 'integer')
             ->add('Generer', 'submit')
             ->getForm();
     	 
     	$request = $this->getRequest();		//Recupère l'état de la requête
-    	 */
+    	 //*/
     	//Si on accède à ce controleur via une requête POST alors c'est que l'on a soumis le formulaire
-    	//if('POST' == $request->getMethod()){
+    	if('POST' == $request->getMethod()){
     	
     		//On récupère le formulaire envoyé
-    		//$form->handleRequest($request);
+    		$form->handleRequest($request);
     	
     		//S'il est valide alors on l'enregistre
-    		//if ($form->isValid()){
+    		if ($form->isValid()){
     			/**
     			 *			SAUVEGARDE DU PRODUIT
     			 */
-                             
-                        $url = "http://it-ebooks-api.info/v1/search/";
+    				//echo "ok";
+//*                        
+						$url = "http://it-ebooks-api.info/v1/search/";
                         
-                        $query = array("java", "php", "net", "html");
+                        //$query = array("java", "php", "net", "html");
                         
-                        for($q = 0; $q < count($query); $q++){
+                        //for($q = 0; $q < count($query); $q++){
+
+    						$form_send = $_POST["form"];
+    						$nombre = $form_send['nombre'];
+    			 			$page = ceil($nombre/10);
+    						
                         	for($page = 1; $page < 3; $page++){
-	                        	$json = file_get_contents($url.$query[$q]."/page/".$page);
+	                        	$json = file_get_contents($url.
+	                        			$form_send['requete']
+	                        			//$query[$q]
+	                        			."/page/".$page);
 	                        	$parsed_json = json_decode($json,true);
 	                        	
 	                        	for($i =0; $i < count($parsed_json['Books']); $i++){
+	                        		if($nombre <= 0 )
+	                        			break 1;
 	                        		$produit = new Produit();
 	                        		$produit->setTitre($parsed_json['Books'][$i]['Title']);
 	                        		$produit->setSousTitre("abc");
@@ -179,21 +191,23 @@ class BasicController extends Controller
 	                        		$produit->setAuteur("abc");
 	                        		$produit->setImage($parsed_json['Books'][$i]['Image']);
 	                        		$produit->setLien("lien");
-	                        		$produit->save();
-	                        		$this->indexDocument($produit);
+	                        		if($produit->save()){
+	                        			$this->indexDocument($produit);
+	                        			echo"<br>Nombre de documents restants à sauvegarder : " .--$nombre;
+	                        		}
 	                        	}	
                         	}
-                        }
-                        
+                        //}
+  //*/                      
     			
     			
     			
     			
     			//on affiche la vue adaptée
-    		//}
-    	//}
+    		}
+    	}
     	//on renvoie vers la vue du formulaire de création de l'utilisateur
-    	//return $this->render('MoteurProduitBundle:Default:generer.html.twig', array('form' => $form->createView()));
+    	return $this->render('MoteurProduitBundle:Default:generer.html.twig', array('form' => $form->createView()));
     }
     
     private function indexDocument($produit){
