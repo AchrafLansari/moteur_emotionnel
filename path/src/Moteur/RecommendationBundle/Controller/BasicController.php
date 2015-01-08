@@ -75,6 +75,7 @@ class BasicController extends Controller
 		
 
 		$recommandation_books = null;
+                $flag = true;
 	
 		if($dejaVu){
 			if($session->get('id')){
@@ -144,7 +145,7 @@ class BasicController extends Controller
 			$flag=true;
 				
 		}
-	
+                
 		//return $this->render('UserBundle:User:index.html.twig');
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
 				'books' => $produits,'flag'=>$flag,'recommandation_book'=>null));
@@ -184,13 +185,12 @@ class BasicController extends Controller
     		$kernel = $this->get('kernel');
     		$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
     		
-                
-                $url = "http://it-ebooks-api.info/v1/search/";
+                $requete = $_POST['tags'];
+                /*$url = "http://it-ebooks-api.info/v1/search/";
                 $json = file_get_contents($url.$_POST['tags']);
                 $parsed_json = json_decode($json,true);
-                $requete = $_POST['tags'];
     		$nb_books = $parsed_json['Total'];
-               /*if ($parsed_json['Total'] == "0"){
+               if ($parsed_json['Total'] == "0"){
                 return new Response('Nothing Found!');
                 }*/
         
@@ -226,8 +226,8 @@ class BasicController extends Controller
     		$resultat = $statement->fetchAll();
     		 
     	}  
-        $books = count($parsed_json['Books']);
-        return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $parsed_json['Books']));
+        $books = count($resultat);
+        return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $resultat));
         //return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
     }
     
