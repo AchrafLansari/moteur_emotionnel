@@ -158,17 +158,7 @@ class BasicController extends Controller
     return $this->render('MoteurRecommendationBundle:User:book.html.twig',array(
                      'book' => $parsed_json));
     }
-    
-    
-    
-    
-    
-	
-	
-    /**
-	 * @Route("/search/", name="_search")
-	 * @Template()
-	 */
+    // recherche de produits en utilisant la barre de recherche 
     public function rechercherAction()
     {  
     	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
@@ -186,8 +176,8 @@ class BasicController extends Controller
                 $url = "http://it-ebooks-api.info/v1/search/";
                 $json = file_get_contents($url.$_POST['tags']);
                 $parsed_json = json_decode($json,true);
-    			$requete = $_POST['tags'];
-    		
+                $requete = $_POST['tags'];
+    		$nb_books = $parsed_json['Total'];
                /*if ($parsed_json['Total'] == "0"){
                 return new Response('Nothing Found!');
                 }*/
@@ -225,7 +215,7 @@ class BasicController extends Controller
     		 
     	}  
         $books = count($parsed_json['Books']);
-        return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,'books' => $parsed_json['Books'],'flag'=>false));
+        return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $parsed_json['Books']));
         //return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
     }
     

@@ -103,13 +103,15 @@ class BasicController extends Controller
     public function noteAction($id_produit){
     	$request = $this->get('request');
     	
+        $session = new Session();
+        $session->start();
     	/**
     	 * @todo
     	 * Récupérer l'id de l'utilisateur dans les cookies s'il est connecté
     	 * 
     	 */
-    	$id_utilisateur = 1;
-    	
+    	$id_utilisateur = $session->get('id');
+        
     	/**
     	 * @todo l'utilisateur ne peut noter le produit que s'il est connecté
     	 */
