@@ -186,13 +186,27 @@ class BasicController extends Controller
 	                        	for($i =0; $i < count($parsed_json['Books']); $i++){
 	                        		if($nombre <= 0 )
 	                        			break 1;
+	                        		
+	                        		$titre = isset($parsed_json['Books'][$i]['Title']) ?
+	                        					$parsed_json['Books'][$i]['Title'] : null;
+	                        		$sous_titre = isset($parsed_json['Books'][$i]['SubTitle']) ?
+	                        					$parsed_json['Books'][$i]['SubTitle'] : null;
+	                        		$description = isset($parsed_json['Books'][$i]['Description']) ?
+	                        					$parsed_json['Books'][$i]['Description'] : null;
+	                        		$auteur = isset($parsed_json['Books'][$i]['Author']) ?
+	                        					$parsed_json['Books'][$i]['Author'] : null;
+	                        		$image = isset($parsed_json['Books'][$i]['Image']) ?
+	                        					$parsed_json['Books'][$i]['Image'] : null;
+	                        		$lien = isset($parsed_json['Books'][$i]['Download']) ?
+	                        					$parsed_json['Books'][$i]['Download'] : null;
+	                        		
 	                        		$produit = new Produit();
-	                        		$produit->setTitre($parsed_json['Books'][$i]['Title']);
-	                        		$produit->setSousTitre("abc");
-	                        		$produit->setDescription($parsed_json['Books'][$i]['Description']);
-	                        		$produit->setAuteur("abc");
-	                        		$produit->setImage($parsed_json['Books'][$i]['Image']);
-	                        		$produit->setLien("lien");
+	                        		$produit->setTitre($titre);
+	                        		$produit->setSousTitre($sous_titre);
+	                        		$produit->setDescription($description);
+	                        		$produit->setAuteur($auteur);
+	                        		$produit->setImage($image);
+	                        		$produit->setLien($lien);
 	                        		if($produit->save()){
 	                        			$this->indexDocument($produit);
 	                        			echo"<br>Nombre de documents restants à sauvegarder : " .--$nombre;
