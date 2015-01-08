@@ -142,47 +142,92 @@ class BasicController extends Controller
     }
     
     public function genererAction(){
-        
-    	
-    	$form = $form = $this->createFormBuilder($task)
+        /*$form = $this->createFormBuilder($task)
             ->add('requete', 'text')
             ->add('nombre', 'int')
             ->add('Generer', 'submit')
             ->getForm();
     	 
     	$request = $this->getRequest();		//Recupère l'état de la requête
-    	 
+    	 */
     	//Si on accède à ce controleur via une requête POST alors c'est que l'on a soumis le formulaire
-    	if('POST' == $request->getMethod()){
+    	//if('POST' == $request->getMethod()){
     	
     		//On récupère le formulaire envoyé
-    		$form->handleRequest($request);
+    		//$form->handleRequest($request);
     	
     		//S'il est valide alors on l'enregistre
-    		if ($form->isValid()){
+    		//if ($form->isValid()){
     			/**
     			 *			SAUVEGARDE DU PRODUIT
     			 */
                              
                         $url = "http://it-ebooks-api.info/v1/search/";
-                        $json = file_get_contents($url.$_POST['requete']);
-                        $parsed_json = json_decode($json,true);
                         
-                        for($i =0; $i <count($_POST['nombre']);$i++){
-                            $produit = new Produit();
-                            $produit->setId($parsed_json['Books'][$i]['ID']);
-                            $produit->save();
-                            $this->indexDocument($produit);
-                        } 
+                        $query = array("java", "php", "net", "html");
+                        
+                        for($q = 0; $q < count($query); $q++){
+                        	for($page = 1; $page < 3; $page++){
+	                        	$json = file_get_contents($url.$query[$q]."/page/".$page);
+	                        	$parsed_json = json_decode($json,true);
+	                        	
+	                        	for($i =0; $i < count($parsed_json['Books']); $i++){
+	                        		$produit = new Produit();
+	                        		$produit->setTitre($parsed_json['Books'][$i]['Title']);
+	                        		$produit->setSousTitre("abc");
+	                        		$produit->setDescription($parsed_json['Books'][$i]['Description']);
+	                        		$produit->setAuteur("abc");
+	                        		$produit->setImage($parsed_json['Books'][$i]['Image']);
+	                        		$produit->setLien("lien");
+	                        		$produit->save();
+	                        		$this->indexDocument($produit);
+	                        	}	
+                        	}
+                        }
+                        
     			
     			
     			
     			
     			//on affiche la vue adaptée
-    		}
-    	}
+    		//}
+    	//}
     	//on renvoie vers la vue du formulaire de création de l'utilisateur
-    	return $this->render('MoteurProduitBundle:Default:generer.html.twig', array('form' => $form->createView()));
+    	//return $this->render('MoteurProduitBundle:Default:generer.html.twig', array('form' => $form->createView()));
     }
     
+    private function indexDocument($produit){
+    	$kernel = $this->get('kernel');
+    	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
+    	$indexation = new IndexationProduit($produit->getTitre(),
+    			$produit->getAuteur(),
+    			$produit->getDescription(),
+    			"",
+    			$produit->getSousTitre(),
+    			$produit->getImage(),
+    			$produit->getLien()
+    	);
+    
+    	$con = Propel::getConnection(ProduitMotPoidsPeer::DATABASE_NAME);
+    	$con->beginTransaction();
+    
+    	foreach ($indexation->indexMotPoids as $mot => $poids){
+    		$produit_mot = new ProduitMotPoids();
+    		$produit_mot->setProduit($produit);
+    		 
+    		$m = MotQuery::create()->findOneByMot($mot);
+    		if($m){
+    			$produit_mot->setMotId($m->getId());
+    		}
+    		else {
+    			$m = new Mot();
+    			$m->setMot($mot);
+    			$produit_mot->setMot($m);
+    		}
+    		$produit_mot->setPoids($poids);
+    		$produit_mot->save();
+    	}
+    	 
+    	$con->commit();
+    }
 }

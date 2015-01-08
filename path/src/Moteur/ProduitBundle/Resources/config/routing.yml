@@ -16,3 +16,6 @@ moteur_produit_note:
 moteur_produit_affiche:
     path:     /produits/affiche/{id}
     defaults: { _controller: MoteurProduitBundle:Basic:afficher }
+moteur_produit_generer:
+    path:     /admin/book/generer
+    defaults: { _controller: MoteurProduitBundle:Basic:generer }

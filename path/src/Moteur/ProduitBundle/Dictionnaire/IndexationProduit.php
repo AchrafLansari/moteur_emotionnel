@@ -101,7 +101,7 @@ class IndexationProduit{
 	 * @Return un array sans les mots trop petits
 	 */
 	private function supprimerPetitsSegments($segments, $taille){
-		$return;
+		$return = array();
 		foreach ($segments as $segment){
 			if(strlen(utf8_decode($segment))>=$taille)
 				$return[] = $segment;
