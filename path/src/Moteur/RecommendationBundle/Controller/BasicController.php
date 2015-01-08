@@ -8,6 +8,7 @@ use Moteur\ProduitBundle\Model\Mot;
 use Moteur\RecommendationBundle\Model\ProfilScoreRequeteUtilisateurProduit;
 use Moteur\UtilisateurBundle\Model\Utilisateur;
 use Moteur\UtilisateurBundle\Model\UtilisateurQuery;
+use Moteur\ProduitBundle\Model\ProduitQuery;
 use Moteur\RecommendationBundle\Model\RequeteQuery;
 use Moteur\RecommendationBundle\Model\Requete;
 use Moteur\ProduitBundle\Model\MotQuery;
@@ -38,7 +39,7 @@ class BasicController extends Controller
 	
 		$path =  $this->get('kernel')->locateResource("@MoteurRecommendationBundle/Data/data.txt");
 		$data = tokenization(utf8_decode(file_get_contents($path)),"\n",0,1);
-		$url = "http://it-ebooks-api.info/v1/search/";
+		/*$url = "http://it-ebooks-api.info/v1/search/";
 		$parsed_json['Total'] = "0";
 	
 		while ($parsed_json['Total'] == "0"){
@@ -47,10 +48,20 @@ class BasicController extends Controller
 			$json = file_get_contents($url.$query);
 			$parsed_json = json_decode($json,true);
 	
-		}
+		}*/
 		
+                $sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 25";
+                $connexion = \Propel::getConnection();
+                $statement = $connexion->prepare($sql);
+                $statement->execute();
+                
+                $produits =  $statement->fetchAll();
+                
+                
+                
+                 
 	
-		$books = count($parsed_json['Books']);
+		$books = count($produits);
 	
 		 
 		$response = new Response();
@@ -136,7 +147,7 @@ class BasicController extends Controller
 	
 		//return $this->render('UserBundle:User:index.html.twig');
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
-				'books' => $parsed_json['Books'],'flag'=>$flag,'recommandation_book'=>$recommandation_books));
+				'books' => $produits,'flag'=>$flag,'recommandation_book'=>null));
 	}
         
     
