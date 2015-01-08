@@ -153,21 +153,22 @@ class BasicController extends Controller
     
     public function bookAction($id)
     {
-     $path = "http://it-ebooks-api.info/v1/book/".$id;
+    /* $path = "http://it-ebooks-api.info/v1/book/".$id;
         
         
      $json = file_get_contents($path);
-     $parsed_json = json_decode($json,true);
-     
-    
-
-    if ($parsed_json["Error"]!="0") {
+     $parsed_json = json_decode($json,true);*/
+        
+    $produit = new ProduitQuery;
+    $row =  $produit->findById($id);
+  
+    if ($row == null) {
         throw $this->createNotFoundException('No book found for id '.$id);
     }
   
     // faites quelque chose, comme passer l'objet $product à un template
     return $this->render('MoteurRecommendationBundle:User:book.html.twig',array(
-                     'book' => $parsed_json));
+                     'book' => $row));
     }
     // recherche de produits en utilisant la barre de recherche 
     public function rechercherAction()
