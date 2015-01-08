@@ -55,30 +55,30 @@ class DefaultController extends Controller
      * @Route("/ajout")
      */
     public function addAction(){
-    	//Récupère l'ensemble des centres d'interet enregistrés
+    	//Rï¿½cupï¿½re l'ensemble des centres d'interet enregistrï¿½s
     	$interets = InteretQuery::create()->find();
     	
-    	//Récupère l'ensembles des produits enregistrés
+    	//Rï¿½cupï¿½re l'ensembles des produits enregistrï¿½s
     	$produits = ProduitQuery::create()->find();
     	
-    	//Récupère 500 des mots indexés
+    	//Rï¿½cupï¿½re 500 des mots indexï¿½s
     	$mots = MotQuery::create()->limit(500)->find();
     	
-    	//On génère les utilisateurs
-    	for($u=0; $u<10; $u++){		//Permet de générer 10 utilisateurs
+    	//On gï¿½nï¿½re les utilisateurs
+    	for($u=0; $u<10; $u++){		//Permet de gï¿½nï¿½rer 10 utilisateurs
     		
     		
     		
-    		//On crée une adresse IP et on récupère les informations sur celle-ci
+    		//On crï¿½e une adresse IP et on rï¿½cupï¿½re les informations sur celle-ci
     		//do{
 	    		$geo = new GeoIp();
-	    		//génère une IP aléatoire afin d'éviter d'enregistrer seulement des IP correspondant au localhost
+	    		//gï¿½nï¿½re une IP alï¿½atoire afin d'ï¿½viter d'enregistrer seulement des IP correspondant au localhost
 	    		$geo->setIpadress(rand(0,255).".".rand(0,255).".".rand(0,255).".".rand(0,255));
 	    	//	$geo->geoCheckIP();
 	    	//}
 	    	//while ($geo->pays == null);
 	    	
-	    	//Liste des géolocalisations possibles
+	    	//Liste des gï¿½olocalisations possibles
 	    	$geolocalisation = array(
 	    		array('pays' => 'France',
 	    				array('region' => 'Ile-de-france',
@@ -97,7 +97,7 @@ class DefaultController extends Controller
 	    				)
 	    		),
 	    		array('pays' => 'Allemagne',
-	    				array('region' => 'Bavière',
+	    				array('region' => 'Baviï¿½re',
 	    						array('Munich', 'Augsbourg', 'Nuremberg')
 	    				),
 	    				array('region' => 'Saxe',
@@ -106,7 +106,7 @@ class DefaultController extends Controller
 	    		)	
 	    	);
 
-	    	//On détermine une géolocalisation aléatoirement parmi la liste des géolocalisations possible
+	    	//On dï¿½termine une gï¿½olocalisation alï¿½atoirement parmi la liste des gï¿½olocalisations possible
 	    	$pays_geo = $geolocalisation[rand(0,2)];
 	    	$region_geo = $pays_geo[rand(0,1)];
 	    	$ville_geo = $region_geo[0][rand(0,2)];
@@ -114,32 +114,32 @@ class DefaultController extends Controller
 	    	$geo->departement = $region_geo['region'];
 	    	$geo->ville = $ville_geo;
 	    	
-	    	//On crée un objet contenant les informations sur l'adresse ip
+	    	//On crï¿½e un objet contenant les informations sur l'adresse ip
 	    	$ip = new Ip();
 	    	$ip->setPays($geo->pays);
 		    $ip->setDepartement($geo->departement);
 		    $ip->setVille($geo->ville);
 	    	
-		    //On crée un nouvel utilisateur
+		    //On crï¿½e un nouvel utilisateur
 	    	$utilisateur = new Utilisateur();
-	    	$utilisateur->setNom(substr(sha1(rand(0, 10)), 0, rand(5,15)));		//Le nom fera entre 5 et et 15 caractères
-	    	$utilisateur->setPrenom(substr(sha1(rand(0, 10)), 0, rand(5,15)));	//Le prénom fera entre 5 et 15 caractères
+	    	$utilisateur->setNom(substr(sha1(rand(0, 10)), 0, rand(5,15)));		//Le nom fera entre 5 et et 15 caractï¿½res
+	    	$utilisateur->setPrenom(substr(sha1(rand(0, 10)), 0, rand(5,15)));	//Le prï¿½nom fera entre 5 et 15 caractï¿½res
 	    	$utilisateur->setMail(
-	    			substr(sha1(rand(0, 10)), 0, rand(5,15))	//Première partie de l'adresse mail
+	    			substr(sha1(rand(0, 10)), 0, rand(5,15))	//Premiï¿½re partie de l'adresse mail
 	    			."@".										//@
 	    			substr(sha1(rand(0, 10)), 0, rand(5,10))	//Nom de domaine de l'adresse mail
 	    			.".".
 	    			substr(sha1(rand(0, 10)), 0, rand(2,4)));	//Extension du nom de domaine de l'adresse mail
-	    	$utilisateur->setAge(rand(10, 75));	//Définit un age compris entre 10 et 75
+	    	$utilisateur->setAge(rand(10, 75));	//Dï¿½finit un age compris entre 10 et 75
 	    	
 	    	//ville possible
 	    	$liste_ville = array('Paris', 'New York', 'Marseille', 'Lyon', 'Moscou', 'Londres');
 	    	
-	    	$utilisateur->setVille($liste_ville[rand(0,5)]);	//ville choisie aléatoirement parmi les villes possibles
+	    	$utilisateur->setVille($liste_ville[rand(0,5)]);	//ville choisie alï¿½atoirement parmi les villes possibles
 	    	
 	    	$description = "";
 	    	for($i=0; $i<rand(0,100); $i++){	//La description aura entre 0 et 100 mots
-	    		//Chaque mot comporte entre 2 et 10 caractères
+	    		//Chaque mot comporte entre 2 et 10 caractï¿½res
 	    		$description .= substr(sha1(rand(0,10000)), 0, rand(2, 10))." ";
 	    	}
 	    	
@@ -155,9 +155,9 @@ class DefaultController extends Controller
 	    	 */
 	    	
 	    	
-	    	//On parcours la liste des centres d'intérêts
+	    	//On parcours la liste des centres d'intï¿½rï¿½ts
 	    	foreach ($interets as $interet){
-		    	if(rand(0, 10) < 3){	//On décide aléatoirement si on ajoute ce centre d'intérêts à l'utilisateur
+		    	if(rand(0, 10) < 3){	//On dï¿½cide alï¿½atoirement si on ajoute ce centre d'intï¿½rï¿½ts ï¿½ l'utilisateur
 		    		$utilisateur_interet = new UtilisateurInteret();
 		    		$utilisateur_interet->setUtilisateur($utilisateur)
 		    							->setInteret($interet)
@@ -173,30 +173,30 @@ class DefaultController extends Controller
 	    	
 	    	//On parcours la liste des produits
 	    	foreach ($produits as $produit){
-	    		if(rand(0, 10) < 5){	//On décide aléatoirement si l'utilisateur a interagit avec ce produit
+	    		if(rand(0, 10) < 5){	//On dï¿½cide alï¿½atoirement si l'utilisateur a interagit avec ce produit
 
-	    			$visites = rand(0,5);	//s'il a interagit alors on définit aléatoirement un nombre de visite de ce produit
+	    			$visites = rand(0,5);	//s'il a interagit alors on dï¿½finit alï¿½atoirement un nombre de visite de ce produit
 	    			
 	    			$achat;
 	    			
-	    			//s'il a visité au moins une fois le produit alors il peut l'acheter/télécharger
+	    			//s'il a visitï¿½ au moins une fois le produit alors il peut l'acheter/tï¿½lï¿½charger
 	    			if($visites>0)
-	    				$achat = (rand(0, 5)<2) ? true : false;	//On décide alétoirement s'il a acheté/téléchargé le produit
+	    				$achat = (rand(0, 5)<2) ? true : false;	//On dï¿½cide alï¿½toirement s'il a achetï¿½/tï¿½lï¿½chargï¿½ le produit
 	    			else
-	    				$achat = false;	//S'il n'a pas visité le produit alors il ne l'a pas acheté/téléchargé
+	    				$achat = false;	//S'il n'a pas visitï¿½ le produit alors il ne l'a pas achetï¿½/tï¿½lï¿½chargï¿½
 	    			
 	    			$note;
 	    			
-	    			//S'il a acheté/téléchargé le produit alors il a pu le noter et on décide aléatoirement s'il a souhaité noter le produit
+	    			//S'il a achetï¿½/tï¿½lï¿½chargï¿½ le produit alors il a pu le noter et on dï¿½cide alï¿½atoirement s'il a souhaitï¿½ noter le produit
 	    			if(!$achat || rand(0,5)<2)
-	    				$note = null;	//si ce n'est pas le cas alors la note est null (NE PAS METTRE 0, ça fausserait le scoring)
+	    				$note = null;	//si ce n'est pas le cas alors la note est null (NE PAS METTRE 0, ï¿½a fausserait le scoring)
 	    			else
-	    				$note = rand(0, 10);	//sinon on décide aléatoirement d'une note comprise entre 0 et 10
+	    				$note = rand(0, 10);	//sinon on dï¿½cide alï¿½atoirement d'une note comprise entre 0 et 10
 	    			
-	    			//On crée un modèle recensant les interactions d'un utilisateur avec un produit
+	    			//On crï¿½e un modï¿½le recensant les interactions d'un utilisateur avec un produit
 	    			$utilisateur_produit = new UtilisateurProduit();
 	    			
-	    			//On enregistre le modèle ainsi crée dans la base de données
+	    			//On enregistre le modï¿½le ainsi crï¿½e dans la base de donnï¿½es
 	    			$utilisateur_produit->setNombreVisite($visites)
 	    								->setAchat($achat)
 	    								->setNote($note)
@@ -208,26 +208,26 @@ class DefaultController extends Controller
 	    	
 	    	/**
 	    	 * 				CREE DES REQUETES AYANT ETE EFFECTUEES PAR L'UTILISATEUR
-	    	 * 				->Simule des recherches de produits ayant été effectuées par l'utilisateur
+	    	 * 				->Simule des recherches de produits ayant ï¿½tï¿½ effectuï¿½es par l'utilisateur
 	    	 * 
 	    	 */
 	    	
-	    	//Réalisation de chaque requête
-	      	for($i=0; $i < rand(0,20); $i++){	//On décide aléatoirement du nombre de requêtes effectuées par l'utilisateur
+	    	//Rï¿½alisation de chaque requï¿½te
+	      	for($i=0; $i < rand(0,20); $i++){	//On dï¿½cide alï¿½atoirement du nombre de requï¿½tes effectuï¿½es par l'utilisateur
 		    	$requete = array();
 		    	
 		    	foreach ($mots as $mot){
-		    		//On décide aléatoirement si le mot fait partie de la requête
+		    		//On dï¿½cide alï¿½atoirement si le mot fait partie de la requï¿½te
 		    		if(rand(0,100)<2)
 		    			$requete[] = $mot->getId();
 		    	}
 		    	
 		    	//Si la requete n'est pas vide alors on peut l'enregistrer
 		    	if(count($requete)>0){
-		    		//l'id de la dernière requete effectuée
+		    		//l'id de la derniï¿½re requete effectuï¿½e
 		    		$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne()->getRequeteId();
 		    		
-		    		//On enregiste individuellement chaque mot dans la requête
+		    		//On enregiste individuellement chaque mot dans la requï¿½te
 		    		foreach ($requete as $id_mot){
 		    			$ajoutRequete = new Requete();
 		    			$ajoutRequete->setUtilisateur($utilisateur);
@@ -248,26 +248,26 @@ class DefaultController extends Controller
     }
     
     /**
-     * @Route("/interet/ajout")
+     * @Route("/interet/ajout/{id_interet}")
      */
-    public function addInteretAction(){
-    	$interets = InteretQuery::create()->find();
-    	$utilisateurs = UtilisateurQuery::create()->find();
+    public function addInteretAction($id_interet){
+        
+        $session = new Session();
+        $session->start();
+        
+        
+    	$interet = InteretQuery::create()->findById($id_interet);
+    	$utilisateur = UtilisateurQuery::create()->findById($session->get('id'));
     	
-    	foreach ($utilisateurs as $utilisateur){
-    		foreach ($interets as $interet){
-    			if(rand(0,10) < 3){
-	    			$utilisateur_interet = new UtilisateurInteret();
-	    			UtilisateurInteretQuery::create()
-	    				->filterByUtilisateurId($utilisateur->getId())
-	    				->filterByInteretId($interet->getId())
-	    				->findOneOrCreate()
-	    				->setUtilisateurId($utilisateur->getId())
-	    				->setInteretId($interet->getId())
-	    				->setValeur(rand(0, 10))
-	    				->save();
-    			}
-    		}
-    	}
+    	//rajoute un interet a un utilisateur 	
+        $utilisateur_interet = new UtilisateurInteret();
+        UtilisateurInteretQuery::create()
+                ->filterByUtilisateurId($utilisateur->getId())
+                ->filterByInteretId($interet->getId())
+                ->findOneOrCreate()
+                ->setUtilisateurId($utilisateur->getId())
+                ->setInteretId($interet->getId())
+                ->setValeur(1)
+                ->save();
     }
 }

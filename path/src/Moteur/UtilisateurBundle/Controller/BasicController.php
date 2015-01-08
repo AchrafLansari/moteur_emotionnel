@@ -25,20 +25,20 @@ use Symfony\Component\HttpFoundation\Response;
 class BasicController extends Controller
 {
 	/**
-	 * Permet de créer un nouvel utilisateur
+	 * Permet de crï¿½er un nouvel utilisateur
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
     public function creerAction()
     {
     	$utilisateur = new Utilisateur();	//Le nouvel utilisateur
-    	$form = $this->createForm(new UtilisateurType(), $utilisateur);	//Le formulaire associé
+    	$form = $this->createForm(new UtilisateurType(), $utilisateur);	//Le formulaire associï¿½
     	
-    	$request = $this->getRequest();		//Recupère l'état de la requête
+    	$request = $this->getRequest();		//Recupï¿½re l'ï¿½tat de la requï¿½te
     	
-    	//Si on accède à ce controleur via une requête POST alors c'est que l'on a soumis le formulaire
+    	//Si on accï¿½de ï¿½ ce controleur via une requï¿½te POST alors c'est que l'on a soumis le formulaire
     	if('POST' == $request->getMethod()){
     		
-    		//On récupère le formulaire envoyé
+    		//On rï¿½cupï¿½re le formulaire envoyï¿½
     		$form->handleRequest($request);
     		
     		//S'il est valide alors on l'enregistres
@@ -47,7 +47,7 @@ class BasicController extends Controller
     			//un nouvel objet IP
     			$ip = new Ip();
     			
-    			//Permet de géolocaliser un utilisateur en fonction de son ip pour faire un scoring basé sur la géolocalisation
+    			//Permet de gï¿½olocaliser un utilisateur en fonction de son ip pour faire un scoring basï¿½ sur la gï¿½olocalisation
     			$geo = new GeoIp();
     			
     			/**
@@ -58,14 +58,14 @@ class BasicController extends Controller
     			$r_3 = rand(0,255);
     			$r_4 = rand(0,255);
     			
-    			//génère une IP aléatoire afin d'éviter d'enregistrer seulement des IP correspondant au localhost
+    			//gï¿½nï¿½re une IP alï¿½atoire afin d'ï¿½viter d'enregistrer seulement des IP correspondant au localhost
     			$geo->setIpadress($r_1.".".$r_2.".".$r_3.".".$r_4);
     			/**
-    			 * FIN de la partie à supprimer
+    			 * FIN de la partie ï¿½ supprimer
     			 */
     			
-    			//Si on a réussit à le géolocaliser alors on ajoute les éléments de la géolocalisation au modèle IP
-    			if($geo->geoCheckIP()){	//On fait appel à un site externe afin d'identifier la géolocalisation de l'ip
+    			//Si on a rï¿½ussit ï¿½ le gï¿½olocaliser alors on ajoute les ï¿½lï¿½ments de la gï¿½olocalisation au modï¿½le IP
+    			if($geo->geoCheckIP()){	//On fait appel ï¿½ un site externe afin d'identifier la gï¿½olocalisation de l'ip
     				$ip->setPays($geo->pays);
     				$ip->setDepartement($geo->departement);
     				$ip->setVille($geo->ville);	 
@@ -77,50 +77,12 @@ class BasicController extends Controller
     			//on sauvegarde le nouvel utilisateur
     			$utilisateur->save();
     			
-    			//on affiche la vue adaptée
-    			return $this->render('MoteurUtilisateurBundle:Default:index.html.twig', array('message' => "Ajout réussi!"));
+    			//on affiche la vue adaptï¿½e
+    			return $this->render('MoteurUtilisateurBundle:Default:index.html.twig', array('message' => "Ajout rï¿½ussi!"));
     		}
     	}
-    	//on renvoie vers la vue du formulaire de création de l'utilisateur
+    	//on renvoie vers la vue du formulaire de crï¿½ation de l'utilisateur
         return $this->render('MoteurUtilisateurBundle:Utilisateur:creer.html.twig', array('form' => $form->createView()));
-    }
-    
-    //FONCTIONNE - MODIF A FAIRE
-    public function listerAction($page, $nombre)
-    {
-    	$utilisateurs = UtilisateurQuery::create()
-    						->orderByNom(\Criteria::ASC)
-    						->paginate($page, $nombre);
-    	
-    	$id = rand(0,80);
-    	
-    	$retours;
-    	
-    	foreach ($utilisateurs as $utilisateur){
-    		
-    		if($utilisateur->getId() < $id){
-    			$inf = $utilisateur->getId();
-    			$sup = $id;
-    		}
-    		else{
-    			$inf = $id;
-    			$sup = $utilisateur->getId();
-    		}
-    		
-	    	$score = ProfilScoreUtilisateurQuery::create()
-		    	->condition('cond1', 'profil_score_utilisateur.utilisateur_a_id = ?', $inf)
-		    	->condition('cond2', 'profil_score_utilisateur.utilisateur_b_id = ?', $sup)
-		    	->where(array('cond1', 'cond2'), 'and')
-		    	->findOne();
-	    	
-	    	$retour[0] = $utilisateur;
-	    	$retour[1] = $score->getScore()? $score->getScore() : 0;
-	    	
-	    	$retours[] = $retour;
-    	}
-    	//TO DO Ajouter le score entre les utilisateurs
-    	
-    	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste.html.twig', array('utilisateurs' => $retours, 'page' => $page, 'nombre' => $nombre));
     }
     
     /**
@@ -131,26 +93,26 @@ class BasicController extends Controller
      */
     public function afficherAction($nom, $prenom)
     {
-    	//Récupère l'utilisateur correspondant
+    	//Rï¿½cupï¿½re l'utilisateur correspondant
     	$utilisateur = UtilisateurQuery::create()->filterByNom($nom)->filterByPrenom($prenom)->findOne();
     	
-    	//Récupère les éléments de la géolocalisation basée sur l'IP de l'utilisateur
+    	//Rï¿½cupï¿½re les ï¿½lï¿½ments de la gï¿½olocalisation basï¿½e sur l'IP de l'utilisateur
     	$ip = $utilisateur->getIp();
     	
-    	//Récupère tous les id des centres d'intéret de l'utilisateur
+    	//Rï¿½cupï¿½re tous les id des centres d'intï¿½ret de l'utilisateur
     	$utilisateurInterets = $utilisateur->getUtilisateurInteretsJoinInteret();
     	
-        //Contient les centres d'intérêt de l'utilisateur
+        //Contient les centres d'intï¿½rï¿½t de l'utilisateur
     	$interets = array();
     	
-    	//Crée un tableau contenant les centres d'intérêts
-    	while($i = $utilisateurInterets->getNext()){	//Récupère l'id du ceontre d'intérêt suivant
-    		$interet[0] = InteretQuery::create()->findOneById($i->getInteretId()); //Récupère le centre d'intérêt dans la base
-    		$interet[1] = $i->getValeur();	//Indique à quel point le sujet intérèse l'utilisateur
+    	//Crï¿½e un tableau contenant les centres d'intï¿½rï¿½ts
+    	while($i = $utilisateurInterets->getNext()){	//Rï¿½cupï¿½re l'id du ceontre d'intï¿½rï¿½t suivant
+    		$interet[0] = InteretQuery::create()->findOneById($i->getInteretId()); //Rï¿½cupï¿½re le centre d'intï¿½rï¿½t dans la base
+    		$interet[1] = $i->getValeur();	//Indique ï¿½ quel point le sujet intï¿½rï¿½se l'utilisateur
     		$interets[] = $interet;
     	}
     	
-    	//Renvoie la vue adaptée
+    	//Renvoie la vue adaptï¿½e
     	return $this->render('MoteurUtilisateurBundle:Utilisateur:afficher.html.twig', array('utilisateur' => $utilisateur, "ip" => $ip, "interets" => $interets));
     }
 }
