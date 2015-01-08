@@ -176,7 +176,7 @@ class BasicController extends Controller
     						$nombre = $form_send['nombre'];
     			 			$page = ceil($nombre/10);
     						
-                        	for($page = 1; $page < 3; $page++){
+                        	for($i = 0; $i <= $page; $i++){
 	                        	$json = file_get_contents($url.
 	                        			$form_send['requete']
 	                        			//$query[$q]
@@ -187,18 +187,35 @@ class BasicController extends Controller
 	                        		if($nombre <= 0 )
 	                        			break 1;
 	                        		
+	                        		$id = $parsed_json['Books'][$i]['ID'];
+	                        		
+	                        		$json_produit = file_get_contents("http://it-ebooks-api.info/v1/book/".$id);
+	                        		$parsed_json_produit = json_decode($json_produit, true);
+	                        		
+	                        		
+	                        		//Récupère le titre du document
 	                        		$titre = isset($parsed_json['Books'][$i]['Title']) ?
 	                        					$parsed_json['Books'][$i]['Title'] : null;
+	                        		
+	                        		//Optionnel - récupère le sous-titre du document
 	                        		$sous_titre = isset($parsed_json['Books'][$i]['SubTitle']) ?
 	                        					$parsed_json['Books'][$i]['SubTitle'] : null;
+	                        		
+	                        		//Récupère la description du produit
 	                        		$description = isset($parsed_json['Books'][$i]['Description']) ?
 	                        					$parsed_json['Books'][$i]['Description'] : null;
-	                        		$auteur = isset($parsed_json['Books'][$i]['Author']) ?
-	                        					$parsed_json['Books'][$i]['Author'] : null;
+	                        		
+	                        		//
+	                        		$auteur = isset($parsed_json_produit['Author']) ?
+	                        					$parsed_json_produit['Author'] : null;
+	                        		
+	                        		//Récupère l'image du produit
 	                        		$image = isset($parsed_json['Books'][$i]['Image']) ?
 	                        					$parsed_json['Books'][$i]['Image'] : null;
-	                        		$lien = isset($parsed_json['Books'][$i]['Download']) ?
-	                        					$parsed_json['Books'][$i]['Download'] : null;
+	                        		
+	                        		//
+	                        		$lien = isset($parsed_json_produit['Download']) ?
+	                        					$parsed_json_produit['Download'] : null;
 	                        		
 	                        		$produit = new Produit();
 	                        		$produit->setTitre($titre);
@@ -246,6 +263,7 @@ class BasicController extends Controller
     		$produit_mot->setProduit($produit);
     		 
     		$m = MotQuery::create()->findOneByMot($mot);
+    		
     		if($m){
     			$produit_mot->setMotId($m->getId());
     		}
