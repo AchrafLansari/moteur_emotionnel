@@ -160,8 +160,8 @@ class BasicController extends Controller
      $parsed_json = json_decode($json,true);*/
         
     $produit = new ProduitQuery;
-    $row =  $produit->findById($id);
-  
+    $row =  $produit->findById($id)->toArray();
+    
     if ($row == null) {
         throw $this->createNotFoundException('No book found for id '.$id);
     }

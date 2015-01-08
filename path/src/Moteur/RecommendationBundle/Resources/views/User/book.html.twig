@@ -5,17 +5,17 @@
     <div class="container">
         
         
-        <img src="{{ book['Image'] }}" style="margin-left: 470px;"/>
-        <h1 style="margin-left: 200px;"> {{ book['Title'] }}</h1> 
-        <h3 style="margin-left: 370px;" > {{ book['SubTitle'] }}</h3> 
+        <img src="{{ book[0]['Image'] }}" style="margin-left: 470px;"/>
+        <h1 style="margin-left: 200px;"> {{ book[0]['Titre'] }}</h1> 
+        <h3 style="margin-left: 370px;" > {{ book[0]['SousTitre'] }}</h3> 
         
         <p style="margin: 12px 179px 9px;">
-        {{ book['Description'] }}
+        {{ book[0]['Description'] }}
         </p>
         <div class="notation_telechargement">
-        <a style="float:right;" href="{{ book['Download'] }}" target="_blank">  <img id="download" src="{{ asset('bundles/user/images/download.png') }}" alt="Telecharger"  /> </a>
+        <a style="float:right;" href="{{ book[0]['Lien'] }}" target="_blank">  <img id="download" src="{{ asset('bundles/user/images/download.png') }}" alt="Telecharger"  /> </a>
         <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
-        <div style="float:left;" class="basic" id="notation" data-average="2" data-id="{{ book['ID'] }}"></div>
+        <div style="float:left;" class="basic" id="notation" data-average="2" data-id="{{ book[0]['Id'] }}"></div>
         </div>
         
 
