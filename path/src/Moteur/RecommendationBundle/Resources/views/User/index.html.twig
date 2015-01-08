@@ -20,7 +20,7 @@
             </a>
             <div class="carousel-caption">
               <p>{{ book['titre']|e }}</p>
-              <p><a href="">{% if book['sous_titre'] is defined %} {{ book['sous_titre']|e }} {% endif %}</a></p>
+              <p><a href="">{% if book['sous_titre'] is not null %} {{ book['sous_titre']|e }} {% endif %}</a></p>
             </div>
           </div>
                     {% endfor %}
@@ -43,7 +43,7 @@
             </a>
             <div class="media-body">
               <h4 class="media-heading">{{ book['titre']|e }}</h4>
-              {% if book['sous_titre'] is defined %} {{ book['sous_titre']|e }} {% endif %} 
+              {% if book['sous_titre'] is not null %} {{ book['sous_titre']|e }} {% endif %} 
             </div>
              {% endfor %} 
           </div>
