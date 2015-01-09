@@ -31,10 +31,8 @@ function tokenization ($text,$delimiteurs,$nb_carac,$state)
         }
  
  function recommandation_description($description){
-     
-     
      $tab_description = tokenization($description," ,\n",0,1);
-     //array_map('strtolower',$tab_description);
-     var_dump($tab_description);
-     return $tab_description;
+     $tab = array_map('strtolower',$tab_description);
+     //var_dump($tab_description);
+     return $tab;
  }

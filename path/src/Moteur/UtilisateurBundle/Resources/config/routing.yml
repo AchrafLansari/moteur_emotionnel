@@ -1,6 +1,4 @@
-moteur_utilisateur_homepage:
-    path:     /utilisateur/
-    defaults: { _controller: MoteurUtilisateurBundle:Basic:index }
+
 moteur_utilisateur_ip:
     path:     /utilisateur/ip/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Default:addIP }

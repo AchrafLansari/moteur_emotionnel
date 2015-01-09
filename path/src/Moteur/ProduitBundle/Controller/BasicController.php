@@ -11,6 +11,7 @@ use Moteur\ProduitBundle\Dictionnaire\IndexationProduit;
 use Moteur\ProduitBundle\Model\MotQuery;
 use Moteur\ProduitBundle\Model\UtilisateurProduitQuery;
 use Moteur\ProduitBundle\Model\UtilisateurProduit;
+use Moteur\ProduitBundle\Form\Type\ProduitType;
 use Moteur\ProduitBundle\Model\ProduitQuery;
 use Moteur\ProduitBundle\Model\ProduitMotPoidsPeer;
 use Propel;
@@ -22,45 +23,7 @@ set_time_limit(10000);
 
 class BasicController extends Controller
 {
-	/**
-     * @Route("/book/{id}", name="_book_show")
-     * @Template()
-     */
-    public function afficherAction($id)
-    {	
-         $path = "http://it-ebooks-api.info/v1/book/".$id;
-         $json = file_get_contents($path);
-         $parsed_json = json_decode($json,true);
-         $produit = new Produit();
-         
-        if ($parsed_json["Error"]!="0") {
-            throw $this->createNotFoundException('No book found for id '.$id);
-        }else {
-            $produit->setId($parsed_json['ID']);
-            $produit->setImage($parsed_json['Image']);
-            $produit->setTitre($parsed_json['Title']);
-            $produit->setSousTitre($parsed_json['SubTitle']);
-            $produit->setDescription($parsed_json['Description']);
-            $produit->setLien($parsed_json['Download']);
-            $produit->save();
-        }
-        
-        $session = new Session();
-        $session->start();
-    	$utilisateur_id = $session->get('id');
-    	
-    	$utilisateurProduit = UtilisateurProduitQuery::create()
-    								->filterByProduit($produit)
-    								->filterByUtilisateurId($utilisateur_id)
-    								->findOneOrCreate()
-    								->setNombreVisite(0);
-    	$utilisateurProduit->setNombreVisite($utilisateurProduit->getNombreVisite()+1);
-    	$utilisateurProduit->save();
-    	
-        //return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
-        
-        return $this->render('MoteurRecommendationBundle:User:book.html.twig',array('book' => $parsed_json));
-        }
+	
     
     /**
      * Permet de spécifier que l'utilisateur a téléchargé un produit
@@ -167,15 +130,9 @@ class BasicController extends Controller
     			/**
     			 *			SAUVEGARDE DU PRODUIT
     			 */
-    				//echo "ok";
-//*                        
+    				
 						$url = "http://it-ebooks-api.info/v1/search/";
-                        
-                        //$query = array("java", "php", "net", "html");
-                        
-                        //for($q = 0; $q < count($query); $q++){
-
-    						$form_send = $_POST["form"];
+                                		$form_send = $_POST["form"];
     						$nombre = $form_send['nombre'];
     			 			$page = ceil($nombre/10);
     						
@@ -245,6 +202,63 @@ class BasicController extends Controller
     	//on renvoie vers la vue du formulaire de création de l'utilisateur
     	return $this->render('MoteurProduitBundle:Default:generer.html.twig', array('form' => $form->createView()));
     }
+    
+    
+     public function addAction(){
+    	$produit = new Produit();	//Le nouvel utilisateur
+    	$form = $this->createForm(new ProduitType(), $produit);	//Le formulaire associé
+    	 
+    	$request = $this->getRequest();		//Recupère l'état de la requête
+    	 
+    	//Si on accède à ce controleur via une requête POST alors c'est que l'on a soumis le formulaire
+    	if('POST' == $request->getMethod()){
+    	
+    		//On récupère le formulaire envoyé
+    		$form->handleRequest($request);
+    	
+    		//S'il est valide alors on l'enregistre
+    		if ($form->isValid()){
+    			/**
+    			 *			SAUVEGARDE DU PRODUIT
+    			 */
+    			$produit->save();
+    			$this->indexDocument($produit);
+    			//on affiche la vue adaptée
+    		}
+    	}
+    	//on renvoie vers la vue du formulaire de création de l'utilisateur
+    	return $this->render('MoteurProduitBundle:Default:add.html.twig', array('form' => $form->createView()));
+    }
+    
+   /* 
+    public function getAction($id_produit, $id_utilisateur){
+    	$produit = ProduitQuery::create()->findOneById($id_produit);
+    	if($produit){
+    		$this->updateNombreVueProduit($id_utilisateur, $id_produit);
+    	}
+    }
+    
+    private function updateNombreVueProduit($id_utilisateur, $id_produit){
+    	$utilisateurProduit = UtilisateurProduitQuery::create()
+    	->filterByUtilisateurId($id_utilisateur)
+    	->filterByProduitId($id_produit)
+    	->findOne();
+    	if($utilisateurProduit == null){
+    		$utilisateurProduit = new UtilisateurProduit();
+    		$utilisateurProduit
+    		->setUtilisateurId($id_utilisateur)
+    		->setProduitId($id_produit)
+    		->setNote(null)
+    		->setAchat(false)
+    		->setNombreVisite(1);
+    	}
+    	else{
+    		$utilisateurProduit->setNombreVisite($utilisateurProduit->getNombreVisite()+1);
+    	}
+    	$utilisateurProduit->save();
+    }
+        */
+   
     
     private function indexDocument($produit){
     	$kernel = $this->get('kernel');

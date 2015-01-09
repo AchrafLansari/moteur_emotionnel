@@ -37,46 +37,25 @@ class BasicController extends Controller
 	
 		$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
 	
-		$path =  $this->get('kernel')->locateResource("@MoteurRecommendationBundle/Data/data.txt");
-		$data = tokenization(utf8_decode(file_get_contents($path)),"\n",0,1);
-		/*$url = "http://it-ebooks-api.info/v1/search/";
-		$parsed_json['Total'] = "0";
-	
-		while ($parsed_json['Total'] == "0"){
-			$query= rtrim($data[rand(0,count($data)-1)]);
-			 
-			$json = file_get_contents($url.$query);
-			$parsed_json = json_decode($json,true);
-	
-		}*/
-		
                 $sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 25";
                 $connexion = \Propel::getConnection();
                 $statement = $connexion->prepare($sql);
                 $statement->execute();
                 
                 $produits =  $statement->fetchAll();
-                
-                
-                
-                 
+               
 	
 		$books = count($produits);
-	
-		 
 		$response = new Response();
 		//$response->headers->clearCookie('cookie');
 		//$response->send();
 	
 		$dejaVu = $request->cookies->has('cookie');
-	
-		//$request->cookies->get("mycookie");
 		$session = new Session();
 		
 
 		$recommandation_books = null;
-                $flag = true;
-	
+ 
 		if($dejaVu){
 			if($session->get('id')){
 				$user = UtilisateurQuery::create()
@@ -94,8 +73,8 @@ class BasicController extends Controller
 				$session->start();
 	
 				// définit des messages dits « flash »
-				$session->getFlashBag()->add('notice', 'Utilisateur Modifier');
-				$session->getFlashBag()->add('error', 'Pas d\'utilisateur');
+				//$session->getFlashBag()->add('notice', 'Utilisateur Modifier');
+				//$session->getFlashBag()->add('error', 'Pas d\'utilisateur');
 				 
 				$nom = $_POST['nom'];
 				$prenom = $_POST['prenom'];
@@ -145,8 +124,6 @@ class BasicController extends Controller
 			$flag=true;
 				
 		}
-                
-		//return $this->render('UserBundle:User:index.html.twig');
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
 				'books' => $produits,'flag'=>$flag,'recommandation_book'=>$recommandation_books));
 	}
@@ -154,12 +131,7 @@ class BasicController extends Controller
     
     public function bookAction($id)
     {
-    /* $path = "http://it-ebooks-api.info/v1/book/".$id;
-        
-        
-     $json = file_get_contents($path);
-     $parsed_json = json_decode($json,true);*/
-        
+   
     $produit = new ProduitQuery;
     $row =  $produit->findById($id)->toArray();
     
@@ -167,7 +139,6 @@ class BasicController extends Controller
         throw $this->createNotFoundException('No book found for id '.$id);
     }
   
-    // faites quelque chose, comme passer l'objet $product à un template
     return $this->render('MoteurRecommendationBundle:User:book.html.twig',array(
                      'book' => $row));
     }
@@ -226,7 +197,6 @@ class BasicController extends Controller
         $books = count($resultat);
         
         return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $resultat));
-        //return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
     }
     
     /**
@@ -238,15 +208,17 @@ class BasicController extends Controller
     public function listeAction($page, $nombre){
     	//Un objet requ�te de Symfony avec les variables globales
     	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
-    	
+    	$session = new Session();
+    	$session->start();
+        
     	//Variable stockant la liste des produits correspondants
     	$resultat = array();
     	
-    	//Si l'utilisateur est identifi� par un cookie de nom "utilisateur_id" alors on peut r�cup�rer la liste
-    	if($request->cookies->has('utilisateur_id'))
+    	//Si l'utilisateur est identifi� par la session a s'assurer de la condition
+    	if($session->get('id')== null)
     	{
     		//l'id de l'utilisateur connect�
-	    	$id = $request->cookies->get('utilisateur_id');
+	    	$id = $session->get('id');
 	    		
 	    	//la requ�te SQL faisant appel � la proc�dure stock�e charger de classer les produits par score avec l'utilisateur connect�
 	    	$sql = "CALL recommander_produits(?,?,?)";
@@ -300,8 +272,52 @@ class BasicController extends Controller
     	$statement->execute();
     	$resultats = $statement->fetchAll();
     	return $resultats;
-    	/*for($i=0;$i<5;$i++){
-    		array_push($books,$parsed_json['Books'][$i]);
-    	}*/
+    	
+    }
+     /**
+     * Renvoie une liste d'utilisateur avec leurs scores dont les profils correspondent � l'utilisateur identifi� par id_utilisateur
+     * Plus un score est �lev� et plus deux utilisateurs sont proches
+     * @param unknown $id_utilisateur
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function utilisateurAction($id_utilisateur){
+    	//R�alise le score entre un utilisateur d'id "id_tuilisateur" et l'ensemble des utilisateurs de la base
+    	$scores = ProfilScoreUtilisateurQuery::create()	//la liste des scores entre les utilisateurs
+    	
+    	//recherche les scores avec les id_utilisateur dont l'id est sup�rieur � celui de la variable $id utilisateur
+    	->condition('cond1', 'profil_score_utilisateur.utilisateur_a_id = ?', $id_utilisateur)  //si l'id utilisateur est sur la premi�re colonne "id util" de la vue en base de donn�e
+    	
+    	//recherche les scores avec les id_utilisateur dont l'id est inf�rieur � celui de la variable $id utilisateur
+    	->condition('cond2', 'profil_score_utilisateur.utilisateur_b_id = ?', $id_utilisateur)  //si l'id utilisateur est sur la seconde colonne "id util" de la vue en base de donn�e
+    	
+    	->where(array('cond1', 'cond2'), 'or')
+    	->orderBy('profil_score_utilisateur.score', 'DESC') //trie par score d�croissant
+    	->limit(10)	//limite le nombre de r�sultats � 10 utilisateurs
+    	->find();	//effectue la recherche
+    	
+    	//un tableau dont chaque �l�ment associe un utilisateurs avec le score correspondant
+    	$utilisateurs_score = NULL;
+    	
+    	//Pour chaque score il faut r�cup�rer les infos sur l'utilisateur correspondant
+    	foreach($scores as $score){
+    		$id_second_utilisateur = 0;
+			if($score->getUtilisateurAId() == $id_utilisateur)
+				$id_second_utilisateur = $score->getUtilisateurBId();
+			else $id_second_utilisateur = $score->getUtilisateurAId();
+    		
+    		$utilisateurs_score[] = array(
+    				//ajoute les informations de l'utilisateur
+    				UtilisateurQuery::create()->findOneById($id_second_utilisateur),
+    				//le score entre les deux utilisateurs
+    				$score->getScore()
+    		);
+    	}
+    	
+    	//Affiche les r�sultats dans la vue correspondante
+    	return $this->render(
+    			'MoteurRecommendationBundle:Default:utilisateur.html.twig',
+    			$utilisateurs_score
+    	);
+    	
     }
 }

@@ -238,6 +238,7 @@ class DefaultController extends Controller
 		    	}
 	    	}
     	}
+            return null;
     }
     
     /**
@@ -269,5 +270,17 @@ class DefaultController extends Controller
                 ->setInteretId($interet->getId())
                 ->setValeur(1)
                 ->save();
+    }
+    
+    /**
+     * Renvoie la liste des centres d'int�r�ts existants
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listerAction(){
+    	//Recherche la liste des centres d'int�r�ts class�s par ordre alphab�tique
+    	$interets = InteretQuery::create()->orderByNom(\Criteria::ASC)->find();
+    	
+    	//Retourne la liste dans la vue adapt�e
+    	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste_interet.html.twig', array('interets' => $interets));
     }
 }

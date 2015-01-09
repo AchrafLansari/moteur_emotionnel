@@ -20,7 +20,7 @@ class ProduitType extends BaseAbstractType
         $builder->add('titre');
         $builder->add('sous_titre');
         $builder->add('auteur');
-        $builder->add('description');
+        $builder->add('description','textarea');
         $builder->add('image');
         $builder->add('lien');
     }
