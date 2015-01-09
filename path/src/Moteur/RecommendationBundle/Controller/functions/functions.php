@@ -47,6 +47,7 @@ function tokenization ($text,$delimiteurs,$nb_carac,$state)
      foreach ($tab_recommandations as $item=>$valeur ){
         
         $requete = $valeur;
+        
         $indexation = new IndexationMot($requete, $path);
         $requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne();
         $requete_id = $requete_id->getRequeteId();
