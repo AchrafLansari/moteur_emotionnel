@@ -5,33 +5,23 @@
     <div class="container">
 
       <h3> {{ nb_books }} Produits trouvés : </h3>
-      <div id="this-carousel-id" class="carousel slide">
-        <div class="carousel-inner">
+      
             
                     
             
                     {% for book in books %}
-            {% if loop.first %}
-                <div class="item active">
-            {% else %}
-                 <div class="item">
-            {% endif %}
-                         <a href="/book/{{ book['produit_id'] }}">  <img src="{{ book['image'] }}" alt="{{ book['produit_id'] }}" style =" display: block; margin-left: auto;margin-right: auto;" />
-            </a>
-            <div class="carousel-caption">
-              <p>{{ book['titre']|e }}</p>
-              <p><a href="">{% if book['sous_titre'] is defined %} {{ book['sous_titre']|e }} {% endif %}</a></p>
-            </div>
-          </div>
+                            <div class="media" style="padding-bottom: 10px;padding-top: 10px;">
+                                <a class="media-left"  href="/book/{{ book['produit_id'] }}" >
+                                     <img src="{{ book['image'] }}" alt="{{ book['produit_id'] }}"  />
+                                </a>
+                                <div class="media-body">
+                                  <h4 class="media-heading">{{ book['titre']|e }}</h4>
+                                  {% if book['sous_titre'] is defined %} {{ book['sous_titre']|e }} {% endif %}
+                                </div>
+                            </div>
                     {% endfor %}
           
-        </div><!-- .carousel-inner -->
-        <!--  next and previous controls here
-              href values must reference the id for this carousel -->
-          <a class="carousel-control left" href="#this-carousel-id" data-slide="prev">‹</a>
-          <a class="carousel-control right" href="#this-carousel-id" data-slide="next">›</a>
-      </div><!-- .carousel -->
-      <!-- end carousel -->
+       
       
       
  
