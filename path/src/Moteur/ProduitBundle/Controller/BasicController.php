@@ -66,10 +66,13 @@ class BasicController extends Controller
      * Permet de spécifier que l'utilisateur a téléchargé un produit
      * L'interaction entre l'utilisateur et le produit permet d'affiner son score avec ce produit
      * @param unknown $id_produit
-     * @param unknown $id_utilisateur
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function telechargerAction($id_produit, $id_utilisateur){
+    public function telechargerAction($id_produit){
+    	
+    	$session = new Session();
+    	$session->start();
+    	$id_utilisateur = $session->get('id');
     	
     	//Trouve l'enregistrement qui stocke les interactions (nombres de visites, a téléchargé, note) entre un utilisateur et un produit
     	$utilisateurProduit = UtilisateurProduitQuery::create()
