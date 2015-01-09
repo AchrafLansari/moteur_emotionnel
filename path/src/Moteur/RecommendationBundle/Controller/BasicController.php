@@ -195,7 +195,10 @@ class BasicController extends Controller
                 }*/
         
     		$indexation = new IndexationMot($requete, $path);
-    		$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne()->getRequeteId();
+    		$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne();
+    		$requete_id = $requete_id->getRequeteId();
+    		
+    		
     		$utilisateur_id = $session->get('id');
     		
                 
@@ -227,6 +230,8 @@ class BasicController extends Controller
     		 
     	}  
         $books = count($resultat);
+        
+        print_r($resultat);
         return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $resultat));
         //return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
     }
