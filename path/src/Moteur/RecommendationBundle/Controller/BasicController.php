@@ -82,7 +82,7 @@ class BasicController extends Controller
 				$user = UtilisateurQuery::create()
 				->filterById($session->get('id'))
 				->findOne();
-				$recommandation_books = recommandations_articles(recommandation_description($data,$user->getDescription()));
+				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
                                 
                                 
                         }
@@ -270,4 +270,38 @@ class BasicController extends Controller
     	return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('resultats' => $resultat, 'page' => $page, 'nombre' => $nombre));
     }
     
+    public function listedescriptionAction($tab_recommandations){
+    	$books = array();
+    	 
+    	$query = "SELECT DISTINCT p.id AS id, p.titre AS titre, p.image as image, sous_titre
+				FROM produit p
+				JOIN produit_mot_poids pmp ON pmp.produit_id = p.id
+				JOIN mot m ON m.id = pmp.mot_id
+				WHERE m.mot
+				IN (";
+    	
+    	$i=0;
+    	
+    	foreach ($tab_recommandations as $item=>$valeur ){
+    		if($i++ != 0)
+    			$query .= ",";
+    		$query.= "?";
+    	}
+    	$query .= ") LIMIT 0, 10";
+    	 
+    	$connexion = \Propel::getConnection();
+    	$statement = $connexion->prepare($query);
+    	
+    	$i = 1;
+    	foreach ($tab_recommandations as $item=>$valeur ){
+    	    $statement->bindParam($i++, $tab_recommandations[$item]);
+    	}
+
+    	$statement->execute();
+    	$resultats = $statement->fetchAll();
+    	return $resultats;
+    	/*for($i=0;$i<5;$i++){
+    		array_push($books,$parsed_json['Books'][$i]);
+    	}*/
+    }
 }
