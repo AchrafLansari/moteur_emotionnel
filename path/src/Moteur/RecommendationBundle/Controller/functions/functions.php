@@ -29,39 +29,27 @@ function tokenization ($text,$delimiteurs,$nb_carac,$state)
              return $arrayElements;
         }
  
- function recommandation_description($tab_livres,$description){
+ function recommandation_description($description){
      
      
      $tab_description = tokenization($description," ,\n",0,1);
-     $tab_recommandations = array();
-     
-     foreach ($tab_description as $item=>$valeur ){
-         
-         $val = utf8_decode($valeur);
-         $val = ucfirst($val);
-         
-         for($i=0;$i<count($tab_livres);$i++){
-            
-          
-          if($val==rtrim($tab_livres[$i])){
-              
-              array_push($tab_recommandations, $valeur);
-          }
-         }
-     }
-     return $tab_recommandations;
+     array_map('strtolower',$tab_description);
+     var_dump($tab_description);
+     return $tab_description;
  }
  
  function recommandations_articles($tab_recommandations){
      
      
-     $url = "http://it-ebooks-api.info/v1/search/";
+     
      $books = array();
      
      foreach ($tab_recommandations as $item=>$valeur ){
         
-        $json = file_get_contents($url.$valeur);
-        $parsed_json = json_decode($json,true);
+        $requete = $valeur;
+        $indexation = new IndexationMot($requete, $path);
+        $requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne();
+        $requete_id = $requete_id->getRequeteId();
         
         for($i=0;$i<5;$i++){
             array_push($books,$parsed_json['Books'][$i]); 

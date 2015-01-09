@@ -148,7 +148,7 @@ class BasicController extends Controller
                 
 		//return $this->render('UserBundle:User:index.html.twig');
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
-				'books' => $produits,'flag'=>$flag,'recommandation_book'=>null));
+				'books' => $produits,'flag'=>$flag,'recommandation_book'=>$recommandation_books));
 	}
         
     
@@ -186,13 +186,7 @@ class BasicController extends Controller
     		$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
     		
                 $requete = $_POST['tags'];
-                /*$url = "http://it-ebooks-api.info/v1/search/";
-                $json = file_get_contents($url.$_POST['tags']);
-                $parsed_json = json_decode($json,true);
-    		$nb_books = $parsed_json['Total'];
-               if ($parsed_json['Total'] == "0"){
-                return new Response('Nothing Found!');
-                }*/
+                
         
     		$indexation = new IndexationMot($requete, $path);
     		$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne();

@@ -19,8 +19,8 @@
                          <a href="/book/{{ book['id'] }}">  <img src="{{ book['image'] }}" alt="{{ book['id'] }}" style =" display: block; margin-left: auto;margin-right: auto;" />
             </a>
             <div class="carousel-caption">
-              <p>{{ book['titre']|e }}</p>
-              <p><a href="">{% if book['sous_titre'] is not null %} {{ book['sous_titre']|e }} {% endif %}</a></p>
+                <p><a href="/book/{{ book['id'] }}">{{ book['titre']|e }}</a></p>
+              <p>{% if book['sous_titre'] is not null %} {{ book['sous_titre']|e }} {% endif %}</p>
             </div>
           </div>
                     {% endfor %}
