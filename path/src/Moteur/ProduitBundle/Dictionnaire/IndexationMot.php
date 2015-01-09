@@ -19,7 +19,7 @@ class IndexationMot{
 		$separateurs = " \n\t\r,«;.»’'\"()!?+-";
 
 		$this->indexRequete = $this->fractionner_chaine($this->requete, $separateurs);
-		$this->indexRequete = $this->supprimerPetitsSegments($this->indexRequete, 4);
+		//$this->indexRequete = $this->supprimerPetitsSegments($this->indexRequete, 4);
 		sort($this->indexRequete);
 		$this->indexRequete = array_map("strtolower", $this->indexRequete);
 		$this->indexRequete = $this->supprimerMotsVide($this->indexRequete);
@@ -40,7 +40,7 @@ class IndexationMot{
 	 * @return un tableau sans les Ã©lÃ©ments n'ayant pas de sens
 	 */
 	private function supprimerMotsVide($segments){
-		$return;
+		$return = array();
 		foreach ($segments as $segment){
 			if(!in_array($segment, $this->listeMotsVides))
 				$return[] = $segment;
@@ -56,7 +56,7 @@ class IndexationMot{
 	 * @Return un array sans les mots trop petits
 	 */
 	private function supprimerPetitsSegments($segments, $taille){
-		$return;
+		$return = array();
 		foreach ($segments as $segment){
 			if(strlen(utf8_decode($segment))>=$taille)
 				$return[] = $segment;

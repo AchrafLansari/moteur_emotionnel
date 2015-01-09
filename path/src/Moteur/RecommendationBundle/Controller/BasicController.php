@@ -218,6 +218,7 @@ class BasicController extends Controller
     			$ajoutRequete->save();
     		}
     		
+    		$requete_id++;
     		$sql = "CALL rechercher_produits_via_requete(?)";
     		 
     		//\Propel::
@@ -227,11 +228,9 @@ class BasicController extends Controller
     		$statement->execute();
     		
     		$resultat = $statement->fetchAll();
-    		 
     	}  
         $books = count($resultat);
         
-        print_r($resultat);
         return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $resultat));
         //return $this->render('MoteurRecommendationBundle:Recherche:liste.html.twig', array('resultats' => $resultat, 'requete' => $requete));
     }

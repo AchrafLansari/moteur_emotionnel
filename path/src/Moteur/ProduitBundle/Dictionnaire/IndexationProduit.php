@@ -44,7 +44,7 @@ class IndexationProduit{
 		$separateurs = " \n\t\r,«;.»’'\"()!?+:-/&$0123456789*~#{}[]|`_@%µ¤£§<>=°²";
 
 		$this->indexTitre = $this->fractionner_chaine($this->titre, $separateurs);
-		$this->indexTitre = $this->supprimerPetitsSegments($this->indexTitre, 4);
+		//$this->indexTitre = $this->supprimerPetitsSegments($this->indexTitre, 4);
 		sort($this->indexTitre);
 		//$this->indexTitre = $this->supprimerMotsVide($this->indexTitre);
 		$this->indexTitre = array_map("strtolower", $this->indexTitre);
@@ -52,7 +52,7 @@ class IndexationProduit{
 		//$this->indexPoidsTitre = $this->lemmatisation($this->indexPoidsTitre);
 		
 		$this->indexAuteur = $this->fractionner_chaine($this->auteur, $separateurs);
-		$this->indexAuteur = $this->supprimerPetitsSegments($this->indexAuteur, 4);
+		//$this->indexAuteur = $this->supprimerPetitsSegments($this->indexAuteur, 4);
 		sort($this->indexAuteur);
 		//$this->indexAuteur = $this->supprimerMotsVide($this->indexAuteur);
 		$this->indexAuteur = array_map("strtolower", $this->indexAuteur);
@@ -60,7 +60,7 @@ class IndexationProduit{
 		//$this->indexPoidsAuteur = $this->lemmatisation($this->indexPoidsAuteur);
 		
 		$this->indexDescription = $this->fractionner_chaine($this->description, $separateurs);
-		$this->indexDescription = $this->supprimerPetitsSegments($this->indexDescription, 4);
+		//$this->indexDescription = $this->supprimerPetitsSegments($this->indexDescription, 4);
 		sort($this->indexDescription);
 		//$this->indexDescription = $this->supprimerMotsVide($this->indexDescription);
 		$this->indexDescription = array_map("strtolower", $this->indexDescription);
