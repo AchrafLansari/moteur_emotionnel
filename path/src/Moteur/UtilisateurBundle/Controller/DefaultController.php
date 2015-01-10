@@ -241,9 +241,7 @@ class DefaultController extends Controller
             return null;
     }
     
-    /**
-     * @Route("/interet/creer/{nom}")
-     */
+    
     public function createInteretAction($nom){
     	InteretQuery::create()->filterByNom($nom)->findOneOrCreate()->setNom($nom)->save();
     }
@@ -283,4 +281,6 @@ class DefaultController extends Controller
     	//Retourne la liste dans la vue adapt�e
     	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste_interet.html.twig', array('interets' => $interets));
     }
+    
+    
 }

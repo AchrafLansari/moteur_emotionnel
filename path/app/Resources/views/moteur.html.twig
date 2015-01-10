@@ -50,7 +50,7 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="{{ path('moteur_recommendation_homepage', {'page':1,'nombre':10} ) }}">Accueil</a></li>
-              {% if app.request.cookies.has('utilisateur_id') %}
+              {% if  app.session.get('connexion') %}
 	              <li class="dropdown">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 	                      Utilisateur
@@ -64,7 +64,7 @@
 	                </ul>
 	              </li><!-- dropdown -->
               {% endif %}
-              {% if not app.request.cookies.has('utilisateur_id') %}
+              {% if not app.session.get('connexion') %}
               	<li><a href="{{ path('moteur_utilisateur_connecte') }}">Connexion</a></li>
               {% endif %}
             </ul><!-- /.nav -->
@@ -73,8 +73,11 @@
       </div><!-- /.navbar-inner -->
     </div><!-- /.navbar -->
         {% endblock %}
+        
+        
         <div class="container">
 			<div class="row">
+                            {% if app.session.get('connexion') %}
 				<div class="span3">
 					<h2>Chercher un produit déjà visité</h2>
 					<form method="post" action="{{ path('search') }}">
@@ -82,7 +85,9 @@
 						<input type="submit">
 					</form>
 				</div>
+                            {% endif %}
         {% block body %}{% endblock %}
+        
         	</div>
         </div>
         

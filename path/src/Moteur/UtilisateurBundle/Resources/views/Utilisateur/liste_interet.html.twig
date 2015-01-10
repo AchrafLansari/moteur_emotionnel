@@ -3,17 +3,27 @@
 {% block body %}
 <div class="span9">
 
-<h1>Liste des centres d'intérêts</h1>
 
-	<table>
-		<tr>
-			<th>Nom</th>
-		</tr>
-		{% for interet in interets %}
-		<tr>
-			<td>{{ interet.nom }}</td>
-		</tr>
-		{% endfor %}
-	</table>
+                    <div class="panel panel-default">
+
+             <div style="margin-top: 50px;"  class="panel-heading"><h1>Liste des centres d'intérêts : </h1></div>
+             <table style="margin-top: 100px;" class="table">
+               <thead>
+                   <tr>
+                   <th> Nom : </th>
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for interet in interets %}
+                           <tr>
+                                   <td>{{ interet.nom }}</td>
+                           </tr>
+                           {% endfor %}
+               </tbody>
+             </table>
+                      </div>;
+     
+     
+	
 </div>
 {% endblock %}

@@ -20,7 +20,9 @@ use Moteur\UtilisateurBundle\Form\Type\UtilisateurType;
 use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateur;
 use Moteur\RecommendationBundle\Model\ProfilScoreUtilisateurQuery;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session;
 
 class BasicController extends Controller
 {
@@ -114,5 +116,46 @@ class BasicController extends Controller
     	
     	//Renvoie la vue adapt�e
     	return $this->render('MoteurUtilisateurBundle:Utilisateur:afficher.html.twig', array('utilisateur' => $utilisateur, "ip" => $ip, "interets" => $interets));
+    }
+    
+    public function connecterAction(){
+        
+        $request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+        
+        $session = new \Symfony\Component\HttpFoundation\Session\Session();
+        //$session->start();
+        
+        $form = $this->createFormBuilder()
+            ->add('login', 'text')
+            ->add('mdp', 'password')
+            ->add('Valider', 'submit')
+            ->getForm();
+    	 
+    	$request = $this->getRequest();		//Recupère l'état de la requête
+    	 //*/
+    	//Si on accède à ce controleur via une requête POST alors c'est que l'on a soumis le formulaire
+    	if('POST' == $request->getMethod()){
+    	
+    		//On récupère le formulaire envoyé
+    		$form->handleRequest($request);
+    	
+    		//S'il est valide alors on l'enregistre
+    		if ($form->isValid()){
+                    
+                    
+                    
+                   // if($_POST['login']=="admin" && $_POST['mdp']=="admin"){
+                        
+                        
+                        $session->set('connexion','true');
+                      
+                       
+                   // }
+                    
+                }
+        }
+        
+        return $this->render('MoteurUtilisateurBundle:Utilisateur:connexion.html.twig', array('form' => $form->createView()));
+
     }
 }

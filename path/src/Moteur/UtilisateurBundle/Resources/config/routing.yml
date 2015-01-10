@@ -24,8 +24,8 @@ moteur_utilisateur_connecte:
     path:     /connexion
     defaults: { _controller: MoteurUtilisateurBundle:Basic:connecter }
 moteur_interet_creer:
-    path:     /interet/creer
-    defaults: { _controller: MoteurUtilisateurBundle:Interet:creer }
+    path:     /admin/interet/creer/{nom}
+    defaults: { _controller: MoteurUtilisateurBundle:Default:creer }
 moteur_interet_liste:
-    path:     /interet/liste
-    defaults: { _controller: MoteurUtilisateurBundle:Interet:lister }
+    path:     admin/interet/liste
+    defaults: { _controller: MoteurUtilisateurBundle:Default:lister }
