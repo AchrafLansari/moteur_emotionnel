@@ -1,21 +1,21 @@
 
 moteur_utilisateur_ip:
-    path:     /utilisateur/ip/ajout
+    path:     /admin/utilisateur/ip/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Default:addIP }
 moteur_utilisateur_ajout:
-    path:     /utilisateur/ajout
+    path:     /admin/utilisateur/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Default:add }
 moteur_utilisateur_interet_creer:
-    path:     /utilisateur/interet/creer/{nom}
+    path:     /admin/utilisateur/interet/creer/{nom}
     defaults: { _controller: MoteurUtilisateurBundle:Default:createInteret }
 moteur_utilisateur_interet_ajout:
-    path:     /utilisateur/interet/ajout
+    path:     /admin/utilisateur/interet/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Default:addInteret }
 moteur_utilisateur_creer:
-    path:     /utilisateur/creer
+    path:     /admin/utilisateur/creer
     defaults: { _controller: MoteurUtilisateurBundle:Basic:creer }
 moteur_utilisateur_liste:
-    path:     /utilisateur/liste/{page}/{nombre}
+    path:     /admin/utilisateur/liste/{page}/{nombre}
     defaults: { _controller: MoteurUtilisateurBundle:Basic:lister }
 moteur_utilisateur_affiche:
     path:     /utilisateur/affiche/{nom}/{prenom}
