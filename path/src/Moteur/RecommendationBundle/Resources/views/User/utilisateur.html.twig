@@ -1,0 +1,33 @@
+{% extends "::moteur.html.twig" %}
+
+{% block body %}
+<div class="span9">
+
+
+             <div class="panel panel-default">
+                 <h3>  Utilisateur Correspondant   </h3>               
+             <div style="margin-top: 50px;"  class="panel-heading"><h1>Liste des Utilisateurs : </h1></div>
+             <table style="margin-top: 100px;" class="table">
+               <thead>
+                   <tr>
+                   <th> Nom : </th>
+                   <th> Prénom : </th>
+                   <th> Ville : </th>
+                   <th> Score : </th>
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for  utilisateur in utilisateurs_score %}
+                       
+                           
+                           <tr><td>{{utilisateur[0].nom}}</td><td>{{utilisateur[0].prenom}}</td><td>{{utilisateur[0].ville}}</td><td>{{utilisateur[1]}}</td></tr>
+                   {% endfor %}
+                   
+               </tbody>
+             </table>
+                      </div>
+     
+     
+	
+</div>
+{% endblock %}

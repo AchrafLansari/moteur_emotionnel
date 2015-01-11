@@ -2,10 +2,10 @@ moteur_recommendation_homepage:
     path:     /recommendation/{page}/{nombre}
     defaults: { _controller: MoteurRecommendationBundle:Basic:index }
 moteur_recommendation_utilisateur:
-    path:     /recommendation/{id_utilisateur}
+    path:     /admin/recommendation/{id_utilisateur}
     defaults: { _controller: MoteurRecommendationBundle:Basic:utilisateur }
 user_homepage:
-    path:     /user
+    path:     /home
     defaults: { _controller: MoteurRecommendationBundle:Basic:index }  
 book_page :
     path:     /book/{id}

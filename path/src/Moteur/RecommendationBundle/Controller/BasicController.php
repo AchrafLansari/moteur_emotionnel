@@ -281,6 +281,9 @@ class BasicController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function utilisateurAction($id_utilisateur){
+        
+        //$id_utilisateur = $session->get('id');
+        
     	//R�alise le score entre un utilisateur d'id "id_tuilisateur" et l'ensemble des utilisateurs de la base
     	$scores = ProfilScoreUtilisateurQuery::create()	//la liste des scores entre les utilisateurs
     	
@@ -312,11 +315,19 @@ class BasicController extends Controller
     				$score->getScore()
     		);
     	}
-    	
+    	/*foreach ($utilisateurs_score as $utilisateur){
+                var_dump($utilisateur);
+                echo '<br><br>';
+                print_r($utilisateur[1]);
+               
+                echo '<br><br>';
+        }*/
+        
+        
     	//Affiche les r�sultats dans la vue correspondante
     	return $this->render(
-    			'MoteurRecommendationBundle:Default:utilisateur.html.twig',
-    			$utilisateurs_score
+    			'MoteurRecommendationBundle:User:utilisateur.html.twig',array('utilisateurs_score'=>
+    			$utilisateurs_score)
     	);
     	
     }
