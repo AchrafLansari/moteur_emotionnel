@@ -4,17 +4,11 @@ moteur_produit_homepage:
 moteur_produit_ajout:
     path:     /admin/produit/ajouter
     defaults: { _controller: MoteurProduitBundle:Basic:add }
-moteur_produit_get:
-    path:     /produit/{id_produit}/{id_utilisateur}
-    defaults: { _controller: MoteurProduitBundle:Basic:get }
-moteur_produit_achat:
-    path:     /produit/achat/{id_produit}/{id_utilisateur}
-    defaults: { _controller: MoteurProduitBundle:Basic:achat }
 moteur_produit_note:
     path:     /book/note/{id_produit}
     defaults: { _controller: MoteurProduitBundle:Basic:note }
 moteur_produit_affiche:
-    path:     /produits/affiche/{id}
+    path:     /admin/produit/affiche/{id}
     defaults: { _controller: MoteurProduitBundle:Basic:afficher }
 moteur_produit_generer:
     path:     /admin/book/generer

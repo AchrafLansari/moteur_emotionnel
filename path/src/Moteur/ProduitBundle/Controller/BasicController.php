@@ -308,4 +308,18 @@ class BasicController extends Controller
     	 
     	$con->commit();
     }
+    /*
+     * affiche un produit en passant son id en paramétre et ses informations de boosting
+     */
+    public function afficherAction($id){
+        
+        $produit = ProduitQuery::create()->findOneById($id);
+    	if($produit){
+                    return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit));
+
+    	}else {
+                   return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('error' => "Aucun produit ne coresspond a cet Identifant "));
+
+        }
+    }
 }
