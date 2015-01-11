@@ -213,7 +213,7 @@ class BasicController extends Controller
     		}
     	}
     	//on renvoie vers la vue du formulaire de création de l'utilisateur
-    	return $this->render('MoteurProduitBundle:Default:generer.html.twig', array('form' => $form->createView()));
+    	return $this->render('MoteurProduitBundle:Produit:generer.html.twig', array('form' => $form->createView()));
     }
     
     
@@ -240,7 +240,7 @@ class BasicController extends Controller
     		}
     	}
     	//on renvoie vers la vue du formulaire de création de l'utilisateur
-    	return $this->render('MoteurProduitBundle:Default:add.html.twig', array('form' => $form->createView()));
+    	return $this->render('MoteurProduitBundle:Produit:add.html.twig', array('form' => $form->createView()));
     }
     
    /* 

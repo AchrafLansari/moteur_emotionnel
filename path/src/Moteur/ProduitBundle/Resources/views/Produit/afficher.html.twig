@@ -1,6 +1,10 @@
 {% extends "::moteur.html.twig" %}
 
 {% block body %}
+    
+    {% if error  is defined %}
+        <h3> {{ error }}</h3> 
+    {% else %}
 <div class="row">
 	<div class="span6">
 		<h1>{{ produit.titre }}</h1>
@@ -38,4 +42,5 @@
 		</div>
 	</div>
 </div>
+                        {% endif %}
 {% endblock %}
