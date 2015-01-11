@@ -24,6 +24,19 @@ set_time_limit(10000);
 class BasicController extends Controller
 {
 	
+    /**
+     * Affiche le nombre de produits ainsi que les produits les plus consultés ( a faire)
+     */
+    
+    public function indexAction(){
+        
+        $nb_produits = ProduitQuery::create()
+                    ->find()->count();
+        
+        return $this->render('MoteurProduitBundle:Produit:index.html.twig', array('nb_produits' => $nb_produits));
+
+    }
+    
     
     /**
      * Permet de spécifier que l'utilisateur a téléchargé un produit
