@@ -1,1 +1,26 @@
-Le Nombre de produits est : {{ nb_produits }}!
+{% extends "::moteur.html.twig" %}
+
+{% block body %}
+<div class="span9">
+
+
+             <div class="panel panel-default">
+                 <h3>  {{ nb_produits }} Produits  </h3>               
+             <div style="margin-top: 50px;"  class="panel-heading"><h1>Liste des Produits les plus Consultés : </h1></div>
+             <table style="margin-top: 100px;" class="table">
+               <thead>
+                   <tr>
+                   <th> Titre : </th>
+                   <th> Score : </th>
+                   </tr>
+               </thead>
+               <tbody>
+                   
+               </tbody>
+             </table>
+                      </div>;
+     
+     
+	
+</div>
+{% endblock %}
