@@ -115,7 +115,7 @@ class BasicController extends Controller
     	 * Renvoyer un message/une vue
     	 */
          
-        $session = new Session();
+        $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->remove('connexion');
         return $this->redirect($this->generateUrl('moteur_utilisateur_connecte'));
         

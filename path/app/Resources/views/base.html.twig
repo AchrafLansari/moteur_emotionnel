@@ -118,7 +118,23 @@
       </div><!-- /.navbar-inner -->
     </div><!-- /.navbar -->
         {% endblock %}
+        
+        <div class="container">
+			<div class="row">
+                            {% if app.session.get('connexion') %}
+				<div class="span3">
+					<h2>Chercher un produit déjà visité</h2>
+					<form method="post" action="{{ path('search') }}">
+						<input type="search" name="requete">
+						<input type="submit">
+					</form>
+				</div>
+                            {% endif %}
         {% block body %}{% endblock %}
+        
+        	</div>
+        </div>
+        
         {% block javascripts %}{% endblock %}
     </body>
 </html>
