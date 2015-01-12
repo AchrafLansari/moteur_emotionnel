@@ -4,19 +4,19 @@
    
     <div class="container">
 
-      <h3> {{ nb_books }} Produits trouvÃ©s : </h3>
+      <h3> {{ nb_produits }} Produits trouvés : </h3>
       
             
                     
             
-                    {% for book in books %}
+					{% for produit in produits %}
                             <div class="media" style="padding-bottom: 10px;padding-top: 10px;">
-                                <a class="media-left"  href="/book/{{ book['produit_id'] }}" >
-                                     <img src="{{ book['image'] }}" alt="{{ book['produit_id'] }}"  />
+                                <a class="media-left"  href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}" >
+                                     <img src="{{ produit.image }}" alt="{{ produit.produit_id }}"  />
                                 </a>
                                 <div class="media-body">
-                                  <h4 class="media-heading">{{ book['titre']|e }}</h4>
-                                  {% if book['sous_titre'] is defined %} {{ book['sous_titre']|e }} {% endif %}
+                                  <h4 class="media-heading">{{ produit.titre|e }}</h4>
+                                  {% if produit.sous_titre is defined %} {{ produit.sous_titre|e }} {% endif %}
                                 </div>
                             </div>
                     {% endfor %}
