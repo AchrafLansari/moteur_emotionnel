@@ -1,7 +1,7 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<div class="span9">
+<div class="span9" id="content">
 	<h1>Ajouter un utilisateur</h1>
 	
 	<form action="{{ path('moteur_utilisateur_creer') }}" method="post" {{ form_enctype(form) }}>
