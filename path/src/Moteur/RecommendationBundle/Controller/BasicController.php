@@ -34,8 +34,7 @@ class BasicController extends Controller
 	/**
 	 * Affiche le home
 	 * Enregistre/ou connecte un nouvel utilisateur
-	 * 
-	 * @todo Si l'utilisateur existe déjà alors il faut récupérer son id et le connecter
+	 *
 	 * 
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
@@ -61,7 +60,7 @@ class BasicController extends Controller
 		$dejaVu = $request->cookies->has('cookie');
 		$session = new Session();
 		
-
+                $flag =true;
 		$recommandation_books = null;
  
 		if($dejaVu){
