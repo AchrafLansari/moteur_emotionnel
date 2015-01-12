@@ -1,18 +1,29 @@
+moteur_produit_page:
+    path:     /produit/{id}
+    defaults: { _controller: MoteurProduitBundle:Basic:book }
+
+#accessible depuis chaque produit
 moteur_produit_note:
     path:     /produit/note/{id_produit}
     defaults: { _controller: MoteurProduitBundle:Basic:note }
+
 # Ajouter la route pour telecharger un produit?
+
+#accessible depuis le menu admin - produits
 moteur_produit_homepage:
     path:     /admin/produit/
     defaults: { _controller: MoteurProduitBundle:Basic:index }
+
+#accessible depuis le menu admin - produits
 moteur_produit_ajout:
     path:     /admin/produit/ajouter
     defaults: { _controller: MoteurProduitBundle:Basic:add }
+
 moteur_produit_affiche:
     path:     /admin/produit/affiche/{id}
     defaults: { _controller: MoteurProduitBundle:Basic:afficher }
+
+#accessible depuis le menu admin - produits
 moteur_produit_generer:
     path:     /admin/produit/generer
-    defaults: { _controller: MoteurProduitBundle:Basic:generer }book_page :
-    path:     /book/{id}
-    defaults: { _controller: MoteurProduitBundle:Basic:book }
+    defaults: { _controller: MoteurProduitBundle:Basic:generer }
