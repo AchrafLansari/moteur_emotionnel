@@ -95,16 +95,9 @@ class BasicController extends Controller
     	
         $session = new Session();
         $session->start();
-    	/**
-    	 * @todo
-    	 * Récupérer l'id de l'utilisateur dans les cookies s'il est connecté
-    	 * 
-    	 */
+    	
     	$id_utilisateur = $session->get('id');
         
-    	/**
-    	 * @todo l'utilisateur ne peut noter le produit que s'il est connecté
-    	 */
     	
     	//Vérifie que l'utilisateur essaye de noter le produit via une requête de type POST
     	if ($request->isMethod('POST')) {
