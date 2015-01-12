@@ -2,20 +2,20 @@
 
 {% block body %}
    
-    <div class="container">
+    <div class="container" id="content">
 
-      <h3> {{ nb_produits }} Produits trouvés : </h3>
+      <h3 style="font-family:Dosis;font-size:24px"> {{ nb_produits }} Produits trouvÃ©s : </h3>
       
             
                     
             
 					{% for produit in produits %}
-                            <div class="media" style="padding-bottom: 10px;padding-top: 10px;">
+                            <div class="media-box" style="padding-bottom: 10px;padding-top: 10px;">
                                 <a class="media-left"  href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}" >
-                                     <img src="{{ produit.image }}" alt="{{ produit.produit_id }}"  />
+                                     <img width="200px" height="262px"  src="{{ produit.image }}" alt="{{ produit.produit_id }}"  />
                                 </a>
                                 <div class="media-body">
-                                  <h4 class="media-heading">{{ produit.titre|e }}</h4>
+                                  <h4 style="text-align:center;" class="media-heading">{{ produit.titre|e }}</h4>
                                   {% if produit.sous_titre is defined %} {{ produit.sous_titre|e }} {% endif %}
                                 </div>
                             </div>

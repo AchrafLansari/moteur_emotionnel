@@ -35,7 +35,7 @@
       
       {% if recommandation_book != null %}
           
-          <h3> Ses Articles Pourrait Vous Interesser : </h3>
+          <h2> Ses Articles Pourrait Vous Interesser : </h2>
           <div class="media">
               {% for book in recommandation_book %}
              <div class="media-box">
@@ -54,22 +54,24 @@
       {% endif %}
       
       {% if produits_profil != null %}
-      	<div class="span9">
-		<h1>Produits pouvant vous int�resser</h1>		
-			{% for produit in produits_profil %}
-				<a href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}">
-					<div class="row">
-						<div class="span8">
-							<img src="{{ produit.image }}"/>
-							{{ produit.titre }}
-							<br>Auteur : {{ produit.auteur }}
-						</div>
-						<div class="span1">
+      	<div class="media">
+            
+            <h2>Produits Quand vous recommande </h2>		
+			{% for produit in produits_profil %}  
+             <div class="media-box2">
+             
+            <a href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}">
+              <img width="200px" height="231px" src="{{ produit.image }}" alt="{{ produit.produit_id }}">
+            </a>
+            <div class="media-body">
+              <h4  style="text-align:center;" class="media-heading">{{ produit.titre }}</h4>
+              {% if produit.auteur  is not null %}<p style="text-align:center;"> {{ produit.auteur }} </p> {% endif %} 
+              <div style="text-align:center;" class="span1">
 							{{ produit.score }}
-						</div>
-					</div>
-				</a>
-			{% endfor %}
+              </div>
+            </div>
+            </div>
+             {% endfor %}					
 	</div>
       {% endif %}
       
