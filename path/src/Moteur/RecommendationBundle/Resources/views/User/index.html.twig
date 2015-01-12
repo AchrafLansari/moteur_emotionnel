@@ -2,7 +2,7 @@
 
 {% block body %}
    
-    <div class="container">
+    <div class="container" id="content">
 
       
       <div id="this-carousel-id" class="carousel slide">
@@ -41,7 +41,7 @@
              <div class="media-box">
              
             <a class="media-left media-middle" href="{{path('moteur_produit_page',{'id': book['id'] }) }}">
-              <img src="{{ book['image'] }}" alt="{{ book['id'] }}">
+              <img width="200px" height="231px" src="{{ book['image'] }}" alt="{{ book['id'] }}">
             </a>
             <div class="media-body">
               <h4 class="media-heading">{{ book['titre']|e }}</h4>
@@ -55,7 +55,7 @@
       
       {% if produits_profil != null %}
       	<div class="span9">
-		<h1>Produits pouvant vous intéresser</h1>		
+		<h1>Produits pouvant vous intï¿½resser</h1>		
 			{% for produit in produits_profil %}
 				<a href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}">
 					<div class="row">
