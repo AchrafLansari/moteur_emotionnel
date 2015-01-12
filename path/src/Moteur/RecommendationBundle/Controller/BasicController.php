@@ -248,9 +248,10 @@ class BasicController extends Controller
      * @param unknown $tab_recommandations
      * @return multitype:
      */
-    public function listedescriptionAction($tab_recommandations){
+    private function listedescriptionAction($tab_recommandations){
     	$books = array();
     	 
+    	//requete SQL pour récupérer les produits
     	$query = "SELECT DISTINCT p.id AS id, p.titre AS titre, p.image as image, sous_titre
 				FROM produit p
 				JOIN produit_mot_poids pmp ON pmp.produit_id = p.id
@@ -260,6 +261,7 @@ class BasicController extends Controller
     	
     	$i=0;
     	
+    	//construction de la requete
     	foreach ($tab_recommandations as $item=>$valeur ){
     		if($i++ != 0)
     			$query .= ",";
@@ -270,12 +272,16 @@ class BasicController extends Controller
     	$connexion = \Propel::getConnection();
     	$statement = $connexion->prepare($query);
     	
+    	//Liaison de chaque mot de la description avec la requete
     	$i = 1;
     	foreach ($tab_recommandations as $item=>$valeur ){
     	    $statement->bindParam($i++, $tab_recommandations[$item]);
     	}
 
+    	//exécution de la requete
     	$statement->execute();
+    	
+    	//récupération des résultats
     	$resultats = $statement->fetchAll();
     	return $resultats;
     	
