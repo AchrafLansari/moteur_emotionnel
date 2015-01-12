@@ -69,9 +69,8 @@ class BasicController extends Controller
 				->filterById($session->get('id'))
 				->findOne();
 			
-			$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
-			
-			
+				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
+				$produits_recommandes = $this->listeAction($id, 1, 10);
 			}
 			
 			$flag = false;
@@ -204,22 +203,9 @@ class BasicController extends Controller
      * Affiche une liste recommendant des produits à l'utilisateur en fonction de leurs scores
      * @param unknown $page la page à afficher
      * @param unknown $nombre le nombre de produits à afficher par page
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return multitype;
      */
-    public function listeAction($page, $nombre){
-    	//Un objet requ�te de Symfony avec les variables globales
-    	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
-    	$session = new Session();
-    	$session->start();
-        
-    	//Variable stockant la liste des produits correspondants
-    	$resultat = array();
-    	
-    	//Si l'utilisateur est identifi� par la session a s'assurer de la condition
-    	if($session->get('id')== null)
-    	{
-    		//l'id de l'utilisateur connect�
-	    	$id = $session->get('id');
+    private function listeAction($id, $page = 1, $nombre = 10){
 	    		
 	    	//la requ�te SQL faisant appel � la proc�dure stock�e charger de classer les produits par score avec l'utilisateur connect�
 	    	$sql = "CALL recommander_produits(?,?,?)";
@@ -236,12 +222,8 @@ class BasicController extends Controller
 	    	$statement->execute();	//ex�cute la requ�te
 
 	    	//Les r�sultats comprennent les champs suivants : "produit_id", "score", "titre", "auteur"
-	    	$resultat = $statement->fetchAll(); //r�cup�re l'ensemble des r�sultats
-    	}
-    	
-    	//renvoie les r�sultats dans la vue adapt�e
-    	return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('resultats' => $resultat, 'page' => $page, 'nombre' => $nombre));
-    }
+	    	return $statement->fetchAll(); //r�cup�re l'ensemble des r�sultats
+	}
     
     /**
      * Affiche 10 produits en fonction de la description de l'utilisateur
