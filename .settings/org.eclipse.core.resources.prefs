@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//path/app/Resources/views/base.html.twig=UTF-8
 encoding//path/app/Resources/views/moteur.html.twig=UTF-8
 encoding//path/src/Moteur/ProduitBundle/Controller/BasicController.php=UTF-8
 encoding//path/src/Moteur/ProduitBundle/Resources/views/Produit/afficher.html.twig=UTF-8
