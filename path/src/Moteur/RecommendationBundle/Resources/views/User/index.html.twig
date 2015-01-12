@@ -38,6 +38,7 @@
           <h3> Ses Articles Pourrait Vous Interesser : </h3>
           <div class="media">
               {% for book in recommandation_book %}
+                  <div class="media-box">
             <a class="media-left media-middle" href="{{path('moteur_produit_page',{'id': book['id'] }) }}">
               <img src="{{ book['image'] }}" alt="{{ book['id'] }}">
             </a>
@@ -45,12 +46,13 @@
               <h4 class="media-heading">{{ book['titre']|e }}</h4>
               {% if book['sous_titre'] is not null %} {{ book['sous_titre']|e }} {% endif %} 
             </div>
+                  </div>
              {% endfor %} 
           </div>
           
       {% endif %}
       
-      {% if flag == true  %}
+      {% if flag == "true"  %}
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -106,7 +108,7 @@
         $('.carousel').carousel({
           interval: 4000
         });
-       {% if flag == true  %}
+       {% if flag == "true"  %}
        $('#myModal').modal({
             keyboard: false,
             hide: false,

@@ -60,7 +60,7 @@ class BasicController extends Controller
 		$dejaVu = $request->cookies->has('cookie');
 		$session = new Session();
 		
-                $flag =true;
+                $flag = "true";
 		$recommandation_books = null;
  
 		if($dejaVu){
@@ -72,7 +72,7 @@ class BasicController extends Controller
                                 
                                 
                         }
-			$flag = false;
+			$flag = "false";
 			 
 		}else {
 			if($request->getMethod() == 'POST')
@@ -128,7 +128,7 @@ class BasicController extends Controller
 
 				
 			}
-			$flag=false;
+			$flag="false";
 				
 		}
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
