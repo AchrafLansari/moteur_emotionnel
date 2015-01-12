@@ -41,7 +41,7 @@ class BasicController extends Controller
         
         /**
          * Pour créer la vue "produit_detail_visite"
-         * SELECT produit_id AS id, titre, image, COUNT( nombre_visite ) AS visites FROM utilisateur_produit u JOIN produit p ON u.produit_id = p.id GROUP BY produit_id
+         * SELECT produit_id AS id, titre, image, SUM( nombre_visite ) AS visites FROM utilisateur_produit u JOIN produit p ON u.produit_id = p.id GROUP BY produit_id
          */
         
         return $this->render('MoteurProduitBundle:Produit:index.html.twig', array('nb_produits' => $nb_produits));
