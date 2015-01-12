@@ -62,6 +62,7 @@ class BasicController extends Controller
 		
                 $flag =true;
 		$recommandation_books = null;
+		$produits_recommandes = null;
  
 		if($dejaVu){
 			if($session->get('id')){
@@ -70,7 +71,7 @@ class BasicController extends Controller
 				->findOne();
 			
 				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
-				$produits_recommandes = $this->listeAction($id, 1, 10);
+				$produits_recommandes = $this->listeAction($session->get('id'), 1, 10);
 			}
 			
 			$flag = false;
@@ -133,7 +134,7 @@ class BasicController extends Controller
 				
 		}
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
-				'books' => $produits,'flag'=>$flag,'recommandation_book'=>$recommandation_books));
+				'books' => $produits,'flag'=>$flag,'recommandation_book'=>$recommandation_books, 'produits_profil'=>$produits_recommandes));
 	}
         
     

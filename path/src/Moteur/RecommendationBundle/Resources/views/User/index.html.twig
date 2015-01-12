@@ -38,6 +38,8 @@
           <h3> Ses Articles Pourrait Vous Interesser : </h3>
           <div class="media">
               {% for book in recommandation_book %}
+             <div class="media-box">
+             
             <a class="media-left media-middle" href="{{path('moteur_produit_page',{'id': book['id'] }) }}">
               <img src="{{ book['image'] }}" alt="{{ book['id'] }}">
             </a>
@@ -45,9 +47,30 @@
               <h4 class="media-heading">{{ book['titre']|e }}</h4>
               {% if book['sous_titre'] is not null %} {{ book['sous_titre']|e }} {% endif %} 
             </div>
+            </div>
              {% endfor %} 
           </div>
           
+      {% endif %}
+      
+      {% if produits_profil != null %}
+      	<div class="span9">
+		<h1>Produits pouvant vous intéresser</h1>		
+			{% for produit in produits_profil %}
+				<a href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}">
+					<div class="row">
+						<div class="span8">
+							<img src="{{ produit.image }}"/>
+							{{ produit.titre }}
+							<br>Auteur : {{ produit.auteur }}
+						</div>
+						<div class="span1">
+							{{ produit.score }}
+						</div>
+					</div>
+				</a>
+			{% endfor %}
+	</div>
       {% endif %}
       
       {% if flag == false  %}
