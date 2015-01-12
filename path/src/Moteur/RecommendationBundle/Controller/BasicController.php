@@ -31,6 +31,14 @@ class BasicController extends Controller
 	
 	
 
+	/**
+	 * Affiche le home
+	 * Enregistre/ou connecte un nouvel utilisateur
+	 * 
+	 * @todo Si l'utilisateur existe déjà alors il faut récupérer son id et le connecter
+	 * 
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
 	public function indexAction()
 	{
 		include_once 'functions/functions.php';
@@ -128,7 +136,11 @@ class BasicController extends Controller
 				'books' => $produits,'flag'=>$flag,'recommandation_book'=>$recommandation_books));
 	}
         
-    
+    /**
+     * @todo Déplacer dans le bundle produit
+     * @param unknown $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function bookAction($id)
     {
    
@@ -142,7 +154,13 @@ class BasicController extends Controller
     return $this->render('MoteurRecommendationBundle:User:book.html.twig',array(
                      'book' => $row));
     }
-    // recherche de produits en utilisant la barre de recherche 
+    
+    
+    /**
+     * Recherche de produits en utilisant la barre de recherche
+     * @todo Afficher la liste avec la note moyenne
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function rechercherAction()
     {  
     	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
@@ -200,9 +218,9 @@ class BasicController extends Controller
     }
     
     /**
-     * Affiche une liste recommendant des produits � l'utilisateur en fonction de leurs scores
-     * @param unknown $page la page � afficher
-     * @param unknown $nombre le nombre de produits � afficher par page
+     * Affiche une liste recommendant des produits à l'utilisateur en fonction de leurs scores
+     * @param unknown $page la page à afficher
+     * @param unknown $nombre le nombre de produits à afficher par page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listeAction($page, $nombre){
@@ -315,14 +333,6 @@ class BasicController extends Controller
     				$score->getScore()
     		);
     	}
-    	/*foreach ($utilisateurs_score as $utilisateur){
-                var_dump($utilisateur);
-                echo '<br><br>';
-                print_r($utilisateur[1]);
-               
-                echo '<br><br>';
-        }*/
-        
         
     	//Affiche les r�sultats dans la vue correspondante
     	return $this->render(

@@ -20,7 +20,7 @@
 			Ce produit a été visiter {{ visites }} fois
 			<br>
 			{% if achat %}
-				Vous avez acheté ce produit
+				Vous avez téléchargé ce produit
 				{% if not note %}
 					<div class="row">
 						<form method="post" action="{{ path('moteur_produit_note', {'id_produit':produit.id, 'id_utilisateur':utilisateur}) }}">
@@ -30,7 +30,7 @@
 					</div>
 				{% endif %}
 				{% if note %}
-					<br>Votre note : {{ note }}
+					<br>Note du produit : {{ note }}
 				{% endif %}
 			{% endif %}
 			

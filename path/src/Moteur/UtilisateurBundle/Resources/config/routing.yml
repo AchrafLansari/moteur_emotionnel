@@ -1,31 +1,25 @@
-
-moteur_utilisateur_ip:
-    path:     /admin/utilisateur/ip/ajout
-    defaults: { _controller: MoteurUtilisateurBundle:Default:addIP }
+moteur_utilisateur_affiche:
+    path:     /admin/utilisateur/affiche/{nom}/{prenom}
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:afficher }
 moteur_utilisateur_ajout:
-    path:     /admin/utilisateur/ajout
-    defaults: { _controller: MoteurUtilisateurBundle:Default:add }
+    path:     /admin/utilisateur/ajout/{nombre}
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:add }
 moteur_utilisateur_interet_creer:
     path:     /admin/utilisateur/interet/creer/{nom}
-    defaults: { _controller: MoteurUtilisateurBundle:Default:createInteret }
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:createInteret }
 moteur_utilisateur_interet_ajout:
-    path:     /admin/utilisateur/interet/ajout
-    defaults: { _controller: MoteurUtilisateurBundle:Default:addInteret }
-moteur_utilisateur_creer:
-    path:     /admin/utilisateur/creer
-    defaults: { _controller: MoteurUtilisateurBundle:Basic:creer }
+    path:     /utilisateur/interet/ajout
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:addInteret }
+moteur_interet_liste:
+    path:     admin/interet/liste
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:lister }
+moteur_utilisateur_connecte:
+    path:     /admin
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:connecter }
+moteur_utilisateur_deconnecte:
+    path:     /admin/deconnecter
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:deconnecter }
+
 moteur_utilisateur_liste:
     path:     /admin/utilisateur/liste/{page}/{nombre}
     defaults: { _controller: MoteurUtilisateurBundle:Basic:lister }
-moteur_utilisateur_affiche:
-    path:     /utilisateur/affiche/{nom}/{prenom}
-    defaults: { _controller: MoteurUtilisateurBundle:Basic:afficher }
-moteur_utilisateur_connecte:
-    path:     /connexion
-    defaults: { _controller: MoteurUtilisateurBundle:Basic:connecter }
-moteur_interet_creer:
-    path:     /admin/interet/creer/{nom}
-    defaults: { _controller: MoteurUtilisateurBundle:Default:creer }
-moteur_interet_liste:
-    path:     admin/interet/liste
-    defaults: { _controller: MoteurUtilisateurBundle:Default:lister }

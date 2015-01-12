@@ -25,6 +25,7 @@ class BasicController extends Controller
 {
 	
     /**
+     * @todo
      * Affiche le nombre de produits ainsi que les produits les plus consultés ( a faire)
      */
     
@@ -32,6 +33,11 @@ class BasicController extends Controller
         
         $nb_produits = ProduitQuery::create()
                     ->find()->count();
+        
+        /**
+         * @todo créer une vue pour avoir le nombre de visites par document
+         * Créer une reqûete pour récupérer la liste des documents les plus consultés
+         */
         
         return $this->render('MoteurProduitBundle:Produit:index.html.twig', array('nb_produits' => $nb_produits));
 
@@ -122,6 +128,10 @@ class BasicController extends Controller
     	 */
     }
     
+    /**
+     * Génère et enregistre une liste de produits
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function genererAction(){
         //*
         $form = $this->createFormBuilder()
@@ -216,7 +226,10 @@ class BasicController extends Controller
     	return $this->render('MoteurProduitBundle:Produit:generer.html.twig', array('form' => $form->createView()));
     }
     
-    
+    /**
+     * Crée et enregistre un nouveau produit
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
      public function addAction(){
     	$produit = new Produit();	//Le nouvel utilisateur
     	$form = $this->createForm(new ProduitType(), $produit);	//Le formulaire associé
@@ -272,7 +285,10 @@ class BasicController extends Controller
     }
         */
    
-    
+   /**
+    * Indexe un produit
+    * @param unknown $produit
+    */ 
     private function indexDocument($produit){
     	$kernel = $this->get('kernel');
     	$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
@@ -308,8 +324,15 @@ class BasicController extends Controller
     	 
     	$con->commit();
     }
-    /*
-     * affiche un produit en passant son id en paramétre et ses informations de boosting
+    
+    /**
+     * Affiche un produit en passant son id en paramétre et ses informations de boosting
+     * @param unknown $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * 
+     * @todo Update le nombre de visites de l'utilisateur courant s'il est connecté
+     * @todo retourner le nombre de visites
+     * @todo retourner la note
      */
     public function afficherAction($id){
         
