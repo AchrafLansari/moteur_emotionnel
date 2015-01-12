@@ -9,10 +9,5 @@ moteur_utilisateur:
 moteur_recommendation:
     resource: "@MoteurRecommendationBundle/Resources/config/routing.yml"
     prefix:   /moteur/
-
-user:
-    resource: "@UserBundle/Resources/config/routing.yml"
-    prefix:   /
-    
   
 
