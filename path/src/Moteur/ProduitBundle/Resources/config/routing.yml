@@ -13,3 +13,6 @@ moteur_produit_affiche:
 moteur_produit_generer:
     path:     /admin/book/generer
     defaults: { _controller: MoteurProduitBundle:Basic:generer }
+book_page :
+    path:     /book/{id}
+    defaults: { _controller: MoteurProduitBundle:Basic:book }

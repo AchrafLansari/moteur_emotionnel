@@ -7,9 +7,6 @@ moteur_recommendation_utilisateur:
 user_homepage:
     path:     /home
     defaults: { _controller: MoteurRecommendationBundle:Basic:index }  
-book_page :
-    path:     /book/{id}
-    defaults: { _controller: MoteurRecommendationBundle:Basic:book }
 search:
     path:     /search/
     defaults: { _controller: MoteurRecommendationBundle:Basic:rechercher }

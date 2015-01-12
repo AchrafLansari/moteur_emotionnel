@@ -345,4 +345,22 @@ class BasicController extends Controller
 
         }
     }
+    
+    /**
+     * @param unknown $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function bookAction($id)
+    {
+   
+    $produit = new ProduitQuery;
+    $row =  $produit->findById($id)->toArray();
+    
+    if ($row == null) {
+        throw $this->createNotFoundException('No book found for id '.$id);
+    }
+  
+    return $this->render('MoteurRecommendationBundle:User:book.html.twig',array(
+                     'book' => $row));
+    }
 }
