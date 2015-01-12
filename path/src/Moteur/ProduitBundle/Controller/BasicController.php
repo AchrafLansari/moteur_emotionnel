@@ -18,6 +18,7 @@ use Propel;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 set_time_limit(10000);
 
@@ -25,27 +26,29 @@ class BasicController extends Controller
 {
 	
     /**
-     * @todo
      * Affiche le nombre de produits ainsi que les produits les plus consultés ( a faire)
      */
     
     public function indexAction(){
+        $session = new Session();
+        if($session->get("connexion") != null){
+	    	//Compte le nombre de produits stockés
+	        $nb_produits = ProduitQuery::create()->find()->count();
+	        
+	        //Le nombre de produits à récupérer
+	        $nombre = 5;
+	        $query = "SELECT id, titre, image, visites FROM produit_detail_visite ORDER BY visites DESC LIMIT ".$nombre;
+	        
+	        //Récupération des produits les plus visités
+	        $connexion = Propel::getConnection();
+	        $statement = $connexion->prepare($query);
+	        $statement->execute();
+	        $produits = $statement->fetchAll();
+	        
+	        return $this->render('MoteurProduitBundle:Produit:index.html.twig', array('produits' => $produits, 'nb_produits' => $nb_produits));
+        }
         
-        $nb_produits = ProduitQuery::create()
-                    ->find()->count();
-        
-        /**
-         * @todo créer une vue pour avoir le nombre de visites par document
-         * Créer une reqûete pour récupérer la liste des documents les plus consultés
-         */
-        
-        /**
-         * Pour créer la vue "produit_detail_visite"
-         * SELECT produit_id AS id, titre, image, SUM( nombre_visite ) AS visites FROM utilisateur_produit u JOIN produit p ON u.produit_id = p.id GROUP BY produit_id
-         */
-        
-        return $this->render('MoteurProduitBundle:Produit:index.html.twig', array('nb_produits' => $nb_produits));
-
+        return $this->redirect($this->generateUrl("moteur_utilisateur_connecte"));
     }
     
     
@@ -334,7 +337,13 @@ class BasicController extends Controller
      */
     public function afficherAction($id){
         
-        $produit = ProduitQuery::create()->findOneById($id);
+        $query = "SELECT titre, sous_titre, description, image, auteur, visites FROM produit_detail_visite WHERE id = ? LIMIT 1";
+        $connexion = \Propel::getConnection();
+        $statement = $connexion->prepare($query);
+        $statement->bindParam(1, $id, \PropelPDO::PARAM_INT);
+        $statement->execute();
+        $produit = $statement->fetch();
+        
     	if($produit){
                     return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit));
 

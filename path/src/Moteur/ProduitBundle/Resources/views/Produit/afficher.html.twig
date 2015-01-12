@@ -8,6 +8,7 @@
 <div class="row">
 	<div class="span6">
 		<h1>{{ produit.titre }}</h1>
+		<img src="{{ produit.image }}">
 		<p>{{ produit.description }}</p>
 	</div>
 	<div class="span3">
@@ -17,28 +18,7 @@
 		</div>
 		<div class="row">
 			<h2>Informations</h2>
-			Ce produit a été visiter {{ visites }} fois
-			<br>
-			{% if achat %}
-				Vous avez téléchargé ce produit
-				{% if not note %}
-					<div class="row">
-						<form method="post" action="{{ path('moteur_produit_note', {'id_produit':produit.id, 'id_utilisateur':utilisateur}) }}">
-							<label class="span1">Noter</label>
-							<input class="span2" type="number" max="10" min="0" name="note"/>
-						</form>
-					</div>
-				{% endif %}
-				{% if note %}
-					<br>Note du produit : {{ note }}
-				{% endif %}
-			{% endif %}
-			
-			{% if not achat %}
-				<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/produit/achat/{{ produit.id }}/{{ utilisateur }}">
-					Acheter le produit
-				</a>
-			{% endif %}
+			Ce produit a été visité {{ produit.visites }} fois
 		</div>
 	</div>
 </div>
