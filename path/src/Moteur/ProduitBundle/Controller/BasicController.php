@@ -124,9 +124,7 @@ class BasicController extends Controller
 	    	return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit, 'visites' => $utilisateurProduit->getNombreVisite(), 'achat' => $utilisateurProduit->getAchat(), 'note' => $utilisateurProduit->getNote(), 'utilisateur' => $utilisateurProduit->getUtilisateurId()));
     	}
     	
-    	/**
-    	 * @todo Renvoyer un message d'erreur en json?
-    	 */
+    	return null;
     }
     
     /**
@@ -331,9 +329,6 @@ class BasicController extends Controller
      * @param unknown $id
      * @return \Symfony\Component\HttpFoundation\Response
      * 
-     * @todo Update le nombre de visites de l'utilisateur courant s'il est connecté
-     * @todo retourner le nombre de visites
-     * @todo retourner la note
      */
     public function afficherAction($id){
         
@@ -356,6 +351,7 @@ class BasicController extends Controller
     /**
      * @param unknown $id
      * @return \Symfony\Component\HttpFoundation\Response
+     * @todo si l'utilisateur est connecté alors il faut actualiser son nombre de visites
      */
     public function bookAction($id)
     {
