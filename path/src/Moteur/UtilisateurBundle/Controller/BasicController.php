@@ -107,13 +107,18 @@ class BasicController extends Controller
     
     
     /**
-     * Déconnecte un administrateur
+     * Dï¿½connecte un administrateur
      */
     public function deconnecterAction(){
     	/**
-    	 * @todo Déconnecter l'administrateur
+    	 * @todo Dï¿½connecter l'administrateur
     	 * Renvoyer un message/une vue
     	 */
+         
+        $session = new Session();
+        $session->remove('connexion');
+        return $this->redirect($this->generateUrl('moteur_utilisateur_connecte'));
+        
     }
     
     
@@ -123,10 +128,10 @@ class BasicController extends Controller
     }
     
     /**
-     * Génère un nombre d'utilisateurs avec des centres d'intérêts et des interactions avec des produits existants
+     * Gï¿½nï¿½re un nombre d'utilisateurs avec des centres d'intï¿½rï¿½ts et des interactions avec des produits existants
      *
      * @todo afficher une vue en retour
-     * @param unknown $nombre Le nombre de nouveaux utilisateurs à créer
+     * @param unknown $nombre Le nombre de nouveaux utilisateurs ï¿½ crï¿½er
      * @return NULL
      */
     public function addAction($nombre){
@@ -318,7 +323,7 @@ class BasicController extends Controller
     
     
     /**
-     * Créer un nouveau centre d'intérêt
+     * Crï¿½er un nouveau centre d'intï¿½rï¿½t
      * @todo il faut renvoyer une vue ou un message
      * @param unknown $nom
      */
@@ -327,7 +332,7 @@ class BasicController extends Controller
     }
     
     /**
-     * Permet à un utilisateur d'ajouter un centre d'intérêt
+     * Permet ï¿½ un utilisateur d'ajouter un centre d'intï¿½rï¿½t
      * @param unknown $id_interet
      */
     public function addInteretAction($id_interet){
