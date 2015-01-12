@@ -140,7 +140,6 @@ class BasicController extends Controller
     
     /**
      * Recherche de produits en utilisant la barre de recherche
-     * @todo Afficher la liste avec la note moyenne
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function rechercherAction()
