@@ -2,7 +2,7 @@
 
 {% block body %}
    
-    <div class="container">
+    <div class="container" id="content">
 
       
       <div id="this-carousel-id" class="carousel slide">
@@ -50,47 +50,47 @@
           
       {% endif %}
       
-      {% if flag == false  %}
+      {% if flag == true  %}
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        
-		        <h4 class="modal-title" id="exampleModalLabel">Identification </h4>
-		      </div>
-		      <div class="modal-body">
-		        <form action="{{ path('user_homepage') }}" method="post" enctype="multipart/form-data">
-		          <div class="form-group">
-		            <label for="nom" class="control-label">Nom :</label>
-		            <input name="nom" type="text" class="form-control" id="recipient-name" placeholder="Entrez votre nom" required>
-		          </div>
-		          <div class="form-group">
-		            <label for="prenom" class="control-label">Prenom:</label>
-		            <input name="prenom" type="text" class="form-control" id="recipient-name" placeholder="Entrez votre prenom" required>
-		          </div>
-		          <div class="form-group">
-		            <label for="age" class="control-label">Age :</label>
-		            <input name="age" type="number" class="form-control" id="recipient-name" required>
-		          </div>
-		          <div class="form-group">
-		            <label for="ville" class="control-label">Ville :</label>
-		            <input name="ville" type="text" class="form-control" id="recipient-name"  placeholder="Entrez votre ville">
-		          </div>
-		          <div class="form-group">
-		            <label for="description" class="control-label">Description :</label>
-		            <textarea name="description" class="form-control" id="message-text" placeholder="Entrez votre description" ></textarea>
-		          </div>
-		           
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-		        <button type="submit" class="btn btn-primary">Valider</button>
-		          
-		        </form>
-		      
-		       </div>
-		      
-		    </div>
-		  </div>
-		</div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title" id="exampleModalLabel">Identification </h4>
+      </div>
+      <div class="modal-body">
+        <form action="{{ path('user_homepage') }}" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="nom" class="control-label">Nom :</label>
+            <input name="nom" type="text" class="form-control" id="recipient-name" placeholder="Entrez votre nom" required>
+          </div>
+          <div class="form-group">
+            <label for="prenom" class="control-label">Prenom:</label>
+            <input name="prenom" type="text" class="form-control" id="recipient-name" placeholder="Entrez votre prenom" required>
+          </div>
+          <div class="form-group">
+            <label for="age" class="control-label">Age :</label>
+            <input name="age" type="number" class="form-control" id="recipient-name" required>
+          </div>
+          <div class="form-group">
+            <label for="ville" class="control-label">Ville :</label>
+            <input name="ville" type="text" class="form-control" id="recipient-name"  placeholder="Entrez votre ville">
+          </div>
+          <div class="form-group">
+            <label for="description" class="control-label">Description :</label>
+            <textarea name="description" class="form-control" id="message-text" placeholder="Entrez votre description" ></textarea>
+          </div>
+           
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-primary">Valider</button>
+          
+        </form>
+      
+       </div>
+      
+    </div>
+  </div>
+</div>
      {% endif %}
       <div id="footer_cookies" style="display: none"> En poursuivant votre navigation sur ce site, vous acceptez l'utilisation de nos cookies afin de vous offrir une meilleure utilisation de ce site Internet.</div>
     </div> <!-- /container -->
@@ -106,7 +106,7 @@
         $('.carousel').carousel({
           interval: 4000
         });
-       {% if flag == false  %}
+       {% if flag == true  %}
        $('#myModal').modal({
             keyboard: false,
             hide: false,

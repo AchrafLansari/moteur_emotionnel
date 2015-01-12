@@ -44,21 +44,23 @@ class BasicController extends Controller
 	
 		$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
 	
-        $sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 25";
-        $connexion = \Propel::getConnection();
-        $statement = $connexion->prepare($sql);
-        $statement->execute();
+                $sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 25";
+                $connexion = \Propel::getConnection();
+                $statement = $connexion->prepare($sql);
+                $statement->execute();
                 
-        $produits =  $statement->fetchAll();
+                $produits =  $statement->fetchAll();
                
 	
 		$books = count($produits);
 		$response = new Response();
-		
+		//$response->headers->clearCookie('cookie');
+		//$response->send();
+	
 		$dejaVu = $request->cookies->has('cookie');
 		$session = new Session();
 		
-        $flag =true;
+                $flag =true;
 		$recommandation_books = null;
  
 		if($dejaVu){
@@ -66,9 +68,12 @@ class BasicController extends Controller
 				$user = UtilisateurQuery::create()
 				->filterById($session->get('id'))
 				->findOne();
-				
-				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));                
-            } 
+				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
+                                
+                                
+                        }
+			$flag = false;
+			 
 		}else {
 			if($request->getMethod() == 'POST')
 			{
@@ -85,6 +90,7 @@ class BasicController extends Controller
 				$description = $_POST['description'];
 	
 				// définit et récupère des attributs de session
+	
 				$geo = new GeoIp();
 				
 				do{
@@ -123,6 +129,7 @@ class BasicController extends Controller
 				
 			}
 			$flag=false;
+				
 		}
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
 				'books' => $produits,'flag'=>$flag,'recommandation_book'=>$recommandation_books));
@@ -158,40 +165,37 @@ class BasicController extends Controller
     		
     		$utilisateur_id = $session->get('id');
     		
-    		if($utilisateur_id != null){
-	                
-	    		foreach ($indexation->indexRequete as $mot){
-	    			$m_Req = MotQuery::create()
-	    			->filterByMot($mot)
-	    			->findOne();
-	    			 
-	    			if(!$m_Req){
-	    				$m_Req = new Mot();
-	    				$m_Req->setMot($mot)->save();
-	    			}
-	    			$ajoutRequete = new Requete();
-	    			$ajoutRequete->setUtilisateurId($utilisateur_id);
-	    			$ajoutRequete->setRequeteId($requete_id + 1);
-	    			$ajoutRequete->setMotId($m_Req->getId());
-	    			$ajoutRequete->save();
-	    		}
-	    		
-	    		$requete_id++;
-	    		$sql = "CALL rechercher_produits_via_requete(?)";
-	    		 
-	    		//\Propel::
-	    		$connexion = \Propel::getConnection();
-	    		$statement = $connexion->prepare($sql);
-	    		$statement->bindParam(1, $requete_id, \PDO::PARAM_INT);
-	    		$statement->execute();
-	    		
-	    		$resultat = $statement->fetchAll();
-	    	}  
-	        $books = count($resultat);
-	        
-	        return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_produits' => $books,'produits' => $resultat));
-    	}
-    	return $this->redirect($this->generateUrl("user_homepage"));
+                
+    		foreach ($indexation->indexRequete as $mot){
+    			$m_Req = MotQuery::create()
+    			->filterByMot($mot)
+    			->findOne();
+    			 
+    			if(!$m_Req){
+    				$m_Req = new Mot();
+    				$m_Req->setMot($mot)->save();
+    			}
+    			$ajoutRequete = new Requete();
+    			$ajoutRequete->setUtilisateurId($utilisateur_id);
+    			$ajoutRequete->setRequeteId($requete_id + 1);
+    			$ajoutRequete->setMotId($m_Req->getId());
+    			$ajoutRequete->save();
+    		}
+    		
+    		$requete_id++;
+    		$sql = "CALL rechercher_produits_via_requete(?)";
+    		 
+    		//\Propel::
+    		$connexion = \Propel::getConnection();
+    		$statement = $connexion->prepare($sql);
+    		$statement->bindParam(1, $requete_id, \PDO::PARAM_INT);
+    		$statement->execute();
+    		
+    		$resultat = $statement->fetchAll();
+    	}  
+        $books = count($resultat);
+        
+        return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $resultat));
     }
     
     /**
