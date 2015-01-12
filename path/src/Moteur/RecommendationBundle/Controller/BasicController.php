@@ -44,10 +44,10 @@ class BasicController extends Controller
 	
 		$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
 	
-                $sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 25";
-                $connexion = \Propel::getConnection();
-                $statement = $connexion->prepare($sql);
-                $statement->execute();
+        $sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 25";
+        $connexion = \Propel::getConnection();
+        $statement = $connexion->prepare($sql);
+        $statement->execute();
                 
                 $produits =  $statement->fetchAll();
                
@@ -68,10 +68,12 @@ class BasicController extends Controller
 				$user = UtilisateurQuery::create()
 				->filterById($session->get('id'))
 				->findOne();
-				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
-                                
-                                
-                        }
+			
+			$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
+			
+			
+			}
+			
 			$flag = false;
 			 
 		}else {
@@ -195,7 +197,7 @@ class BasicController extends Controller
     	}  
         $books = count($resultat);
         
-        return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_books' => $books,'books' => $resultat));
+        return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_produits' => $books,'produits' => $resultat));
     }
     
     /**
@@ -241,6 +243,11 @@ class BasicController extends Controller
     	return $this->render('MoteurRecommendationBundle:Default:index.html.twig', array('resultats' => $resultat, 'page' => $page, 'nombre' => $nombre));
     }
     
+    /**
+     * Affiche 10 produits en fonction de la description de l'utilisateur
+     * @param unknown $tab_recommandations
+     * @return multitype:
+     */
     public function listedescriptionAction($tab_recommandations){
     	$books = array();
     	 
