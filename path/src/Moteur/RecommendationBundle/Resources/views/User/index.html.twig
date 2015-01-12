@@ -16,10 +16,10 @@
             {% else %}
                  <div class="item">
             {% endif %}
-                         <a href="/book/{{ book['id'] }}">  <img  src="{{ book['image'] }}" alt="{{ book['id'] }}" style =" display: block; margin-left: auto;margin-right: auto;width:300px;height:360px;  " />
+                         <a href="{{path('moteur_produit_page',{'id': book['id'] }) }}">  <img  src="{{ book['image'] }}" alt="{{ book['id'] }}" style =" display: block; margin-left: auto;margin-right: auto;width:300px;height:360px;  " />
             </a>
             <div class="carousel-caption">
-                <p style="text-align:center;" ><a  href="/book/{{ book['id'] }}">{{ book['titre']|e }}</a></p>
+                <p style="text-align:center;" ><a  href="{{path('moteur_produit_page',{'id': book['id'] }) }}">{{ book['titre']|e }}</a></p>
               <p style="text-align:center;">{% if book['sous_titre'] is not null %}  {{ book['sous_titre']|e }} {% endif %}</p>
             </div>
           </div>
@@ -38,7 +38,7 @@
           <h3> Ses Articles Pourrait Vous Interesser : </h3>
           <div class="media">
               {% for book in recommandation_book %}
-            <a class="media-left media-middle" href="/book/{{book['id']}}">
+            <a class="media-left media-middle" href="{{path('moteur_produit_page',{'id': book['id'] }) }}">
               <img src="{{ book['image'] }}" alt="{{ book['id'] }}">
             </a>
             <div class="media-body">

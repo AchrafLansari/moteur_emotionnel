@@ -255,7 +255,7 @@ class BasicController extends Controller
     	return $this->render('MoteurProduitBundle:Produit:add.html.twig', array('form' => $form->createView()));
     }
     
-   /* 
+    
     public function getAction($id_produit, $id_utilisateur){
     	$produit = ProduitQuery::create()->findOneById($id_produit);
     	if($produit){
@@ -282,7 +282,7 @@ class BasicController extends Controller
     	}
     	$utilisateurProduit->save();
     }
-        */
+        
    
    /**
     * Indexe un produit
@@ -355,10 +355,14 @@ class BasicController extends Controller
      */
     public function bookAction($id)
     {
-   
+    $session = new Session();
     $produit = new ProduitQuery;
     $row =  $produit->findById($id)->toArray();
+    $id_utilisateur = $session->get('id');
     
+    if( $id_utilisateur != null){
+        $this->updateNombreVueProduit($id_utilisateur,$id);
+    }
     if ($row == null) {
         throw $this->createNotFoundException('No book found for id '.$id);
     }
