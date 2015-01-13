@@ -92,6 +92,7 @@ class BasicController extends Controller
     		if ($form->isValid()){
                     if($_POST['form']['login']=="admin" && $_POST['form']['mdp']=="admin"){
                         $session->set('connexion','true');
+                        return $this->redirect($this->generateUrl('user_homepage'));
                     }
                     
                 }
@@ -107,7 +108,7 @@ class BasicController extends Controller
     public function deconnecterAction(){
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->remove('connexion');
-        return $this->redirect($this->generateUrl('moteur_utilisateur_connecte'));
+        return $this->redirect($this->generateUrl('user_homepage'));
         
     }
     
