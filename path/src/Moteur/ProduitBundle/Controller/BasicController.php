@@ -331,6 +331,10 @@ class BasicController extends Controller
      * 
      */
     public function afficherAction($id){
+    	
+    	/**
+    	 * @todo updateNombreVues
+    	 */
         
         $query = "SELECT titre, sous_titre, description, image, auteur, visites FROM produit_detail_visite WHERE id = ? LIMIT 1";
         $connexion = \Propel::getConnection();
