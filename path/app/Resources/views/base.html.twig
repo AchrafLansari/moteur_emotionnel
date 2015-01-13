@@ -68,24 +68,20 @@
               
               {% if  app.session.get('connexion') %}
 	              <li class="dropdown">
-	                <a class="dropdown-toggle" data-toggle="dropdown">
-	                	Admin - Utilisateurs<b class="caret"></b>
-	                </a>
-	                <ul class="dropdown-menu">	                  
+	                
+	                
 	                  <li><a href="{{ path('moteur_interet_liste') }}">Liste des centres d'intérêts</a></li>
 	                  <li><a href="{{ path('moteur_utilisateur_liste', {'page': 1, 'nombre': 10}) }}">Liste des utilisateurs</a></li>
-	                </ul>
+	                
 	              </li><!-- dropdown -->
 	              <li class="dropdown">
-	                <a class="dropdown-toggle" data-toggle="dropdown">
-	                	Admin - Produits<b class="caret"></b>
-	                </a>
-	                <ul class="dropdown-menu">
+	                
+	                
 	                  
 	                  <li><a href="{{ path('moteur_produit_homepage') }}">Liste des produits</a></li>
 	                  <li><a href="{{ path('moteur_produit_ajout') }}">Ajouter un produit</a></li>
 	                  <li><a href="{{ path('moteur_produit_generer') }}">Générer des produits</a></li>
-	                </ul>
+	                
 	              </li><!-- dropdown -->
 	              <li><a href="{{ path('moteur_utilisateur_deconnecte') }}">Déconnexion</a></li>
               {% endif %}
