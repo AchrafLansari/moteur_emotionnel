@@ -1,10 +1,10 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<div class="span9" id="content">
+<div class="span12" id="content" style="text-align: center;">
 	<h1>Ajouter un Produit : </h1>
 	
-	<form style="margin-top:50px;" action="{{ path('moteur_produit_ajout') }}" method="post" {{ form_enctype(form) }}>
+	<form style="margin-top:20px;" action="{{ path('moteur_produit_ajout') }}" method="post" {{ form_enctype(form) }}>
 	    {{ form_widget(form) }}
 	    <input type="submit" />
 	</form>

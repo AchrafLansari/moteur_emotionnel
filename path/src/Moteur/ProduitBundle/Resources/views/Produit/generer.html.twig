@@ -1,7 +1,7 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<div class="span9" id="content">
+<div class="span12" id="content" style="text-align: center;">
 	<h1>Générer des produits</h1>
 	
 	<form action="{{ path('moteur_produit_generer') }}" method="post" {{ form_enctype(form) }}>
