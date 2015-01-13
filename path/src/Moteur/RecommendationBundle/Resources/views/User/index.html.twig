@@ -18,8 +18,8 @@
 			            	<img  src="{{ book['image'] }}" alt="{{ book['id'] }}" style =" display: block; margin-left: auto;margin-right: auto;width:300px;height:360px;  " />
 			            </a>
 			            <div class="carousel-caption">
-			                <p style="text-align:center;" ><a  href="{{path('moteur_produit_page',{'id': book['id'] }) }}">{{ book['titre']|e }}</a></p>
-			             	<p style="text-align:center;">{% if book['sous_titre'] is not null %}  {{ book['sous_titre']|e }} {% endif %}</p>
+			                <p style="text-align:center;font-size: 20px;" ><a  href="{{path('moteur_produit_page',{'id': book['id'] }) }}">{{ book['titre']|e }}</a></p>
+			             	<p style="text-align:center;font-size: 14px;">{% if book['sous_titre'] is not null %}  {{ book['sous_titre']|e }} {% endif %}</p>
 					             </div>
 							</div>
             {% endfor %}
