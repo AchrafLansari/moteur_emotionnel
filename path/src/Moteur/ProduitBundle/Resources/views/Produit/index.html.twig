@@ -8,23 +8,22 @@
                  <h3>  {{ nb_produits }} Produits  </h3>               
 	             <div style="margin-top: 50px;"  class="panel-heading">
 	             	<h1>Liste des Produits les plus Consultés : </h1>
-		             <table style="margin-top: 100px;" class="table">
-		               <thead>
-		                   <tr>
-		                   <th> Image : </th>
-		                   <th> Titre : </th>
-		                   <th> Visites : </th>
-		                   </tr>
-		               </thead>
-		               <tbody>
+		             
 	                   {% for produit in produits %}
-							<tr>
-								<td><img src="{{ produit.image }}" alt"{{ produit.titre }}"/></td>
-								<td><a href="{{ path('moteur_produit_affiche', {'id': produit.id}) }}">{{ produit.titre }}</a></td>						
-								<td>{{ produit.visites }}</td>
-							</tr>
-							{% endfor %}
-		               </tbody>
+							
+                            <div class="media-box" style="padding-bottom: 10px;padding-top: 10px;">
+                                
+                                
+                               <img width="200px" height="250px"  src="{{ produit.image }}" alt="{{ produit.titre }}"  />
+                                <a href="{{ path('moteur_produit_affiche', {'id': produit.id}) }}">{{ produit.titre }}</a>
+                                <div class="media-body">
+                                  
+                                  {% if produit.visites  is defined %}  {{ produit.visites }}   {% endif %}
+                                </div>
+                            </div>
+                                
+			    {% endfor %}
+		              
 		             </table>
 	             </div>
 			</div>
