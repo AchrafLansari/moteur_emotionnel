@@ -4,18 +4,31 @@
    
     <div class="container" id="content">
         
-        
-        <img src="{{ book[0]['Image'] }}" style="margin-left: 470px;"/>
-        <h1 style="text-align:center;margin-top:10px;"> {{ book[0]['Titre'] }}</h1> 
-        <h3 style="text-align:center;margin-top:10px;"> {{ book[0]['SousTitre'] }}</h3> 
-        
-        <p style="margin: 12px 179px 9px; ">
-        {{ book[0]['Description'] }}
-        </p>
-        <div class="notation_telechargement">
-        <a style="float:right;" href="{{ book[0]['Lien'] }}" target="_blank">  <img id="download" src="{{ asset('bundles/user/images/download.png') }}" alt="Telecharger"  /> </a>
-        <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
-        <div style="float:left;" class="basic" id="notation" data-average="2" data-id="{{ book[0]['Id'] }}"></div>
+        <div class="row">
+	        <div class="span4">
+	        	<img src="{{ book[0]['Image'] }}"/>
+	        </div>
+	        <div class="span8">
+	        	<h1 style="margin-top:10px;"> {{ book[0]['Titre'] }}</h1> 
+		        <h3 style="margin-top:10px;"> {{ book[0]['SousTitre'] }}</h3> 
+		        
+		        <p style="font-size: 18px;">
+		        	{{ book[0]['Description'] }}
+		        </p>
+		        
+		        <div class="notation_telechargement row">
+		        	<div class="span4">
+		        		<a href="{{ book[0]['Lien'] }}" target="_blank" id="download"  style="font-size: 18px;">
+		        			<img style="height: 40px;" src="{{ asset('bundles/user/images/download.png') }}" alt="Telecharger" title="Telecharger le livre" />
+		        			Telecharger le livre
+		        		</a>
+		        	</div>
+		        	<div class="basic span4" id="notation" data-average="2" data-id="{{ book[0]['Id'] }}"></div>
+		        	
+		     	   <!-- in this exemple, 12 is the average and 1 is the id of the line to update in DB -->
+		        	
+		        </div>
+	        </div>
         </div>
         
 
