@@ -19,6 +19,7 @@ moteur_produit_ajout:
     path:     /admin/produit/ajouter
     defaults: { _controller: MoteurProduitBundle:Basic:add }
 
+#inutile du fait de moteur_produit_page
 moteur_produit_affiche:
     path:     /admin/produit/affiche/{id}
     defaults: { _controller: MoteurProduitBundle:Basic:afficher }

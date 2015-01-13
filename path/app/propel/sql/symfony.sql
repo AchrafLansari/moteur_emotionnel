@@ -13,8 +13,11 @@ CREATE TABLE `produit`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `titre` VARCHAR(100),
+    `sous_titre` VARCHAR(255),
     `auteur` VARCHAR(100),
-    `description` VARCHAR(1000),
+    `description` TEXT,
+    `image` VARCHAR(255),
+    `lien` VARCHAR(255),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
@@ -112,6 +115,8 @@ CREATE TABLE `utilisateur`
     `mail` VARCHAR(100),
     `age` INTEGER,
     `ville` VARCHAR(100),
+    `description` VARCHAR(255),
+    `ip_utilisateur` VARCHAR(12),
     `ip_id` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `utilisateur_FI_1` (`ip_id`),

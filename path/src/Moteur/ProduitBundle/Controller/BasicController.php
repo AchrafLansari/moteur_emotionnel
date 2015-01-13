@@ -325,17 +325,12 @@ class BasicController extends Controller
     }
     
     /**
-     * Affiche un produit en passant son id en paramétre et ses informations de boosting
+     * Affiche un produit en passant son id en paramètre et ses informations de boosting
      * @param unknown $id
      * @return \Symfony\Component\HttpFoundation\Response
      * 
      */
-    public function afficherAction($id){
-    	
-    	/**
-    	 * @todo updateNombreVues
-    	 */
-        
+    public function afficherAction($id){        
         $query = "SELECT titre, sous_titre, description, image, auteur, visites FROM produit_detail_visite WHERE id = ? LIMIT 1";
         $connexion = \Propel::getConnection();
         $statement = $connexion->prepare($query);
@@ -344,7 +339,13 @@ class BasicController extends Controller
         $produit = $statement->fetch();
         
     	if($produit){
-                    return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit));
+    		$session = new Session();
+    		$id_utilisateur = $session->get('id');
+    		echo "<h1>".$id_utilisateur."</h1>";
+    		if($id_utilisateur != null){
+    			$this->updateNombreVueProduit($id_utilisateur, $id);
+    		}
+    		return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('produit' => $produit));
 
     	}else {
                    return $this->render('MoteurProduitBundle:Produit:afficher.html.twig', array('error' => "Aucun produit ne coresspond a cet Identifant "));
@@ -355,7 +356,6 @@ class BasicController extends Controller
     /**
      * @param unknown $id
      * @return \Symfony\Component\HttpFoundation\Response
-     * @todo si l'utilisateur est connecté alors il faut actualiser son nombre de visites
      */
     public function bookAction($id)
     {
