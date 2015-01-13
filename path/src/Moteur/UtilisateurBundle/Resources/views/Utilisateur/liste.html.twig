@@ -43,6 +43,15 @@
 				<a href="{{ path('moteur_utilisateur_liste', {'page': page+1, 'nombre': nombre}) }}">Page suivante</a>
 			</div>
 		</div>
+		
+		<div class="span9 row">
+			<h2>Générer de nouveaux utilisateurs</h2>
+		
+			<form action="{{ path('moteur_utilisateur_ajout') }}" method="post" >
+			    <input type="number" name="nombre" />
+			    <input type="submit" />
+			</form>	
+		</div>
 </div>
 		
 {% endblock %}

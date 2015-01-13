@@ -27,10 +27,6 @@ use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session;
 
-/**
- * 
- * @todo ajouter les use!
- */
 
 class BasicController extends Controller
 {
@@ -109,11 +105,6 @@ class BasicController extends Controller
      * D�connecte un administrateur
      */
     public function deconnecterAction(){
-    	/**
-    	 * @todo D�connecter l'administrateur
-    	 * Renvoyer un message/une vue
-    	 */
-         
         $session = new \Symfony\Component\HttpFoundation\Session\Session();
         $session->remove('connexion');
         return $this->redirect($this->generateUrl('moteur_utilisateur_connecte'));
@@ -123,11 +114,15 @@ class BasicController extends Controller
     /**
      * G�n�re un nombre d'utilisateurs avec des centres d'int�r�ts et des interactions avec des produits existants
      *
-     * @todo afficher une vue en retour
-     * @param unknown $nombre Le nombre de nouveaux utilisateurs � cr�er
-     * @return NULL
      */
-    public function addAction($nombre){
+    public function addAction(){
+    	$nombre = 1;
+    	
+    	if(!isset($_POST['nombre']))
+    		return $this->redirect($this->generateUrl("moteur_utilisateur_liste", array('page'=>1, 'nombre'=>10))); //redirige l'administrateur vers la liste des utilisateurs
+    	else
+    		$nombre = $_POST['nombre'];
+    	
     	//R�cup�re l'ensemble des centres d'interet enregistr�s
     	$interets = InteretQuery::create()->find();
     	 
@@ -311,22 +306,29 @@ class BasicController extends Controller
     			}
     		}
     	}
-    	return null;
+    	return $this->redirect($this->generateUrl("moteur_utilisateur_liste", array('page'=>1, 'nombre'=>10)));
     }
     
     
     /**
-     * Cr�er un nouveau centre d'int�r�t
-     * @todo il faut renvoyer une vue ou un message
+     * Créé un nouveau centre d'intérêt
      * @param unknown $nom
      */
-    public function createInteretAction($nom){
-    	InteretQuery::create()->filterByNom($nom)->findOneOrCreate()->setNom($nom)->save();
+    public function createInteretAction(){
+    	if(isset($_POST['nom'])){
+    		InteretQuery::create()
+    			->filterByNom($_POST['nom'])
+    			->findOneOrCreate();
+    	}
+    	return $this->redirect($this->generateUrl("moteur_interet_liste"));
     }
     
     /**
-     * Permet � un utilisateur d'ajouter un centre d'int�r�t
+     * Permet à un utilisateur d'ajouter un centre d'intérêt
      * @param unknown $id_interet
+     * 
+     * @todo Inutilisé pour l'instant
+     * 
      */
     public function addInteretAction($id_interet){
     
@@ -339,24 +341,30 @@ class BasicController extends Controller
     	//rajoute un interet a un utilisateur
     	$utilisateur_interet = new UtilisateurInteret();
     	UtilisateurInteretQuery::create()
-    	->filterByUtilisateurId($utilisateur->getId())
-    	->filterByInteretId($interet->getId())
-    	->findOneOrCreate()
-    	->setUtilisateurId($utilisateur->getId())
-    	->setInteretId($interet->getId())
-    	->setValeur(1)
-    	->save();
+	    	->filterByUtilisateurId($utilisateur->getId())
+	    	->filterByInteretId($interet->getId())
+	    	->findOneOrCreate()
+	    	->setUtilisateurId($utilisateur->getId())
+	    	->setInteretId($interet->getId())
+	    	->setValeur(1)
+	    	->save();
     }
     
     /**
      * Renvoie la liste des centres d'intérèts existants
-     * @todo ajouter le nombre d'utilisateurs
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listerAction(){
     	//Recherche la liste des centres d'int�r�ts class�s par ordre alphab�tique
-    	$interets = InteretQuery::create()->orderByNom(\Criteria::ASC)->find();
-    	 
+    	
+    	/**
+    	 * @todo Modifier la requete pour afficher les centres d'intérêts n'étant pas associés à des utilisateurs
+    	 */
+    	$query = "SELECT nom, COUNT(utilisateur_id) as nombre FROM interet i JOIN utilisateur_interet u ON i.id = u.interet_id GROUP BY interet_id ORDER BY nom ASC";
+    	$statement = \Propel::getConnection()->prepare($query);
+    	$statement->execute();
+    	$interets = $statement->fetchAll();
+    	
     	//Retourne la liste dans la vue adapt�e
     	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste_interet.html.twig', array('interets' => $interets));
     }

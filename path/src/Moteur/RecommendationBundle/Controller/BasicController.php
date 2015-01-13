@@ -142,6 +142,9 @@ class BasicController extends Controller
 		$age = $_POST['age'];
 		$ville = $_POST['ville'];
 		$description = $_POST['description'];
+		/**
+		 * @todo Il faut toujouts pouvoir ajouter un ou plusieurs centres d'intérêt pour la recommendation!!! (checkbox?)
+		 */
 		
 		//Permet de créer les différentes composantes d'une adresse ip
 		$geo = new GeoIp();

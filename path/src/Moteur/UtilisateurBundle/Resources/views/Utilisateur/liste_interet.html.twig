@@ -3,21 +3,31 @@
 {% block body %}
 <div class="span9" id="content">
 	<div class="panel panel-default">
-		<h1>Liste des centres d'intérêts existants</h1>
+		<h1>Centres d'intérêts</h1>
         <table class="table">
            <thead>
                <tr>
-        	       <th>Nom</th>
+        	       <th>Nom du centre d'intérêt</th>
+        	       <th>Nombre d'utilisateurs</th>
                </tr>
            </thead>
            <tbody>
                {% for interet in interets %}
      	          <tr>
         	          <td>{{ interet.nom }}</td>
+        	          <td>{{ interet.nombre }}</td>
                   </tr>
                {% endfor %}
            </tbody>
     	</table>
+	</div>
+	<div class="span9 row">
+		<h2>Ajouter un centre d'intérêt</h2>
+	
+		<form action="{{ path('moteur_utilisateur_interet_creer') }}" method="post" >
+		    <input type="text" name="nom" />
+		    <input type="submit" />
+		</form>	
 	</div>
 </div>
 {% endblock %}

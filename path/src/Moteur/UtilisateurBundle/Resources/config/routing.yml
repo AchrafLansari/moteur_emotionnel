@@ -3,12 +3,14 @@ moteur_utilisateur_affiche:
     path:     /admin/utilisateur/affiche/{nom}/{prenom}
     defaults: { _controller: MoteurUtilisateurBundle:Basic:afficher }
 
+#accessible de moteur_utilisateur_liste
 moteur_utilisateur_ajout:
-    path:     /admin/utilisateur/ajout/{nombre}
+    path:     /admin/utilisateur/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Basic:add }
 
+#accessible de moteur_interet_liste
 moteur_utilisateur_interet_creer:
-    path:     /admin/utilisateur/interet/creer/{nom}
+    path:     /admin/utilisateur/interet/creer
     defaults: { _controller: MoteurUtilisateurBundle:Basic:createInteret }
 
 moteur_utilisateur_interet_ajout:
