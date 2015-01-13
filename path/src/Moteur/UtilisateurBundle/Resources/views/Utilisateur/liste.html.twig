@@ -1,8 +1,17 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<div class="span9" id="content">
-		<div class="row">
+<div id="content">
+		<div class="span3">
+			<h2>Générer de nouveaux utilisateurs</h2>
+		
+			<form action="{{ path('moteur_utilisateur_ajout') }}" method="post" >
+			    <input type="number" name="nombre" />
+			    <input type="submit" />
+			</form>	
+		</div>
+
+		<div class="span9">
 			
 			<div class="panel panel-default">
 				<h1>Liste des utilisateurs existants</h1>
@@ -31,26 +40,17 @@
 		           </tbody>
 		    	</table>
 			</div>
-		</div>
-		<div class="row">
-			<div class="span3">
-				{% if page > 1 %}<a href="{{ path('moteur_utilisateur_liste', {'page': page-1, 'nombre': nombre}) }}">Page pr�c�dente</a>{% endif %}
+			<div class="row">
+				<div class="span3">
+					{% if page > 1 %}<a href="{{ path('moteur_utilisateur_liste', {'page': page-1, 'nombre': nombre}) }}">Page pr�c�dente</a>{% endif %}
+				</div>
+				<div class="span3">
+					Page actuelle : {{ page }}
+				</div>
+				<div class="span3">
+					<a href="{{ path('moteur_utilisateur_liste', {'page': page+1, 'nombre': nombre}) }}">Page suivante</a>
+				</div>
 			</div>
-			<div class="span3">
-				Page actuelle : {{ page }}
-			</div>
-			<div class="span3">
-				<a href="{{ path('moteur_utilisateur_liste', {'page': page+1, 'nombre': nombre}) }}">Page suivante</a>
-			</div>
-		</div>
-		
-		<div class="span9 row">
-			<h2>Générer de nouveaux utilisateurs</h2>
-		
-			<form action="{{ path('moteur_utilisateur_ajout') }}" method="post" >
-			    <input type="number" name="nombre" />
-			    <input type="submit" />
-			</form>	
 		</div>
 </div>
 		
