@@ -230,6 +230,9 @@ class BasicController extends Controller
     
     /**
      * Recherche de produits en utilisant la barre de recherche
+     * 
+     * @todo Recherche disponible seulement pour les utilisateurs connectés? Ou alors si non connecté id_util = null
+     * 
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function rechercherAction()
