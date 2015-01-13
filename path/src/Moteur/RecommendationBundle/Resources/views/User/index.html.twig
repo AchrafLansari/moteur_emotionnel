@@ -58,16 +58,16 @@
             <h2>Produits que nous vous recommandons</h2>		
 			{% for produit in produits_profil %}  
              <div class="media-box2">
-             
+             <div style="position: absolute; color: white; background-color: darkgrey; padding: 3px; font-size: 16px;">
+				Ranking : <span style="color: black; font-weight: bold;">{{ produit.score }}</span>
+              </div>
             <a href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}">
               <img width="200px" height="231px" src="{{ produit.image }}" alt="{{ produit.produit_id }}">
             </a>
             <div class="media-body">
               <h4  style="text-align:center;" class="media-heading">{{ produit.titre }}</h4>
               {% if produit.auteur  is not null %}<p style="text-align:center;"> {{ produit.auteur }} </p> {% endif %} 
-              <div style="text-align:center;" class="span1">
-							{{ produit.score }}
-              </div>
+              
             </div>
             </div>
              {% endfor %}					

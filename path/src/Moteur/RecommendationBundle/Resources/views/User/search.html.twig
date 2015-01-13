@@ -11,7 +11,7 @@
             
 					{% for produit in produits %}
                             <div class="media-box" style="padding-bottom: 10px;padding-top: 10px;">
-                                <a class="media-left"  href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}" >
+                            	<a class="media-left"  href="{{ path('moteur_produit_page', {'id': produit.produit_id}) }}" >
                                      <img width="200px" height="262px"  src="{{ produit.image }}" alt="{{ produit.produit_id }}"  />
                                 </a>
                                 <div class="media-body">
