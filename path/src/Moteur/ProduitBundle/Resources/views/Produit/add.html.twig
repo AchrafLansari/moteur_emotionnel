@@ -1,7 +1,7 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<div class="span9" id="">
+<div class="span9" id="content">
 	<h1>Ajouter un Produit : </h1>
 	
 	<form style="margin-top:50px;" action="{{ path('moteur_produit_ajout') }}" method="post" {{ form_enctype(form) }}>

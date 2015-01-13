@@ -51,7 +51,7 @@
           </a>
           <a class="brand" href="/home"><img src="{{ asset('bundles/user/images/logo.png') }}" style="margin-top: 10px;" width="180px" height="30px"/></a>
           <div class="nav-collapse">
-            <ul class="nav">
+            <ul class="nav"  {% if  app.session.get('connexion') %} style="margin-top:10px;font-size:18px" {% endif %} >
             	{% if not app.session.get('connexion') %}
 	              <li>
 	              	<a  id="active" class="lien-search" href="#">
@@ -67,17 +67,15 @@
 	          	{% endif %}
               
               {% if  app.session.get('connexion') %}
-	              <li class="dropdown">
+	              <li style="margin-top:10px" class="dropdown">
 	                
 	                
 	                  <li><a href="{{ path('moteur_interet_liste') }}">Liste des centres d'intérêts</a></li>
 	                  <li><a href="{{ path('moteur_utilisateur_liste', {'page': 1, 'nombre': 10}) }}">Liste des utilisateurs</a></li>
 	                
 	              </li><!-- dropdown -->
-	              <li class="dropdown">
-	                
-	                
-	                  
+	              <li  class="dropdown">
+	                 
 	                  <li><a href="{{ path('moteur_produit_homepage') }}">Liste des produits</a></li>
 	                  <li><a href="{{ path('moteur_produit_ajout') }}">Ajouter un produit</a></li>
 	                  <li><a href="{{ path('moteur_produit_generer') }}">Générer des produits</a></li>
