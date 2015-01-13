@@ -41,103 +41,188 @@ class BasicController extends Controller
 	public function indexAction()
 	{
 		include_once 'functions/functions.php';
-	
+		
+		
+		/**
+		 * 
+		 * 				Partie : Initialisation de variables
+		 * 
+		 */
+		$flag =false;
+		$recommandation_books = null;
+		$produits_recommandes = null;
+		$session = new Session();
 		$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+		$response = new Response();
 	
-        $sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 25";
+		/**
+		 * 
+		 * 					Partie : Produits à afficher dans le carroussel
+		 * 
+		 */
+		
+        //Récupère aléatoirement les  produits à afficher dans le carroussel
+		$sql = "SELECT * FROM PRODUIT ORDER BY RAND() LIMIT 5";
         $connexion = \Propel::getConnection();
         $statement = $connexion->prepare($sql);
         $statement->execute();
-                
-                $produits =  $statement->fetchAll();
-               
-	
+        $produits =  $statement->fetchAll();
+        
+        //Compte le nombre de produits effectivement récupérés
 		$books = count($produits);
-		$response = new Response();
+		
+		
+		
+		
+		
 		//$response->headers->clearCookie('cookie');
 		//$response->send();
-	
-		$dejaVu = $request->cookies->has('cookie');
-		$session = new Session();
 		
-                $flag =true;
-		$recommandation_books = null;
-		$produits_recommandes = null;
- 
-		if($dejaVu){
-			if($session->get('id')){
-				$user = UtilisateurQuery::create()
-				->filterById($session->get('id'))
-				->findOne();
-			
-				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
-				$produits_recommandes = $this->listeAction($session->get('id'), 1, 10);
-			}
-			
-			$flag = false;
-			 
-		}else {
-			if($request->getMethod() == 'POST')
-			{
-				$session->start();
-	
-				// définit des messages dits « flash »
-				//$session->getFlashBag()->add('notice', 'Utilisateur Modifier');
-				//$session->getFlashBag()->add('error', 'Pas d\'utilisateur');
-				 
-				$nom = $_POST['nom'];
-				$prenom = $_POST['prenom'];
-				$age = $_POST['age'];
-				$ville = $_POST['ville'];
-				$description = $_POST['description'];
-	
-				// définit et récupère des attributs de session
-	
-				$geo = new GeoIp();
-				
-				do{
-					$geo->setIpadress(rand(0,255).".".rand(0,255).".".rand(0,255).".".rand(0,255));
-					$geo->geoCheckIP();
-				}
-				while($geo->pays==null);
-				
-				$ip = new Ip();
-				$ip->setPays($geo->pays);
-				$ip->setDepartement($geo->departement);
-				$ip->setVille($geo->ville);
-				$ip->save();
-				
-				$utilisateur = new Utilisateur();
-				$utilisateur->setNom($nom);
-				$utilisateur->setPrenom($prenom);
-				$utilisateur->setVille($ville);
-				$utilisateur->setAge($age);
-				$utilisateur->setDescription($description);
-				$utilisateur->setIpUtilisateur($this->container->get('request')->getClientIp());
-				$utilisateur->setIp();
-				$utilisateur->save();
-	
-				
-	
-				$session->set('id',$utilisateur->getId());// je pense qu'il faut le récuperer de la base ou de l'action précedante
-	
-	
-				unset($_POST);
-	
-				$cookie = new Cookie('cookie', 'utilisateur',time() + 3600 * 24 * 7);
-				$response->headers->setCookie($cookie);
-				$response->send();
-
-				
-			}
-			$flag=false;
-				
+		/**
+		 * 
+		 * 					Partie : enregistrement et/ou connexion de l'utilisateur
+		 * 
+		 */
+		if($request->getMethod() == 'POST')
+		{
+			//Enregistre l'utilisateur et renvoie vrai s'il est connecté
+			$flag = $this->enregistreUtilisateur($session, $response);
 		}
+	
+		
+		
+		/**
+		 * 
+		 * 					Partie : affichage de produits en fonction du profil de l'utilisateur
+		 * 
+		 */
+		//Vérifie si l'utilisateur s'est déjà enregistré sur la page
+		$dejaVu = $request->cookies->has('cookie');
+		
+ 
+		//Actions à effectuer si l'utilisateur s'est déjà enregistré
+		if($dejaVu || $flag){
+			
+			//Permet de désactiver l'affichage automatique du menu de connexion
+			$flag = true;
+			
+			//Récupère l'id de l'utilisateur dans la session
+			if($session->get('id')){
+				
+				//Récupère les données d'un utilisateur en fonction de son id
+				$user = UtilisateurQuery::create()
+					->filterById($session->get('id'))
+					->findOne();
+			
+				//Affiche une liste en fonction de la description de l'utilisateur
+				$recommandation_books = $this->listedescriptionAction(recommandation_description($user->getDescription()));
+				
+				//Affiche une liste de produits en fonction du profil complet de l'utilisateur
+				$produits_recommandes = $this->listeAction($session->get('id'), 1, 10);
+			}	 
+		}
+		
+		//Retourne la vue
 		return $this->render('MoteurRecommendationBundle:User:index.html.twig',array('nb_books' => $books,
 				'books' => $produits,'flag'=>$flag,'recommandation_book'=>$recommandation_books, 'produits_profil'=>$produits_recommandes));
 	}
         
-    
+    /**
+     * Permet d'enregistrer/de connecter un utilisateur 
+     * @param unknown $session
+     * @param unknown $response
+     * @return boolean
+     */
+	private function enregistreUtilisateur($session, $response){
+		$session->start();
+		
+		//Initialise les différents éléments de l'utilisateur eb fonction du formulaire
+		$nom = $_POST['nom'];
+		$prenom = $_POST['prenom'];
+		$age = $_POST['age'];
+		$ville = $_POST['ville'];
+		$description = $_POST['description'];
+		
+		//Permet de créer les différentes composantes d'une adresse ip
+		$geo = new GeoIp();
+		
+		//Crée une adresse IP aléatoirement
+		$geo->setIpadress(rand(0,255).".".rand(0,255).".".rand(0,255).".".rand(0,255));
+		
+		//Liste des géolocalisations possibles
+		$geolocalisation = array(
+				array('pays' => 'France',
+						array('region' => 'Ile-de-france',
+								array('Paris', 'Saint-Denis', 'Montreuil')
+						),
+						array('region' => 'Rhone-Alpes',
+								array('Lyon', 'Saint-Etienne', 'Grenoble')
+						)
+				),
+				array('pays' => 'Etats-Unis',
+						array('region' => 'New-York',
+								array('Manhattan', 'Bronx', 'Brooklyn')
+						),
+						array('region' => 'Californie',
+								array('Los Angeles', 'San Diego', 'San Jose')
+						)
+				),
+				array('pays' => 'Allemagne',
+						array('region' => 'Bavière',
+								array('Munich', 'Augsbourg', 'Nuremberg')
+						),
+						array('region' => 'Saxe',
+								array('Dresde', 'Leipzig', 'Chemnitz')
+						)
+				)
+		);
+		
+		//On détermine une géolocalisation aléatoirement parmi la liste des géolocalisations possible
+		$pays_geo = $geolocalisation[rand(0,2)];
+		$region_geo = $pays_geo[rand(0,1)];
+		$ville_geo = $region_geo[0][rand(0,2)];
+		$geo->pays = $pays_geo['pays'];
+		$geo->departement = $region_geo['region'];
+		$geo->ville = $ville_geo;
+		
+		
+		try {
+			//Sauvegarde des paramètres de l'adresse IP
+			$ip = new Ip();
+			$ip->setPays($geo->pays);
+			$ip->setDepartement($geo->departement);
+			$ip->setVille($geo->ville);
+			$ip->save();
+			
+			//Sauvegarde de l'utilisateur
+			$utilisateur = new Utilisateur();
+			$utilisateur->setNom($nom);
+			$utilisateur->setPrenom($prenom);
+			$utilisateur->setVille($ville);
+			$utilisateur->setAge($age);
+			$utilisateur->setDescription($description);
+			$utilisateur->setIpUtilisateur($this->container->get('request')->getClientIp());
+			$utilisateur->setIp();
+			$utilisateur->save();
+			
+			
+			/**
+			 * @todo
+			*/
+			// je pense qu'il faut le récuperer de la base ou de l'action précédente
+			$session->set('id',$utilisateur->getId());
+			
+			unset($_POST);
+			
+			$cookie = new Cookie('cookie', 'utilisateur',time() + 3600 * 24 * 7);
+			$response->headers->setCookie($cookie);
+			$response->send();
+			
+			return true;
+		} catch (Exception $e) {
+			return false;
+		}
+	}
     
     
     /**
@@ -146,28 +231,36 @@ class BasicController extends Controller
      */
     public function rechercherAction()
     {  
+    	//Initialise les variables
     	$request = new Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
     	$requete = "";
     	$resultats = array();
+    	$books = 0;
     	$session = new Session();
         
-        
-        
+        //Si la requete est un POST
     	if ($request->isMethod('POST')) {
+    		
+    		//Chargement du module permettant d'indexer la requete
     		$kernel = $this->get('kernel');
     		$path = $kernel->locateResource('@MoteurProduitBundle/Dictionnaire/');
     		
-                $requete = $_POST['tags'];
-                
-        
+    		//Récupération de la requête
+            $requete = $_POST['tags'];
+            
+            //Récupère le dernier id d'une requête effectuée
     		$indexation = new IndexationMot($requete, $path);
     		$requete_id = RequeteQuery::create()->limit(1)->orderBy('requete_id', 'DESC')->findOne();
     		$requete_id = $requete_id->getRequeteId();
     		
+    		//Id de la requête actuelle
+    		$requete_id++;
     		
+    		//Récupère l'id de l'utilisateur connecté
     		$utilisateur_id = $session->get('id');
     		
                 
+    		//Indexe chaque mot de la requête dans la base de donnéee
     		foreach ($indexation->indexRequete as $mot){
     			$m_Req = MotQuery::create()
     			->filterByMot($mot)
@@ -179,24 +272,27 @@ class BasicController extends Controller
     			}
     			$ajoutRequete = new Requete();
     			$ajoutRequete->setUtilisateurId($utilisateur_id);
-    			$ajoutRequete->setRequeteId($requete_id + 1);
+    			$ajoutRequete->setRequeteId($requete_id);
     			$ajoutRequete->setMotId($m_Req->getId());
     			$ajoutRequete->save();
     		}
     		
-    		$requete_id++;
+    		//Requete SQL
     		$sql = "CALL rechercher_produits_via_requete(?)";
     		 
-    		//\Propel::
+    		//Récupération des produits correspondants à la requete
     		$connexion = \Propel::getConnection();
     		$statement = $connexion->prepare($sql);
     		$statement->bindParam(1, $requete_id, \PDO::PARAM_INT);
     		$statement->execute();
     		
     		$resultat = $statement->fetchAll();
+    		
+    		//On compte le nombre de produits
+    		$books = count($resultat);
     	}  
-        $books = count($resultat);
         
+        //retourne la vue adaptée
         return $this->render('MoteurRecommendationBundle:User:search.html.twig',array('nb_produits' => $books,'produits' => $resultat));
     }
     

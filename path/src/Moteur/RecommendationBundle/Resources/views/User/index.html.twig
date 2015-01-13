@@ -6,36 +6,35 @@
 
       
       <div id="this-carousel-id" class="carousel slide">
+      	<h1>Produits à la une</h1>
         <div class="carousel-inner">
-            
-                    
-            
-                    {% for book in books %}
-            {% if loop.first %}
-                <div class="item active">
-            {% else %}
-                 <div class="item">
-            {% endif %}
-                         <a href="{{path('moteur_produit_page',{'id': book['id'] }) }}">  <img  src="{{ book['image'] }}" alt="{{ book['id'] }}" style =" display: block; margin-left: auto;margin-right: auto;width:300px;height:360px;  " />
-            </a>
-            <div class="carousel-caption">
-                <p style="text-align:center;" ><a  href="{{path('moteur_produit_page',{'id': book['id'] }) }}">{{ book['titre']|e }}</a></p>
-              <p style="text-align:center;">{% if book['sous_titre'] is not null %}  {{ book['sous_titre']|e }} {% endif %}</p>
-            </div>
-          </div>
-                    {% endfor %}
+            {% for book in books %}
+	            {% if loop.first %}
+	                <div class="item active">
+	            {% else %}
+	                <div class="item">
+	            {% endif %}
+			            <a href="{{path('moteur_produit_page',{'id': book['id'] }) }}">
+			            	<img  src="{{ book['image'] }}" alt="{{ book['id'] }}" style =" display: block; margin-left: auto;margin-right: auto;width:300px;height:360px;  " />
+			            </a>
+			            <div class="carousel-caption">
+			                <p style="text-align:center;" ><a  href="{{path('moteur_produit_page',{'id': book['id'] }) }}">{{ book['titre']|e }}</a></p>
+			             	<p style="text-align:center;">{% if book['sous_titre'] is not null %}  {{ book['sous_titre']|e }} {% endif %}</p>
+					             </div>
+							</div>
+            {% endfor %}
           
         </div><!-- .carousel-inner -->
         <!--  next and previous controls here
               href values must reference the id for this carousel -->
-          <a class="carousel-control left" href="#this-carousel-id" data-slide="prev">‹</a>
-          <a class="carousel-control right" href="#this-carousel-id" data-slide="next">›</a>
+          <a class="carousel-control left" href="#this-carousel-id" data-slide="prev">â€¹</a>
+          <a class="carousel-control right" href="#this-carousel-id" data-slide="next">â€º</a>
       </div><!-- .carousel -->
       <!-- end carousel -->
       
       {% if recommandation_book != null %}
           
-          <h2> Ses Articles Pourrait Vous Interesser : </h2>
+          <h2>Ces articles pourraient vous intéresser : </h2>
           <div class="media">
               {% for book in recommandation_book %}
              <div class="media-box">
@@ -56,7 +55,7 @@
       {% if produits_profil != null %}
       	<div class="media">
             
-            <h2>Produits Quand vous recommande </h2>		
+            <h2>Produits que nous vous recommandons</h2>		
 			{% for produit in produits_profil %}  
              <div class="media-box2">
              

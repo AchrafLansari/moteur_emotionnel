@@ -2,37 +2,47 @@
 
 {% block body %}
 <div class="span9" id="content">
-	
-	<h1>Liste des utilisateurs</h1>
-	
+		<div class="row">
+			
+			<div class="panel panel-default">
+				<h1>Liste des utilisateurs existants</h1>
+		        <table class="table">
+		           <thead>
+		               <tr>
+		        	       <th>Nom</th>
+		        	       <th>Prénom</th>
+		               </tr>
+		           </thead>
+		           <tbody>
+		           		{% for utilisateur in utilisateurs %}
+			     	          <tr>
+			        	          <td>
+			        	          		<a href="{{ path('moteur_utilisateur_affiche', {'nom': utilisateur.nom, 'prenom': utilisateur.prenom}) }}">
+			        	          			{{ utilisateur.nom }}
+			        	          		</a>
+			        	          </td>
+			        	          <td>
+			        	          		<a href="{{ path('moteur_utilisateur_affiche', {'nom': utilisateur.nom, 'prenom': utilisateur.prenom}) }}">
+			        	          			{{ utilisateur.prenom }}
+			        	          		</a>
+			        	          </td>
+			                  </tr>
+		           		{% endfor %}
+		           </tbody>
+		    	</table>
+			</div>
+		</div>
 		<div class="row">
 			<div class="span3">
-				{% if page > 1 %}<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/utilisateur/liste/{{ page-1 }}/{{ nombre }}">Page pr�c�dente</a>{% endif %}
+				{% if page > 1 %}<a href="{{ path('moteur_utilisateur_liste', {'page': page-1, 'nombre': nombre}) }}">Page pr�c�dente</a>{% endif %}
 			</div>
 			<div class="span3">
 				Page actuelle : {{ page }}
 			</div>
 			<div class="span3">
-				<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/utilisateur/liste/{{ page+1 }}/{{ nombre }}">Page suivante</a>
+				<a href="{{ path('moteur_utilisateur_liste', {'page': page+1, 'nombre': nombre}) }}">Page suivante</a>
 			</div>
 		</div>
-		<div class="row">
-			{% for utilisateur in utilisateurs %}
-			
-			<a href="http://localhost/moteur_emotionnel/path/web/app_dev.php/utilisateur/affiche/{{ utilisateur.0.nom }}/{{ utilisateur.0.prenom }}">
-				<div class="span8">
-					Nom : {{ utilisateur.0.nom }}
-					<br>Prénom : {{ utilisateur.0.prenom }}
-					<br>Mail : {{ utilisateur.0.mail }}
-					<br>Age : {{ utilisateur.0.age }}
-					<br>Ville : {{ utilisateur.0.ville }}
-				</div>
-				<div class="span1">Score : {{ utilisateur.1 }}</div>
-			</a>
-			
-			{% endfor %}
-		</div>
-
 </div>
 		
 {% endblock %}

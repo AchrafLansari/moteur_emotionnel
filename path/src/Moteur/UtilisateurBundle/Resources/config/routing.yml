@@ -1,25 +1,36 @@
+#accessible depuis moteur_utilisateur_liste
 moteur_utilisateur_affiche:
     path:     /admin/utilisateur/affiche/{nom}/{prenom}
     defaults: { _controller: MoteurUtilisateurBundle:Basic:afficher }
+
 moteur_utilisateur_ajout:
     path:     /admin/utilisateur/ajout/{nombre}
     defaults: { _controller: MoteurUtilisateurBundle:Basic:add }
+
 moteur_utilisateur_interet_creer:
     path:     /admin/utilisateur/interet/creer/{nom}
     defaults: { _controller: MoteurUtilisateurBundle:Basic:createInteret }
+
 moteur_utilisateur_interet_ajout:
     path:     /utilisateur/interet/ajout
     defaults: { _controller: MoteurUtilisateurBundle:Basic:addInteret }
+
+#accessible en admin depuis le menu utilisateur
 moteur_interet_liste:
     path:     admin/interet/liste
     defaults: { _controller: MoteurUtilisateurBundle:Basic:lister }
+    
+#accessible seulement en se rendant directement sur la page
 moteur_utilisateur_connecte:
     path:     /admin
     defaults: { _controller: MoteurUtilisateurBundle:Basic:connecter }
+
+#accessible lorsque connecte en tant admin dans la barre de menu
 moteur_utilisateur_deconnecte:
     path:     /admin/deconnecter
     defaults: { _controller: MoteurUtilisateurBundle:Basic:deconnecter }
 
+#accessible en admin depuis le menu utilisateurs
 moteur_utilisateur_liste:
     path:     /admin/utilisateur/liste/{page}/{nombre}
-    defaults: { _controller: MoteurUtilisateurBundle:Basic:lister }
+    defaults: { _controller: MoteurUtilisateurBundle:Basic:listeutilisateurs }

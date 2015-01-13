@@ -95,7 +95,6 @@ class BasicController extends Controller
     		//S'il est valide alors on l'enregistre
     		if ($form->isValid()){
                     if($_POST['form']['login']=="admin" && $_POST['form']['mdp']=="admin"){
-                    	echo "ok";
                         $session->set('connexion','true');
                     }
                     
@@ -119,12 +118,6 @@ class BasicController extends Controller
         $session->remove('connexion');
         return $this->redirect($this->generateUrl('moteur_utilisateur_connecte'));
         
-    }
-    
-    
-    public function indexAction()
-    {
-    	return $this->render('MoteurUtilisateurBundle:Default:index.html.twig', array('name' => "nom"));
     }
     
     /**
@@ -177,7 +170,7 @@ class BasicController extends Controller
     						)
     				),
     				array('pays' => 'Allemagne',
-    						array('region' => 'Bavi�re',
+    						array('region' => 'Bavière',
     								array('Munich', 'Augsbourg', 'Nuremberg')
     						),
     						array('region' => 'Saxe',
@@ -356,7 +349,7 @@ class BasicController extends Controller
     }
     
     /**
-     * Renvoie la liste des centres d'int�r�ts existants
+     * Renvoie la liste des centres d'intérèts existants
      * @todo ajouter le nombre d'utilisateurs
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -366,5 +359,16 @@ class BasicController extends Controller
     	 
     	//Retourne la liste dans la vue adapt�e
     	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste_interet.html.twig', array('interets' => $interets));
+    }
+    
+    /**
+     * Renvoie une liste d'utilisateurs enregistrés classés par ordre alphabétique de noms
+     * @param unknown $nombre
+     * @param unknown $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listeutilisateursAction($nombre, $page){
+    	$utilisateurs = UtilisateurQuery::create()->orderByNom(\Criteria::ASC)->paginate($page, $nombre);
+    	return $this->render('MoteurUtilisateurBundle:Utilisateur:liste.html.twig', array('utilisateurs' => $utilisateurs, 'page'=> $page, 'nombre'=>$nombre));
     }
 }
