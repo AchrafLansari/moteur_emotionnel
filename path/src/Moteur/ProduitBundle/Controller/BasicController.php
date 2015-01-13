@@ -208,7 +208,7 @@ class BasicController extends Controller
 	                        		$produit->setLien($lien);
 	                        		if($produit->save()){
 	                        			$this->indexDocument($produit);
-	                        			echo"<br>Nombre de documents restants à sauvegarder : " .--$nombre;
+	                        			$nombre--;
 	                        		}
 	                        	}	
                         	}
